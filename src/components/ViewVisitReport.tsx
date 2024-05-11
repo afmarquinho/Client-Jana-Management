@@ -1,6 +1,6 @@
 const ViewVisitReport = () => {
   return (
-    <div className="w-11/12 max-w-3xl mx-auto p-8">
+    <div className="w-11/12 max-w-3xl mx-auto p-2 md:p-8 ">
       <h2 className="text-xl font-black mb-2">
         Resúmen del Informe de Vista de Obra
       </h2>

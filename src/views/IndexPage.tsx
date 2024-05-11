@@ -23,6 +23,8 @@ const IndexPage = () => {
             ¡Bienvenido!
             <br />
             Simplificando la gestión, transformando ofertas en oportunidades.
+
+
           </p>
         </div>
         <LoginForm/>
