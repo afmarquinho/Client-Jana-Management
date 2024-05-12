@@ -12,22 +12,20 @@ const IndexPage = () => {
         <div
           className="w-1/2 relative bg-cover bg-center p-5 hidden sm:flex"
           style={{
-            backgroundImage: "url(../public/img/fondo.jpg)",
+            backgroundImage: "url(../src/assets/background/fondo.jpg)",
             backgroundRepeat: "no-repeat",
           }}
         >
           <p
-            className="font-bold text-2xl text-right p-4 self-end rounded-md
-          bg-customRed500 bg-opacity-85 text-white shadow-md shadow-gray-400"
+            className="font-bold text-2xl text-right p-2 self-end rounded-[15px]
+          bg-customRed500 border-[10px] border-red-500 bg-opacity-60 text-white shadow-md shadow-gray-400"
           >
             ¡Bienvenido!
             <br />
             Simplificando la gestión, transformando ofertas en oportunidades.
-
-
           </p>
         </div>
-        <LoginForm/>
+        <LoginForm />
       </div>
     </div>
   );
