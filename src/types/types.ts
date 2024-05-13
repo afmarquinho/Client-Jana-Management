@@ -5,7 +5,7 @@ export type VisitReport = {
   date: string;
   name: string;
   customerName: string;
-  id: number;
+  id: string;
   city: string;
   address: string;
   phoneNumber: string;
