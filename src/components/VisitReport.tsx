@@ -10,7 +10,7 @@ const VisitReport = () => {
           <VisitReportForm />
 
           <div className="w-full md:w-1/2 lg:w-2/3">
-            <h2 className="text-center font-bold">
+            <h2 className="">
               Visualiza tus informes aquí
             </h2>
             <div className="mt-4 flex flex-wrap gap-5"></div>

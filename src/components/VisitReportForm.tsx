@@ -1,155 +1,206 @@
-import { ErrorMessage, Field, Form, Formik } from "formik";
-import * as Yup from "yup";
-import WorkforceMaterialModal from "./modals/WorkforceMaterialModal";
+import { useFormik } from "formik";
+import { useState } from "react";
+import { workForceObject } from "../types/types";
+import { TrashIcon } from "@heroicons/react/16/solid";
 
+const VisitReportForm: React.FC = () => {
+  const [workForceArray, setWorkForceArray] = useState<workForceObject[]>([]);
+  const [workForce, setWorkForce] = useState<string>("");
+  const [workShift, setWorkShift] = useState<number>(0);
 
-const VisitReportForm = () => {
+  const addWorkForce = () => {
+    if (workForce && workShift > 0) {
+      setWorkForceArray([...workForceArray, { workForce, workShift }]);
+      //* Otra manera de resolver el llenado del array
+      // * setWorkForceArray( prevWorkForceArray =>[...prevWorkForceArray, {workForce, workShift}])
+      console.log(workForceArray);
+      setWorkForce("");
+      setWorkShift(0);
+    } else {
+      alert("Debe completar los campos de mano de obra y turnos correctamente");
+    }
+  };
+
+  const deleteWorkForce = (index: number) => {
+    const newList = workForceArray.filter((_, i) => i !== index);
+    setWorkForceArray(newList);
+  };
+
+  const { handleSubmit, handleChange } = useFormik({
+    initialValues: {
+      initialValues: {
+        name: "",
+        visitDate: "",
+        dueDate: "",
+        customerName: "",
+        city: "",
+        address: "",
+        phoneNumber: "",
+        email: "",
+        priority: "",
+        workforce: [],
+        materials: [],
+        description: "",
+      },
+    },
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
+
   return (
-    <Formik
-      initialValues={{
-        nombre: "",
-        cliente: "",
-        ciudad: "",
-        descripcion: "",
-        prioridad: "",
-      }}
-      validationSchema={Yup.object({
-        nombre: Yup.string().required("El nombre es obligatorio"),
-        cliente: Yup.string().required("El cliente es obligatorio"),
-        ciudad: Yup.string().required("La ciudad es obligatoria"),
-        descripcion: Yup.string().required("La descripción es obligatoria"),
-        prioridad: Yup.string().required("La prioridad es obligatoria"),
-      })}
-      onSubmit={(values) => {console.log(values);
-        // demas funciones del submit
-      }}
+    <form
+      action="
+        "
+      className="w-full md:w-1/2 lg:w-1/3 space-y-4"
+      onSubmit={handleSubmit}
     >
-      <Form className="w-full md:w-1/2 lg:w-1/3 space-y-4">
-        <h2 className="text-center font-bold">
-          Ingresa los datos del informe de visita a obra
-        </h2>
-        <ErrorMessage
-          name="nombre"
-          component="div"
-          className="text-red-500 text-xs"
-        >
-          {(msg) => <div className="text-red-500 text-xs m-0">{msg}</div>}
-        </ErrorMessage>
-        <Field
+      <h2 className="">Ingresa los datos del informe de visita a obra</h2>
+      <input
+        type="text"
+        placeholder="Nombre"
+        className="border-customRed500 border-2 rounded-md px-2 py-1 w-full outline-none"
+        name="name"
+        onChange={handleChange}
+      />
+      <div className="flex flex-col sm:flex-row gap-2">
+        <div className="w-full sm:w-1/2">
+          <label htmlFor="visitDate" className="text-sm">
+            Fecha de Visita
+          </label>
+          <input
+            type="date"
+            className="border-customRed500 border-2 rounded-md px-2 w-full py-1 outline-none"
+            name="visitDate"
+            onChange={handleChange}
+          />
+        </div>
+        <div className="w-full sm:w-1/2">
+          <label htmlFor="dueDate" className="text-sm">
+            Fecha de Entrega
+          </label>
+          <input
+            type="date"
+            className="border-customRed500 border-2 rounded-md px-2 w-full py-1 outline-none"
+            name="dueDate"
+            onChange={handleChange}
+          />
+        </div>
+      </div>
+      <div className="flex flex-col sm:flex-row gap-2">
+        <input
           type="text"
-          name="nombre"
-          placeholder="Nombre"
-          className="border-customRed500 border-2 rounded-md px-2 py-1 w-full outline-none"
+          placeholder="Cliente"
+          className="border-customRed500 border-2 rounded-md px-2 py-1 w-full sm:w-1/2 outline-none"
+          name="customerName"
+          onChange={handleChange}
         />
-        <div className="flex space-x-2">
-          <Field
-            type="text"
-            name="cliente"
-            placeholder="Cliente"
-            className="border-customRed500 border-2 rounded-md px-2 py-1 w-1/2 outline-none"
-          />
-          <Field
-            type="text"
-            name="ciudad"
-            placeholder="Cuidad"
-            className="border-customRed500 border-2 rounded-md px-2 py-1 w-1/2 outline-none"
-          />
-        </div>
-        <ErrorMessage name="cliente" component="div" className="text-red-500">
-          {(msg) => <div className="text-red-500 text-xs m-0">{msg}</div>}
-        </ErrorMessage>
-        <ErrorMessage name="ciudad" component="div" className="text-red-500">
-          {(msg) => <div className="text-red-500 text-xs m-0">{msg}</div>}
-        </ErrorMessage>
 
-        <Field
-          as="textarea"
-          name="descripcion"
-          placeholder="Descripción"
-          className="border-customRed500 border-2 rounded-md px-2 py-1 w-full h-20 resize-none outline-none"
+        <input
+          type="text"
+          placeholder="Cuidad"
+          className="border-customRed500 border-2 rounded-md px-2 py-1 w-full sm:w-1/2 outline-none"
+          name="city"
+          onChange={handleChange}
         />
-        <ErrorMessage
-          name="descripcion"
-          component="div"
-          className="text-red-500"
-        >
-          {(msg) => <div className="text-red-500 text-xs m-0">{msg}</div>}
-        </ErrorMessage>
+      </div>
+      <input
+        type="text"
+        placeholder="Dirección p.e. Calle 35 # 10-45"
+        className="border-customRed500 border-2 rounded-md px-2 py-1 w-full outline-none"
+        name="address"
+        onChange={handleChange}
+      />
+      <div className="flex flex-col sm:flex-row gap-2">
+        <input
+          type="phone"
+          placeholder="Teléfono p.e. +573121234567"
+          className="border-customRed500 border-2 rounded-md px-2 py-1 w-full sm:w-1/2 outline-none"
+          name="phoneNumber"
+          onChange={handleChange}
+        />
 
-        <button
-          className="text-xs text-white font-bold bg-customRed500 py-1 px-2 rounded-md hover:bg-customRed700"
-          type="button"
-        >
-          Agregar Mano de Obra
-        </button>
-        <WorkforceMaterialModal/>
-        
-        <div className="my-3 flex justify-start flex-wrap">
-          <span className="text-xs md:text-sm border-2 rounded-md border-customRed500 px-2 me-2 mb-2">
-            Operarios - 5 turnos
-            <button className="pl-5 text-customRed500 font-black">X</button>
-          </span>
-          <span className="text-xs md:text-sm border-2 rounded-md border-customRed500 px-2 me-2 mb-2">
-            Operarios - 5 turnos
-            <button className="pl-5 text-customRed500 font-black">X</button>
-          </span>
-          <span className="text-xs md:text-sm border-2 rounded-md border-customRed500 px-2 me-2 mb-2">
-            Operarios - 5 turnos
-            <button className="pl-5 text-customRed500 font-black">X</button>
-          </span>
-          <span className="text-xs md:text-sm border-2 rounded-md border-customRed500 px-2 me-2 mb-2">
-            Operarios - 5 turnos
-            <button className="pl-5 text-customRed500 font-black">X</button>
-          </span>
-        </div>
-
-        <button
-          className="text-xs text-white font-bold bg-customRed500 py-1 px-2 rounded-md hover:bg-customRed700"
-          type="button"
-        >
-          Agregar Materiales
-        </button>
-        <div className="my-3 flex justify-start flex-wrap">
-          <span className="text-xs md:text-sm border-2 rounded-md border-customRed500 px-2 me-2 mb-2">
-            Material 1 - 5 Kg
-            <button className="pl-5 text-customRed500 font-black">X</button>
-          </span>
-          <span className="text-xs md:text-sm border-2 rounded-md border-customRed500 px-2 me-2 mb-2">
-            Material 2 - 5 L
-            <button className="pl-5 text-customRed500 font-black">X</button>
-          </span>
-          <span className="text-xs md:text-sm border-2 rounded-md border-customRed500 px-2 me-2 mb-2">
-            Material 3 - 10 unid{" "}
-            <button className="pl-5 text-customRed500 font-black">X</button>
-          </span>
-        </div>
-
-        <label htmlFor="prioridad" className="me-2">
-          Prioridad:
-        </label>
-        <Field as="select" name="prioridad">
-          <option value="">--Seleccione-- </option>
-          <option value="alta">Alta</option>
-          <option value="media">Medio</option>
-          <option value="baja">Baja</option>
-        </Field>
-        <ErrorMessage
-          name="prioridad"
-          component="div"
-          className="text-red-500 text-xs"
-        >
-          {(msg) => <div className="text-red-500 text-xs m-0">{msg}</div>}
-        </ErrorMessage>
-
-        <button
-          type="submit"
-          className="w-full p-2 bg-gradient-to-b from-customRed700 to-customRed800
+        <input
+          type="email"
+          placeholder="Correo p.e. correo@correo.com"
+          className="border-customRed500 border-2 rounded-md px-2 py-1 w-full sm:w-1/2 outline-none"
+          name="email"
+          onChange={handleChange}
+        />
+      </div>
+      <textarea
+        placeholder="Descripción"
+        className="border-customRed500 border-2 rounded-md px-2 py-1 w-full h-20 resize-none outline-none"
+        name="description"
+        onChange={handleChange}
+      ></textarea>
+      <hr className="m-0 border-gray-300" />
+      <small>Agregar Mano de Obra</small> <br />
+      {/*Work Force Section */}
+      <div className="flex flex-col sm:flex-row gap-2">
+        <input
+          type="text"
+          placeholder="Mano de Obra"
+          className="border-customRed500 border-2 rounded-md px-2 py-1 w-full sm:w-2/3 outline-none"
+          value={workForce}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setWorkForce(e.target.value)
+          }
+        />
+        <input
+          type="number"
+          placeholder="# Turnos"
+          className="border-customRed500 border-2 rounded-md px-2 py-1 w-full sm:w-1/3 outline-none"
+          value={workShift}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setWorkShift(parseInt(e.target.value))
+          }
+        />
+      </div>
+      <button
+        className="text-xs text-white font-bold bg-blue-500 py-1 px-2 rounded-md
+         hover:bg-green-800"
+        type="button"
+        onClick={addWorkForce}
+      >
+        Agregar Mano de Obra
+      </button>
+      <ul className="list-decimal">
+        {workForceArray.map((item, index) => (
+          <li key={index} className=" flex justify-between items-center">
+            <span>
+              {index + 1}. {item.workForce} -- {item.workShift} Turnos
+            </span>
+            <button onClick={() => deleteWorkForce(index)}>
+              <TrashIcon className="text-red-500 h-4" />
+            </button>
+          </li>
+        ))}
+      </ul>
+      <button
+        className="text-xs text-white font-bold bg-customRed500 py-1 px-2 rounded-md hover:bg-customRed700"
+        type="button"
+      >
+        {/* *Material Section */}
+        Agregar Materiales
+      </button>
+      
+      <label htmlFor="prioridad" className="me-2">
+        Prioridad:
+      </label>
+      <select name="priority" onChange={handleChange}>
+        <option value="">--Seleccione-- </option>
+        <option value="hight">Alta</option>
+        <option value="middle">Medio</option>
+        <option value="low">Baja</option>
+      </select>
+      <input
+        type="submit"
+        className="w-full p-2 bg-gradient-to-b from-customRed700 to-customRed800
             rounded-md shadow-gray-400 shadow-md outline-none text-white font-bold cursor-pointer uppercase text-xs"
-        >
-          Guardar
-        </button>
-      </Form>
-    </Formik>
+        value="Guardar"
+      />
+    </form>
   );
 };
 

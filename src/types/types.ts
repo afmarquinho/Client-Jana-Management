@@ -2,10 +2,10 @@
 export type GenericObject = { [key: string]: number };
 
 export type VisitReport = {
-  date: string;
+  visitDate: string;
   name: string;
   customerName: string;
-  id: string;
+  id: number;
   city: string;
   address: string;
   phoneNumber: string;
@@ -16,4 +16,9 @@ export type VisitReport = {
   workforce: GenericObject;
   materials: GenericObject;
   description: string;
+};
+
+export type workForceObject = {
+  workForce: string;
+  workShift: number;
 };
