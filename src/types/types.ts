@@ -1,24 +1,29 @@
 // Define a generic object, as workforce y material have a no difine number of elements
 export type GenericObject = { [key: string]: number };
 
+export type workForce = {
+  workForce: string;
+  workShift: number;
+};
+export type material = {
+  material: string;
+  amount: number;
+  unit: string;
+};
+
 export type VisitReport = {
   visitDate: string;
   name: string;
   customerName: string;
-  id: number;
+  id: string;
   city: string;
   address: string;
   phoneNumber: string;
   email: string;
   dueDate: string;
-  priority: "Alta" | "Media" | "Baja";
+  priority: string;
   // priority: string; this is another option
-  workforce: GenericObject;
-  materials: GenericObject;
+  workforce: workForce[];
+  materials: material[];
   description: string;
-};
-
-export type workForceObject = {
-  workForce: string;
-  workShift: number;
 };

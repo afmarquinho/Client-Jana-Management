@@ -1,12 +1,22 @@
 import { useFormik } from "formik";
 import { useState } from "react";
-import { workForceObject } from "../types/types";
+import { workForce } from "../types/types";
+import { material } from "../types/types";
 import { TrashIcon } from "@heroicons/react/16/solid";
+import { addItem } from "../redux/tenders/visitReportSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
+import { RootState } from "../redux/store";
 
 const VisitReportForm: React.FC = () => {
-  const [workForceArray, setWorkForceArray] = useState<workForceObject[]>([]);
+  const [workForceArray, setWorkForceArray] = useState<workForce[]>([]);
+  const [materialArray, setMaterialArray] = useState<material[]>([]);
+
   const [workForce, setWorkForce] = useState<string>("");
   const [workShift, setWorkShift] = useState<number>(0);
+  const [material, setMaterial] = useState<string>("");
+  const [amount, setAmount] = useState<number>(0);
+  const [unit, setUnit] = useState<string>("");
 
   const addWorkForce = () => {
     if (workForce && workShift > 0) {
@@ -20,31 +30,55 @@ const VisitReportForm: React.FC = () => {
       alert("Debe completar los campos de mano de obra y turnos correctamente");
     }
   };
+  const addMaterial = () => {
+    if (material && unit && amount > 0) {
+      setMaterialArray([...materialArray, { material, amount, unit }]);
+      setMaterial("");
+      setAmount(0);
+      setUnit("");
+    } else {
+      alert("Debe completar los campos de materiales");
+    }
+  };
 
   const deleteWorkForce = (index: number) => {
     const newList = workForceArray.filter((_, i) => i !== index);
     setWorkForceArray(newList);
   };
+  const deleteMaterial = (index: number) => {
+    const newList = materialArray.filter((_, i) => i !== index);
+    setMaterialArray(newList);
+  };
 
   const { handleSubmit, handleChange } = useFormik({
     initialValues: {
-      initialValues: {
-        name: "",
-        visitDate: "",
-        dueDate: "",
-        customerName: "",
-        city: "",
-        address: "",
-        phoneNumber: "",
-        email: "",
-        priority: "",
-        workforce: [],
-        materials: [],
-        description: "",
-      },
+      visitDate: "",
+      name: "",
+      customerName: "",
+      city: "",
+      address: "",
+      phoneNumber: "",
+      email: "",
+      dueDate: "",
+      priority: "",
+      description: "",
     },
     onSubmit: (values) => {
-      console.log(values);
+      if (workForceArray.length === 0 || materialArray.length === 0) {
+        alert("Debe asignar mano de obra y materiales a la cotización");
+        return;
+      }
+      const visitReportData = {
+        ...values,
+        workforce: workForceArray,
+        materials: materialArray,
+        id: uuidv4(),
+      };
+      const dispatch = useDispatch();
+      dispatch(addItem(visitReportData));
+      const data = useSelector((state: RootState) => state.visitReport.data)
+      console.log(data)
+
     },
   });
 
@@ -134,9 +168,10 @@ const VisitReportForm: React.FC = () => {
         name="description"
         onChange={handleChange}
       ></textarea>
+
+      {/* Workforce section */}
       <hr className="m-0 border-gray-300" />
-      <small>Agregar Mano de Obra</small> <br />
-      {/*Work Force Section */}
+      <small>Agregar Mano de Obra</small>
       <div className="flex flex-col sm:flex-row gap-2">
         <input
           type="text"
@@ -149,7 +184,7 @@ const VisitReportForm: React.FC = () => {
         />
         <input
           type="number"
-          placeholder="# Turnos"
+          placeholder="Cantidad"
           className="border-customRed500 border-2 rounded-md px-2 py-1 w-full sm:w-1/3 outline-none"
           value={workShift}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -163,7 +198,7 @@ const VisitReportForm: React.FC = () => {
         type="button"
         onClick={addWorkForce}
       >
-        Agregar Mano de Obra
+        Agregar
       </button>
       <ul className="list-decimal">
         {workForceArray.map((item, index) => (
@@ -177,14 +212,72 @@ const VisitReportForm: React.FC = () => {
           </li>
         ))}
       </ul>
+      <hr className="m-0 border-gray-300" />
+      <small>Agregar Materiales</small>
+      <div className="flex flex-col gap-2">
+        <input
+          type="text"
+          placeholder="Material"
+          className="border-customRed500 border-2 rounded-md px-2 py-1 w-full outline-none"
+          value={material}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setMaterial(e.target.value)
+          }
+        />
+        <div className="flex flex-col sm:flex-row gap-1">
+          <input
+            type="number"
+            placeholder="cantidad"
+            className="border-customRed500 border-2 rounded-md px-2 py-1 w-full sm:w-1/2 outline-none"
+            value={amount}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setAmount(parseInt(e.target.value))
+            }
+          />
+          <div className="w-full sm:w-1/2">
+            <label htmlFor="unit" className="me-2 text-sm">
+              Unidades
+            </label>
+            <select
+              id="unit"
+              name="unit"
+              className="text-sm"
+              value={unit}
+              onChange={(e) => setUnit(e.target.value)}
+            >
+              <option value="">--Seleccione-- </option>
+              <option value="m">Metro</option>
+              <option value="m2">m2</option>
+              <option value="kg">Kilogramo</option>
+              <option value="g">Gramo</option>
+              <option value="l">Litro</option>
+              <option value="m3">m3</option>
+              <option value="u">Unidad</option>
+            </select>
+          </div>
+        </div>
+      </div>
       <button
-        className="text-xs text-white font-bold bg-customRed500 py-1 px-2 rounded-md hover:bg-customRed700"
+        className="text-xs text-white font-bold bg-blue-500 py-1 px-2 rounded-md
+         hover:bg-green-800"
         type="button"
+        onClick={addMaterial}
       >
-        {/* *Material Section */}
-        Agregar Materiales
+        Agregar
       </button>
-      
+      <ul className="">
+        {materialArray.map((item, index) => (
+          <li key={index} className=" flex justify-between">
+            <span>
+              {index + 1}. {item.material} -- {item.amount} {item.unit}
+            </span>
+            <button onClick={() => deleteMaterial(index)}>
+              <TrashIcon className="text-red-500 h-4" />
+            </button>
+          </li>
+        ))}
+      </ul>
+
       <label htmlFor="prioridad" className="me-2">
         Prioridad:
       </label>
