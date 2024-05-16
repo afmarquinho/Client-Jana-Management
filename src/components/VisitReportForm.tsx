@@ -6,7 +6,6 @@ import { TrashIcon } from "@heroicons/react/16/solid";
 import { addItem } from "../redux/tenders/visitReportSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import { RootState } from "../redux/store";
 
 const VisitReportForm: React.FC = () => {
   const [workForceArray, setWorkForceArray] = useState<workForce[]>([]);
@@ -17,13 +16,13 @@ const VisitReportForm: React.FC = () => {
   const [material, setMaterial] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
   const [unit, setUnit] = useState<string>("");
+  const dispatch = useDispatch();
 
   const addWorkForce = () => {
     if (workForce && workShift > 0) {
       setWorkForceArray([...workForceArray, { workForce, workShift }]);
       //* Otra manera de resolver el llenado del array
       // * setWorkForceArray( prevWorkForceArray =>[...prevWorkForceArray, {workForce, workShift}])
-      console.log(workForceArray);
       setWorkForce("");
       setWorkShift(0);
     } else {
@@ -50,7 +49,7 @@ const VisitReportForm: React.FC = () => {
     setMaterialArray(newList);
   };
 
-  const { handleSubmit, handleChange } = useFormik({
+  const { handleSubmit, handleChange, resetForm } = useFormik({
     initialValues: {
       visitDate: "",
       name: "",
@@ -74,11 +73,7 @@ const VisitReportForm: React.FC = () => {
         materials: materialArray,
         id: uuidv4(),
       };
-      const dispatch = useDispatch();
-      dispatch(addItem(visitReportData));
-      const data = useSelector((state: RootState) => state.visitReport.data)
-      console.log(data)
-
+      dispatch(addItem(visitReportData));      
     },
   });
 

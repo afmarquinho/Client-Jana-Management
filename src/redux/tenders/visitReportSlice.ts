@@ -17,6 +17,7 @@ const visitReportSlice = createSlice({
     addItem: (state, action: PayloadAction<VisitReport>) => {
       const item = action.payload;
       state.data = [...state.data, item];
+      console.log("Nuevo estado después de agregar:", state.data)
     },
     removeItem: (state, action: PayloadAction<VisitReport>) => {
       const item = action.payload;
