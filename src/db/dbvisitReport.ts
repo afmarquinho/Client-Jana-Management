@@ -2,7 +2,7 @@ import { VisitReport } from "../types/types";
 
 export const visitReport: VisitReport[] = [
   {
-    date: "27/01/2024",
+    visitDate: "27/01/2024",
     name: "Natural Creations, Inc.",
     customerName: "Dibbert-Langworth",
     id: 84344,
@@ -29,7 +29,7 @@ export const visitReport: VisitReport[] = [
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Porro, veniam magni. Omnis sunt quaerat quidem, perferendis animi harum laboriosam dolorem reprehenderit vel est adipisci rerum magnam nulla itaque eaque dignissimos doloremque fuga. Odit et voluptatibus ipsa voluptatum consequuntur? Sunt accusamus tempora ea ratione officiis excepturi ipsa perspiciatis repellendus reprehenderit sapiente.",
   },
   {
-    date: "17/01/2024",
+    visitDate: "17/01/2024",
     name: "AMI Cosmetic Co.,Ltd.",
     customerName: "Wilkinson, Berge and Pfannerstill",
     id: 54937,
@@ -56,7 +56,7 @@ export const visitReport: VisitReport[] = [
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Porro, veniam magni. Omnis sunt quaerat quidem, perferendis animi harum laboriosam dolorem reprehenderit vel est adipisci rerum magnam nulla itaque eaque dignissimos doloremque fuga. Odit et voluptatibus ipsa voluptatum consequuntur? Sunt accusamus tempora ea ratione officiis excepturi ipsa perspiciatis repellendus reprehenderit sapiente.",
   },
   {
-    date: "30/06/2023",
+    visitDate: "30/06/2023",
     name: "Eagle Pharmaceuticals, Inc.",
     customerName: "Nader Group",
     id: 48812,
@@ -83,7 +83,7 @@ export const visitReport: VisitReport[] = [
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Porro, veniam magni. Omnis sunt quaerat quidem, perferendis animi harum laboriosam dolorem reprehenderit vel est adipisci rerum magnam nulla itaque eaque dignissimos doloremque fuga. Odit et voluptatibus ipsa voluptatum consequuntur? Sunt accusamus tempora ea ratione officiis excepturi ipsa perspiciatis repellendus reprehenderit sapiente.",
   },
   {
-    date: "12/01/2024",
+    visitDate: "12/01/2024",
     name: "Fallien Cosmeceuticals, LTD.",
     customerName: "Beatty-Stiedemann",
     id: 58830,
@@ -110,7 +110,7 @@ export const visitReport: VisitReport[] = [
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Porro, veniam magni. Omnis sunt quaerat quidem, perferendis animi harum laboriosam dolorem reprehenderit vel est adipisci rerum magnam nulla itaque eaque dignissimos doloremque fuga. Odit et voluptatibus ipsa voluptatum consequuntur? Sunt accusamus tempora ea ratione officiis excepturi ipsa perspiciatis repellendus reprehenderit sapiente.",
   },
   {
-    date: "01/02/2024",
+    visitDate: "01/02/2024",
     name: "Chain Drug Marketing Association Inc.",
     customerName: "Mosciski Inc",
     id: 50435,
@@ -137,7 +137,7 @@ export const visitReport: VisitReport[] = [
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Porro, veniam magni. Omnis sunt quaerat quidem, perferendis animi harum laboriosam dolorem reprehenderit vel est adipisci rerum magnam nulla itaque eaque dignissimos doloremque fuga. Odit et voluptatibus ipsa voluptatum consequuntur? Sunt accusamus tempora ea ratione officiis excepturi ipsa perspiciatis repellendus reprehenderit sapiente.",
   },
   {
-    date: "24/10/2023",
+    visitDate: "24/10/2023",
     name: "Jubilant HollisterStier LLC",
     customerName: "McGlynn LLC",
     id: 41048,
@@ -164,7 +164,7 @@ export const visitReport: VisitReport[] = [
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Porro, veniam magni. Omnis sunt quaerat quidem, perferendis animi harum laboriosam dolorem reprehenderit vel est adipisci rerum magnam nulla itaque eaque dignissimos doloremque fuga. Odit et voluptatibus ipsa voluptatum consequuntur? Sunt accusamus tempora ea ratione officiis excepturi ipsa perspiciatis repellendus reprehenderit sapiente.",
   },
   {
-    date: "26/04/2024",
+    visitDate: "26/04/2024",
     name: "L?Oreal USA Products Inc",
     customerName: "Koelpin LLC",
     id: 94033,
@@ -191,7 +191,7 @@ export const visitReport: VisitReport[] = [
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Porro, veniam magni. Omnis sunt quaerat quidem, perferendis animi harum laboriosam dolorem reprehenderit vel est adipisci rerum magnam nulla itaque eaque dignissimos doloremque fuga. Odit et voluptatibus ipsa voluptatum consequuntur? Sunt accusamus tempora ea ratione officiis excepturi ipsa perspiciatis repellendus reprehenderit sapiente.",
   },
   {
-    date: "28/06/2023",
+    visitDate: "28/06/2023",
     name: "Uriel Pharmacy Inc.",
     customerName: "Olson, Harber and Mohr",
     id: 64533,
@@ -218,7 +218,7 @@ export const visitReport: VisitReport[] = [
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Porro, veniam magni. Omnis sunt quaerat quidem, perferendis animi harum laboriosam dolorem reprehenderit vel est adipisci rerum magnam nulla itaque eaque dignissimos doloremque fuga. Odit et voluptatibus ipsa voluptatum consequuntur? Sunt accusamus tempora ea ratione officiis excepturi ipsa perspiciatis repellendus reprehenderit sapiente.",
   },
   {
-    date: "18/08/2023",
+    visitDate: "18/08/2023",
     name: "Roxane Laboratories, Inc.",
     customerName: "Huels, Hyatt and Friesen",
     id: 70687,
@@ -245,7 +245,7 @@ export const visitReport: VisitReport[] = [
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Porro, veniam magni. Omnis sunt quaerat quidem, perferendis animi harum laboriosam dolorem reprehenderit vel est adipisci rerum magnam nulla itaque eaque dignissimos doloremque fuga. Odit et voluptatibus ipsa voluptatum consequuntur? Sunt accusamus tempora ea ratione officiis excepturi ipsa perspiciatis repellendus reprehenderit sapiente.",
   },
   {
-    date: "27/07/2023",
+    visitDate: "27/07/2023",
     name: "Beiersdorf Inc",
     customerName: "Roberts, Abbott and Kihn",
     id: 59903,

@@ -1,14 +1,14 @@
-import ViewVisitReport from "../components/ViewVisitReport";
+// import ViewVisitReport from "../components/ViewVisitReport";
 import VisitReport from "../components/VisitReport";
-import AcceptModal from "../components/modals/AcceptModal";
+// import AcceptModal from "../components/modals/AcceptModal";
 
 const BudgetPage = () => {
   return (
     <>
       <VisitReport />
 
-      <ViewVisitReport />
-      <AcceptModal title="Importante" message="¿Desea eliminar este reporte?" />
+      {/* <ViewVisitReport /> */}
+      {/* <AcceptModal title="Importante" message="¿Desea eliminar este reporte?" /> */}
     </>
   );
 };

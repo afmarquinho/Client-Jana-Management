@@ -6,11 +6,11 @@ const VisitReport = () => {
         <h1 className="font-bold text-center text-xl mb-5">
           Informe de Visita a Obra
         </h1>
-        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4">
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 mb-5">
           <VisitReportForm />
 
           <div className="w-full md:w-1/2 lg:w-2/3">
-            <h2 className="text-center font-bold">
+            <h2 className="">
               Visualiza tus informes aquí
             </h2>
             <div className="mt-4 flex flex-wrap gap-5"></div>

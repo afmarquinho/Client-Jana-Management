@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { VisitReport } from "../../types/types";
-import { v4 as uuidv4 } from "uuid";
+
 
 type ReportState = {
-  visitReports: VisitReport[];
+  data: VisitReport[];
 };
 
 const initialState: ReportState = {
-  visitReports: [],
+  data: [],
 };
 
 const visitReportSlice = createSlice({
@@ -16,18 +16,17 @@ const visitReportSlice = createSlice({
   reducers: {
     addItem: (state, action: PayloadAction<VisitReport>) => {
       const item = action.payload;
-      item.id = uuidv4();
-      state.visitReports = [...state.visitReports, item];
+      state.data = [...state.data, item];
     },
     removeItem: (state, action: PayloadAction<VisitReport>) => {
       const item = action.payload;
-      state.visitReports = state.visitReports.filter((newItem) => {
+      state.data = state.data.filter((newItem) => {
         newItem.id !== item.id;
       });
     },
     updateItem: (state, action: PayloadAction<VisitReport>) => {
       const updatedItem = action.payload;
-      state.visitReports = state.visitReports.map((item) =>
+      state.data = state.data.map((item) =>
         item.id === updatedItem.id ? updatedItem : item
       );
     },
