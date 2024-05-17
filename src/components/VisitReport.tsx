@@ -25,6 +25,7 @@ const VisitReport = () => {
   );
 
   const handleReportClick = (itemReport: visitReportTypes) => {
+    console.log(itemReport)
     dispatch(activateViewReport(itemReport));
   };
 
