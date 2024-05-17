@@ -15,6 +15,7 @@ export type VisitReport = {
   visitDate: string;
   name: string;
   customerName: string;
+  nit:number;
   id: string;
   city: string;
   address: string;

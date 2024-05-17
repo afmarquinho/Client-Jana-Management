@@ -49,11 +49,12 @@ const VisitReportForm: React.FC = () => {
     setMaterialArray(newList);
   };
 
-  const { handleSubmit, handleChange, resetForm } = useFormik({
+  const { handleSubmit, handleChange} = useFormik({
     initialValues: {
       visitDate: "",
       name: "",
       customerName: "",
+      nit:"",
       city: "",
       address: "",
       phoneNumber: "",
@@ -72,6 +73,7 @@ const VisitReportForm: React.FC = () => {
         workforce: workForceArray,
         materials: materialArray,
         id: uuidv4(),
+        nit: parseInt(values.nit)
       };
       dispatch(addItem(visitReportData));      
     },
@@ -138,6 +140,13 @@ const VisitReportForm: React.FC = () => {
         placeholder="Dirección p.e. Calle 35 # 10-45"
         className="border-customRed500 border-2 rounded-md px-2 py-1 w-full outline-none"
         name="address"
+        onChange={handleChange}
+      />
+      <input
+        type="number"
+        placeholder="nit p.e. 254781247"
+        className="border-customRed500 border-2 rounded-md px-2 py-1 w-full outline-none"
+        name="nit"
         onChange={handleChange}
       />
       <div className="flex flex-col sm:flex-row gap-2">
