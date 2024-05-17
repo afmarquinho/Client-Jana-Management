@@ -1,13 +1,18 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import VisitReportForm from "./VisitReportForm";
 import { RootState } from "../redux/store";
 import { VisitReport as visitReportTypes } from "../types/types";
 import ReportButton from "./ReportButton";
 import ViewVisitReport from "./ViewVisitReport";
-import { useState } from "react";
+import { activateViewReport } from "../redux/tenders/visitReportSlice";
 
 const VisitReport = () => {
+  const dispatch = useDispatch();
   const data = useSelector((state: RootState) => state.visitReport.data);
+
+  const viewReport = useSelector(
+    (state: RootState) => state.visitReport.viewReport
+  );
 
   const hightPriority = data.filter(
     (report: visitReportTypes) => report.priority === "hight"
@@ -19,12 +24,8 @@ const VisitReport = () => {
     (report: visitReportTypes) => report.priority === "low"
   );
 
-  const [actViewReport, setActViewReport] = useState<boolean>(false);
-  const [selectedReport, setSelectedReport] = useState<visitReportTypes | null >(null);
-
   const handleReportClick = (itemReport: visitReportTypes) => {
-    setSelectedReport(itemReport);
-    setActViewReport(true);
+    dispatch(activateViewReport(itemReport));
   };
 
   // TODO: VALIDAR EL FORMULARIO DE INGRESO DE REPORTES CON YUP
@@ -36,8 +37,8 @@ const VisitReport = () => {
       <h1 className="font-bold text-center text-xl">
         Informe de Visita a Obra
       </h1>
-      {actViewReport && selectedReport  ? (
-        <ViewVisitReport report={selectedReport} />
+      {viewReport.isActive && viewReport.report ? (
+        <ViewVisitReport report={viewReport.report} />
       ) : (
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 my-5">
           <VisitReportForm />
