@@ -1,13 +1,20 @@
+import Logo from "./Logo";
+
 const Header = () => {
   return (
     <>
-      <div className="bg-customRed500 p-2 flex justify-between align-middle">
-        <span className="font-black text-white">JANA</span>
-        <div className="text-xs">
-          <span className="text-white pe-3">Bienvenido: John Doe </span>
-          <button className="bg-white py-1 px-2 rounded-md hover:bg-red-300" type="button">
-            Cerrar Sesión
-          </button>
+      <div className="bg-customBgGray py-5 sm:py-2 ">
+        <div className="w-11/12 max-w-[1100px] mx-auto flex flex-col sm:flex-row justify-between items-center">
+          <Logo />
+          <div className="text-xs flex flex-col sm:flex-row gap-2 sm:gap-8 items-center">
+            <span className="text-white ">Bienvenido: John Doe </span>
+            <button
+              className="py-1 px-2 rounded-md bg-cyan-100 hover:bg-customCyan"
+              type="button"
+            >
+              Cerrar Sesión
+            </button>
+          </div>
         </div>
       </div>
     </>
