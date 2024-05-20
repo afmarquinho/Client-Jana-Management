@@ -1,10 +1,7 @@
 import { XMarkIcon } from "@heroicons/react/16/solid";
 import { VisitReport } from "../types/types";
 import { useDispatch } from "react-redux";
-import {
-  deactiveViewReport,
-  removeItem,
-} from "../redux/tenders/visitReportSlice";
+import { deactiveViewReport, removeItem } from "../redux/tenders/visitReportSlice";
 
 type Props = {
   report: VisitReport;
@@ -15,10 +12,11 @@ const ViewVisitReport: React.FC<Props> = ({ report }) => {
   const handleClose = () => {
     dispatch(deactiveViewReport());
   };
-  const handleDelete = (report: VisitReport) => {
-    dispatch(removeItem(report));
+  const handleDelete = (report:VisitReport) => {
     dispatch(deactiveViewReport());
+    dispatch(removeItem(report))
   };
+  
 
   return (
     <div className="w-11/12 max-w-3xl mx-auto p-2 md:py-4 px-8 relative">
@@ -101,7 +99,7 @@ const ViewVisitReport: React.FC<Props> = ({ report }) => {
         <button
           className="p-2 bg-gradient-to-b from-red-600 to-red-700
             rounded-md shadow-gray-400 shadow-md text-xs text-white"
-          onClick={() => handleDelete(report)}
+            onClick={()=>handleDelete(report)}
         >
           Eliminar
         </button>
