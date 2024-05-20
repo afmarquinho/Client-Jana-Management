@@ -206,7 +206,7 @@ const VisitReportForm: React.FC = () => {
       </button>
       <ul className="list-decimal">
         {workForceArray.map((item, index) => (
-          <li key={index} className=" flex justify-between items-center">
+          <li key={index} className="flex justify-between items-center">
             <span>
               {index + 1}. {item.workForce} -- {item.workShift} Turnos
             </span>

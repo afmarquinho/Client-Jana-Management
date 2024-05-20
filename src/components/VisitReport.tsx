@@ -6,7 +6,8 @@ import ReportButton from "./ReportButton";
 import ViewVisitReport from "./ViewVisitReport";
 import { activateViewReport } from "../redux/tenders/visitReportSlice";
 
-const VisitReport = () => {
+
+const VisitReport: React.FC = () => {
   const dispatch = useDispatch();
   const data = useSelector((state: RootState) => state.visitReport.data);
 
@@ -25,7 +26,7 @@ const VisitReport = () => {
   );
 
   const handleReportClick = (itemReport: visitReportTypes) => {
-    console.log(itemReport)
+    console.log(itemReport);
     dispatch(activateViewReport(itemReport));
   };
 

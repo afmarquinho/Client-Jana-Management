@@ -1,9 +1,14 @@
 import { useState } from "react";
 import Report from "../components/reports/Report";
 import ReportForm from "../components/reports/ReportForm";
+// import { useSelector } from "react-redux";
+// import { RootState } from "../redux/store";
+import { dataReport as data} from "../db/db";
 
 const DashboardReportPage = () => {
   const [actNewReport, setActNewReport] = useState<boolean>(false);
+  // ! IMPORTANTE: QUITAR REDERIZACIÓN DE LA DATA, SE PUSO PARA CODIFICAR MÁS FÁCIL
+  // const data = useSelector((state: RootState) => state.visitReport.data);
 
   return (
     <>
@@ -20,13 +25,22 @@ const DashboardReportPage = () => {
         todos tus reportes de visita de obra de manera fácil y rápida.
       </p>
       <button
-        className="bg-gradient-to-b from-red-500 to-red-600 uppercase py-2 px-5 text-white font-bold rounded hover:bg-gradient-to-b
-       hover:from-gray-500 hover:to-gray-700 my-4 text-xs sm:text-base w-60 shadow-gray-400 shadow-md"
+        className="w-40 bg-gradient-to-b from-red-500 to-red-600 uppercase p-2 text-white font-bold rounded hover:bg-gradient-to-b
+       hover:from-gray-500 hover:to-gray-700 my-4 text-xs sm:text-md shadow-gray-400 shadow-md"
         onClick={() => setActNewReport(!actNewReport)}
       >
-        {actNewReport ? "Volver": "Nuevo Informe"}
+        {actNewReport ? "Volver" : "Nuevo Informe"}
       </button>
-      {actNewReport ? <ReportForm /> : <Report />}
+      {actNewReport ? (
+        <ReportForm />
+      ) : data.length === 0 ? (
+        <p className="font-semibold">
+          No hay Informe para mostrar. <br /> <span className="text-blue-500 font-bold">Diligencia</span> el formulario y {" "}
+          <span className="text-blue-500 font-bold">visualiza</span> tu informes <span className="font-bold">aquí.</span>
+        </p>
+      ) : (
+        <Report />
+      )}
     </>
   );
 };
