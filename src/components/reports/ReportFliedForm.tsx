@@ -1,13 +1,20 @@
 import { TrashIcon } from "@heroicons/react/16/solid";
+import { UseFormRegister } from "react-hook-form";
+import { VisitReport } from "../../types/types";
 
-const ReportFliedForm = () => {
+type ChildInputProps = {
+  register: UseFormRegister<VisitReport>;
+};
+
+const ReportFliedForm: React.FC<ChildInputProps> = ({ register }) => {
   return (
     <div className="space-y-4">
       <input
         type="text"
         placeholder="Nombre"
         className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-customRed"
-        name="name"
+        id="name"
+        {...register("name")}
       />
       <div className="flex flex-col sm:flex-row gap-2">
         <div className="w-full sm:w-1/2">
@@ -18,6 +25,7 @@ const ReportFliedForm = () => {
             type="date"
             className="border-gray-400 border-2 rounded-md px-2 w-full py-1 outline-customRed"
             id="visitDate"
+            {...register("customerName")}
           />
         </div>
         <div className="w-full sm:w-1/2">
@@ -27,7 +35,7 @@ const ReportFliedForm = () => {
           <input
             type="date"
             className="border-gray-400 border-2 rounded-md px-2 w-full py-1 outline-customRed"
-            name="dueDate"
+            {...register("dueDate")}
           />
         </div>
       </div>
@@ -37,14 +45,14 @@ const ReportFliedForm = () => {
           type="text"
           placeholder="Cliente"
           className="border-gray-400 border-2 rounded-md px-2 py-1 w-full sm:w-1/2 outline-customRed"
-          name="customerName"
+          {...register("customerName")}
         />
 
         <input
           type="text"
           placeholder="Cuidad"
           className="border-gray-400 border-2 rounded-md px-2 py-1 w-full sm:w-1/2 outline-customRed"
-          name="city"
+          {...register("city")}
         />
       </div>
 
@@ -52,13 +60,13 @@ const ReportFliedForm = () => {
         type="text"
         placeholder="Dirección p.e. Calle 35 # 10-45"
         className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-customRed"
-        name="address"
+        {...register("address")}
       />
       <input
         type="number"
         placeholder="nit p.e. 254781247"
         className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-customRed"
-        name="nit"
+        {...register("nit")}
       />
 
       <div className="flex flex-col sm:flex-row gap-2">
@@ -66,22 +74,26 @@ const ReportFliedForm = () => {
           type="phone"
           placeholder="Teléfono p.e. +573121234567"
           className="border-gray-400 border-2 rounded-md px-2 py-1 w-full sm:w-1/2 outline-customRed"
-          name="phoneNumber"
+          {...register("phoneNumber")}
         />
 
         <input
           type="email"
           placeholder="Correo p.e. correo@correo.com"
           className="border-gray-400 border-2 rounded-md px-2 py-1 w-full sm:w-1/2 outline-customRed"
-          name="email"
+          {...register("email")}
         />
       </div>
       <textarea
         placeholder="Descripción"
         className="border-gray-400 border-2 rounded-md px-2 py-1 w-full h-20 resize-none outline-customRed"
-        name="description"
-      ></textarea>
-      {/* Workforce section */}
+        {...register("description")}
+      />
+
+      {/* ---------------------------------------------------------------------------------------- */}
+      {/* ----------------------------------WORKFORCE SECTION ------------------------------------ */}
+      {/* ---------------------------------------------------------------------------------------- */}
+
       <hr className="m-0 border-gray-400" />
       <small>Agregar Mano de Obra</small>
       <div className="flex flex-col sm:flex-row gap-2">
@@ -110,6 +122,10 @@ const ReportFliedForm = () => {
           </button>
         </li>
       </ul>
+
+      {/* ---------------------------------------------------------------------------------------- */}
+      {/* ------------------------------------MATERIAL SECTION------------------------------------ */}
+      {/* ---------------------------------------------------------------------------------------- */}
       <hr className="m-0 border-gray-400" />
       <small>Agregar Materiales</small>
       <div className="flex flex-col gap-2">
@@ -152,7 +168,7 @@ const ReportFliedForm = () => {
       <label htmlFor="prioridad" className="me-2">
         Prioridad:
       </label>
-      <select name="priority" className="outline-customRed">
+      <select className="outline-customRed" {...register("priority")}>
         <option value="">--Seleccione-- </option>
         <option value="hight">Alta</option>
         <option value="middle">Medio</option>
