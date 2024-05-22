@@ -1,3 +1,5 @@
+import { useDispatch } from "react-redux";
+import { actReport } from "../../redux/tenders/visitReportSlice";
 import { VisitReport } from "../../types/types";
 
 type Props = {
@@ -5,16 +7,23 @@ type Props = {
 };
 
 const ReportButton: React.FC<Props> = ({ item }) => {
+  const dispatch = useDispatch();
+  
+  const handleClick = () => {
+    dispatch(actReport(item))
+  };
+
   return (
     <button
       key={item.id}
       className={`${
-        item.priority === "hight"
+        item.priority === "high"
           ? "border-l-customRed"
           : item.priority === "middle"
           ? "border-l-yellow-400"
           : "border-l-blue-600"
-      } w-full p-2 text-xs md:text-sm border border-l-[5px] flex flex-col bg-white hover:bg-zinc-200`}
+      } w-full p-2 text-xs md:text-sm border border-l-[3px] flex flex-col bg-white hover:bg-zinc-200`}
+      onClick={handleClick}
     >
       <h3 className="font-bold text-left"> {item.name}</h3>
       <h4 className="text-orange-600 font-semibold">{item.customerName}</h4>

@@ -35,22 +35,17 @@ const visitReportSlice = createSlice({
         item.id === updatedItem.id ? updatedItem : item
       );
     },
-    activateViewReport: (state, action: PayloadAction<VisitReport>) => {
+    actReport: (state, action: PayloadAction<VisitReport>) => {
       state.viewReport.report = action.payload;
       state.viewReport.isActive = true;
     },
-    deactiveViewReport: (state) => {
+    deactReport: (state) => {
       state.viewReport.isActive = false;
       state.viewReport.report = null;
     },
   },
 });
 
-export const {
-  addItem,
-  removeItem,
-  updateItem,
-  activateViewReport,
-  deactiveViewReport,
-} = visitReportSlice.actions;
+export const { addItem, removeItem, updateItem, actReport, deactReport } =
+  visitReportSlice.actions;
 export default visitReportSlice.reducer;
