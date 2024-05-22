@@ -4,9 +4,7 @@ import ReportForm from "../components/reports/ReportForm";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { dataReport as data } from "../db/db";
-import ViewVisitReport from "../components/ViewVisitReport";
 import ViewReport from "../components/reports/ViewReport";
-import { VisitReport } from "../types/types";
 
 const DashboardReportPage = () => {
   const [actNewReport, setActNewReport] = useState<boolean>(false);

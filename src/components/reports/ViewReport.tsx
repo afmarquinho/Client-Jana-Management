@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/16/solid";
 import { VisitReport } from "../../types/types";
 
-const ViewReport = ({}) => {
+const ViewReport = () => {
   const dispatch = useDispatch();
   const report = useSelector(
     (state: RootState) => state.visitReport.viewReport.report
@@ -126,7 +126,7 @@ const ViewReport = ({}) => {
           </button>
           <button className="bg-customRed px-2 rounded text-white hover:bg-red-800 sm:min-w-24 flex items-center justify-center 
           font-semibold"
-          onClick={()=>handleRemove}>
+          onClick={handleRemove}>
             Eliminar
             <TrashIcon className="h-4 ps-2" />
           </button>
