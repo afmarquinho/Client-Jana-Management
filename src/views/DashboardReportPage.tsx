@@ -1,13 +1,21 @@
 import { useState } from "react";
 import Report from "../components/reports/Report";
 import ReportForm from "../components/reports/ReportForm";
-// import { useSelector } from "react-redux";
-// import { RootState } from "../redux/store";
-import { dataReport as data} from "../db/db";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { dataReport as data } from "../db/db";
+import ViewVisitReport from "../components/ViewVisitReport";
+import ViewReport from "../components/reports/ViewReport";
+import { VisitReport } from "../types/types";
 
 const DashboardReportPage = () => {
   const [actNewReport, setActNewReport] = useState<boolean>(false);
+  const isActiveReport = useSelector(
+    (state: RootState) => state.visitReport.viewReport.isActive
+  );
+
   // ! IMPORTANTE: QUITAR REDERIZACIÓN DE LA DATA, SE PUSO PARA CODIFICAR MÁS FÁCIL
+  // ! IMPORTANTE: ALLOW THE OPTION TO TTACHED FILES AS PDF,.DOCX AND IMAGES
   // const data = useSelector((state: RootState) => state.visitReport.data);
 
   return (
@@ -33,10 +41,15 @@ const DashboardReportPage = () => {
       </button>
       {actNewReport ? (
         <ReportForm />
+      ) : isActiveReport ? (
+        <ViewReport />
       ) : data.length === 0 ? (
         <p className="font-semibold">
-          No hay Informe para mostrar. <br /> <span className="text-blue-500 font-bold">Diligencia</span> el formulario y {" "}
-          <span className="text-blue-500 font-bold">visualiza</span> tu informes <span className="font-bold">aquí.</span>
+          No hay Informe para mostrar. <br />{" "}
+          <span className="text-blue-500 font-bold">Diligencia</span> el
+          formulario y{" "}
+          <span className="text-blue-500 font-bold">visualiza</span> tu informes{" "}
+          <span className="font-bold">aquí.</span>
         </p>
       ) : (
         <Report />

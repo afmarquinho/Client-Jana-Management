@@ -3,7 +3,6 @@ import IndexPage from "./views/IndexPage";
 import NotFoundPage from "./views/NotFoundPage";
 import Layout from "./components/Layout";
 import InicioPage from "./views/InicioPage";
-import BudgetPage from "./views/BudgetPage";
 import DashboardReportPage from "./views/DashboardReportPage";
 
 const AppRouter = () => {
@@ -14,7 +13,6 @@ const AppRouter = () => {
         <Route path="*" element={<NotFoundPage />} />
         <Route element={<Layout />}>
           <Route path="/home" element={<InicioPage />} />
-          <Route path="/budget" element={<BudgetPage />} />
           <Route path="/dashboard-report" element={<DashboardReportPage />} />
         </Route>
       </Routes>
