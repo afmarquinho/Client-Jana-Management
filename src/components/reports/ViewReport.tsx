@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { deactReport, removeItem } from "../../redux/tenders/visitReportSlice";
+import { activateNewReport, deactReport, removeItem, setReport } from "../../redux/tenders/visitReportSlice";
 import { RootState } from "../../redux/store";
 import {
   CheckBadgeIcon,
@@ -9,22 +9,30 @@ import {
 } from "@heroicons/react/16/solid";
 import { VisitReport } from "../../types/types";
 
+
 const ViewReport = () => {
+  
   const dispatch = useDispatch();
   const report = useSelector(
     (state: RootState) => state.visitReport.viewReport.report
   );
   // Assuming 'report' won't be null
-  const validReport: VisitReport = report as VisitReport
+  const validReport: VisitReport = report as VisitReport;
 
   const onClose = () => {
     dispatch(deactReport());
   };
   const handleRemove = () => {
     dispatch(deactReport());
-    dispatch(removeItem(validReport))
+    dispatch(removeItem(validReport));
   };
-  
+
+  const act: boolean= true
+  const hanbdleEdit = () => {
+    dispatch(setReport(validReport));
+    dispatch(deactReport());
+    dispatch(activateNewReport(act))
+  };
 
   return (
     <div className="bg-white p-4 md:p-10 w-full max-w-[40rem] mx-auto">
@@ -80,9 +88,9 @@ const ViewReport = () => {
         <p className="font-bold text-customGray">
           Prioridad{" "}
           <span className="font-normal text-black">
-            {report?.visitDate === "high"
+            {report?.priority === "high"
               ? "Alta"
-              : report?.visitDate === "middle"
+              : report?.priority === "middle"
               ? "Media"
               : "Baja"}
           </span>
@@ -116,7 +124,11 @@ const ViewReport = () => {
           <span className="font-normal text-black">{report?.description}</span>
         </p>
         <div className="flex w-full justify-between sm:justify-evenly pt-10">
-          <button className="bg-blue-500 px-2 rounded text-white hover:bg-blue-800 sm:min-w-24 flex items-center justify-center font-semibold">
+          <button
+            className="bg-blue-500 px-2 rounded text-white hover:bg-blue-800 sm:min-w-24 flex 
+          items-center justify-center font-semibold"
+            onClick={hanbdleEdit}
+          >
             Editar
             <PencilIcon className="h-4 ps-2" />
           </button>
@@ -124,9 +136,11 @@ const ViewReport = () => {
             Procesar
             <CheckBadgeIcon className="h-4 ps-2" />
           </button>
-          <button className="bg-customRed px-2 rounded text-white hover:bg-red-800 sm:min-w-24 flex items-center justify-center 
+          <button
+            className="bg-customRed px-2 rounded text-white hover:bg-red-800 sm:min-w-24 flex items-center justify-center 
           font-semibold"
-          onClick={handleRemove}>
+            onClick={handleRemove}
+          >
             Eliminar
             <TrashIcon className="h-4 ps-2" />
           </button>

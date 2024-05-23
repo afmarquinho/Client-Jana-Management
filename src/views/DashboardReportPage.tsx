@@ -1,16 +1,30 @@
 import { useState } from "react";
 import Report from "../components/reports/Report";
 import ReportForm from "../components/reports/ReportForm";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { dataReport as data } from "../db/db";
 import ViewReport from "../components/reports/ViewReport";
-
+import { activateNewReport, clearReport } from "../redux/tenders/visitReportSlice";
 const DashboardReportPage = () => {
-  const [actNewReport, setActNewReport] = useState<boolean>(false);
+  // !IMPORTANTE: VARIABLE QUE VOY A PASAR COMO PARAMETRO PARA ACTIAR Y DESACTIVAR EL FORMULARIO
+  const act: boolean = false;
+  const dispatch = useDispatch();
+  const actNewReport = useSelector(
+    (state: RootState) => state.visitReport.actNewReport
+  );
+
   const isActiveReport = useSelector(
     (state: RootState) => state.visitReport.viewReport.isActive
   );
+  const isActive = () => {
+    if (actNewReport) {
+      dispatch(activateNewReport(act));
+    } else {
+      dispatch(activateNewReport(!act));
+    }
+    dispatch(clearReport())
+  };
 
   // ! IMPORTANTE: QUITAR REDERIZACIÓN DE LA DATA, SE PUSO PARA CODIFICAR MÁS FÁCIL
   // ! IMPORTANTE: ALLOW THE OPTION TO TTACHED FILES AS PDF,.DOCX AND IMAGES
@@ -33,7 +47,7 @@ const DashboardReportPage = () => {
       <button
         className="w-40 bg-gradient-to-b from-red-500 to-red-600 uppercase p-2 text-white font-bold rounded hover:bg-gradient-to-b
        hover:from-gray-500 hover:to-gray-700 my-4 text-xs sm:text-md shadow-gray-400 shadow-md"
-        onClick={() => setActNewReport(!actNewReport)}
+        onClick={isActive}
       >
         {actNewReport ? "Volver" : "Nuevo Informe"}
       </button>
