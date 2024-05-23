@@ -7,6 +7,8 @@ type ReportState = {
     isActive: boolean;
     report: VisitReport | null;
   };
+  updatedReport: VisitReport | null;
+  actNewReport: boolean;
 };
 
 const initialState: ReportState = {
@@ -15,6 +17,8 @@ const initialState: ReportState = {
     isActive: false,
     report: null,
   },
+  updatedReport: null,
+  actNewReport: false,
 };
 
 const visitReportSlice = createSlice({
@@ -43,9 +47,28 @@ const visitReportSlice = createSlice({
       state.viewReport.isActive = false;
       state.viewReport.report = null;
     },
+    // ! importante: Estado para llenar el formulario cuando se activa el editar reporte
+    setReport: (state, action: PayloadAction<VisitReport>) => {
+      state.updatedReport = action.payload;
+    },
+    // !importante: Estado para vaciar el objeto una vez se cierra el formulario al terminar de editar
+    clearReport: (state) => {
+      state.updatedReport = null;
+    },
+    activateNewReport: (state, action:PayloadAction<boolean>) => {
+      state.actNewReport = action.payload;
+    },
   },
 });
 
-export const { addItem, removeItem, updateItem, actReport, deactReport } =
-  visitReportSlice.actions;
+export const {
+  addItem,
+  removeItem,
+  updateItem,
+  actReport,
+  deactReport,
+  setReport,
+  clearReport,
+  activateNewReport,
+} = visitReportSlice.actions;
 export default visitReportSlice.reducer;

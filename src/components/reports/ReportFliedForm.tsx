@@ -1,14 +1,16 @@
 import { TrashIcon } from "@heroicons/react/16/solid";
-import { UseFormRegister } from "react-hook-form";
+import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { VisitReport } from "../../types/types";
 import { workForce } from "../../types/types";
 import { material } from "../../types/types";
-import { useState } from "react";
+import {  useState } from "react";
 
 type ChildInputProps = {
   register: UseFormRegister<VisitReport>;
+  setValue: UseFormSetValue<VisitReport>;
   setWorkForceArray: (data: workForce[]) => void;
   setMaterialArray: (data: material[]) => void;
+
   workForceArray: workForce[];
   materialArray: material[];
 };
@@ -19,13 +21,14 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
   setMaterialArray,
   workForceArray,
   materialArray,
+  
 }) => {
   const [workForce, setWorkForce] = useState<string>("");
   const [workShift, setWorkShift] = useState<number>(0);
   const [material, setMaterial] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
   const [unit, setUnit] = useState<string>("");
-
+ 
   const addWorkForce = () => {
     if (workForce && workShift > 0) {
       setWorkForceArray([...workForceArray, { workForce, workShift }]);
@@ -52,12 +55,12 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
   const deleteWorkForce = (index: number) => {
     const newList = workForceArray.filter((_, i) => i !== index);
     setWorkForceArray(newList);
-    console.log(workForceArray)
+    console.log(workForceArray);
   };
   const deleteMaterial = (index: number) => {
     const newList = materialArray.filter((_, i) => i !== index);
     setMaterialArray(newList);
-    console.log(materialArray)
+    console.log(materialArray);
   };
 
   return (

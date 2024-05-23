@@ -1,13 +1,13 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { VisitReport } from "../../types/types";
 import ReportFliedForm from "./ReportFliedForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { workForce } from "../../types/types";
 import { material } from "../../types/types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { addItem } from "../../redux/tenders/visitReportSlice";
-
+import { RootState } from "../../redux/store";
 
 const ReportForm: React.FC = () => {
   const [workForceArray, setWorkForceArray] = useState<workForce[]>([]);
@@ -15,7 +15,33 @@ const ReportForm: React.FC = () => {
 
   const dispatch = useDispatch();
 
-  const { register, handleSubmit } = useForm<VisitReport>();
+  const { register, handleSubmit, setValue } = useForm<VisitReport>();
+  const updatedReport = useSelector(
+    (state: RootState) => state.visitReport.updatedReport
+  );
+
+  useEffect(() => {
+     // ? Fill the form with updatedReport data
+    if (updatedReport) {
+      setValue("name", updatedReport.name);
+      setValue("visitDate", updatedReport.visitDate);
+      setValue("dueDate", updatedReport.dueDate);
+      setValue("customerName", updatedReport.customerName);
+      setValue("nit", updatedReport.nit);
+      setValue("city", updatedReport.city);
+      setValue("address", updatedReport.address);
+      setValue("phoneNumber", updatedReport.phoneNumber);
+      setValue("email", updatedReport.email);
+      setValue("priority", updatedReport.priority);
+      setValue("description", updatedReport.description);
+      setWorkForceArray(updatedReport.workforce);
+      setMaterialArray(updatedReport.materials);
+    }
+
+    return () => {
+      
+    };
+  }, [updatedReport, setValue]);
 
   const onSubmit: SubmitHandler<VisitReport> = (data) => {
     data.workforce = workForceArray;
@@ -39,6 +65,7 @@ const ReportForm: React.FC = () => {
         setMaterialArray={setMaterialArray}
         workForceArray={workForceArray}
         materialArray={materialArray}
+        setValue={setValue}
       />
       <input
         type="submit"
