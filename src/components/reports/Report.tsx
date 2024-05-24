@@ -1,21 +1,19 @@
-
 import { useSelector } from "react-redux";
 import { VisitReport } from "../../types/types";
 import ReportButton from "./ReportButton";
 import { RootState } from "../../redux/store";
-// import { dataReport as data } from "../../db/db";
+
 
 const Report = () => {
-   const data = useSelector((state: RootState) => state.visitReport.data);
-  // ! IMPORTANTE: QUITAR REDERIZACIÓN DE LA DATA, SE PUSO PARA CODIFICAR MÁS FÁCIL
-  // const hightPriority = data.filter(
-  const hightPriority = data.filter(
+  const report = useSelector((state: RootState) => state.visitReport.report); 
+
+    const hightPriority = report.filter(
     (report: VisitReport) => report.priority === "high"
   );
-  const middlePriority = data.filter(
+  const middlePriority = report.filter(
     (report: VisitReport) => report.priority === "middle"
   );
-  const lowPriority = data.filter(
+  const lowPriority = report.filter(
     (report: VisitReport) => report.priority === "low"
   );
   // TODO: SEPARAR EL BOTON EN UN COMPONENTE
@@ -26,7 +24,7 @@ const Report = () => {
           Alta
         </h2>
         <div className="w-full flex flex-col gap-2">
-          {hightPriority.map((item:VisitReport) => (
+          {hightPriority.map((item: VisitReport) => (
             <ReportButton key={item.id} item={item} />
           ))}
         </div>
@@ -36,7 +34,7 @@ const Report = () => {
           Media
         </h2>
         <div className="w-full flex flex-col gap-2">
-          {middlePriority.map((item:VisitReport) => (
+          {middlePriority.map((item: VisitReport) => (
             <ReportButton key={item.id} item={item} />
           ))}
         </div>
@@ -46,7 +44,7 @@ const Report = () => {
           Baja
         </h2>
         <div className="w-full flex flex-col gap-2">
-          {lowPriority.map((item:VisitReport) => (
+          {lowPriority.map((item: VisitReport) => (
             <ReportButton key={item.id} item={item} />
           ))}
         </div>

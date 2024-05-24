@@ -12,6 +12,7 @@ import { VisitReport } from "../../types/types";
 
 const ViewReport = () => {
   
+  
   const dispatch = useDispatch();
   const report = useSelector(
     (state: RootState) => state.visitReport.viewReport.report

@@ -23,6 +23,7 @@ const ReportForm: React.FC = () => {
   useEffect(() => {
      // ? Fill the form with updatedReport data
     if (updatedReport) {
+      
       setValue("name", updatedReport.name);
       setValue("visitDate", updatedReport.visitDate);
       setValue("dueDate", updatedReport.dueDate);
@@ -42,6 +43,8 @@ const ReportForm: React.FC = () => {
       
     };
   }, [updatedReport, setValue]);
+
+  
 
   const onSubmit: SubmitHandler<VisitReport> = (data) => {
     data.workforce = workForceArray;
@@ -71,9 +74,9 @@ const ReportForm: React.FC = () => {
         type="submit"
         className="w-full max-w-40 p-2 bg-gradient-to-b from-red-500 to-red-600 hover:bg-gradient-to-b
         hover:from-gray-500 hover:to-gray-700
-            rounded-md shadow-gray-400 shadow-md outline-none text-white font-bold cursor-pointer 
-            uppercase text-xs md:text-base self-end"
-        value="Guardar"
+            rounded shadow-gray-400 shadow-md outline-none text-white font-bold cursor-pointer 
+            uppercase text-xs self-end"
+        value={updatedReport ? "Editar":"Guardar"}
       />
     </form>
   );

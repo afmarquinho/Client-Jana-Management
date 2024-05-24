@@ -1,11 +1,12 @@
-import { useState } from "react";
 import Report from "../components/reports/Report";
 import ReportForm from "../components/reports/ReportForm";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { dataReport as data } from "../db/db";
 import ViewReport from "../components/reports/ViewReport";
-import { activateNewReport, clearReport } from "../redux/tenders/visitReportSlice";
+import {
+  activateNewReport,
+  clearReport,
+} from "../redux/tenders/visitReportSlice";
 const DashboardReportPage = () => {
   // !IMPORTANTE: VARIABLE QUE VOY A PASAR COMO PARAMETRO PARA ACTIAR Y DESACTIVAR EL FORMULARIO
   const act: boolean = false;
@@ -13,7 +14,11 @@ const DashboardReportPage = () => {
   const actNewReport = useSelector(
     (state: RootState) => state.visitReport.actNewReport
   );
-
+  const report = useSelector(
+    (state: RootState) => state.visitReport.report
+  );
+  
+  
   const isActiveReport = useSelector(
     (state: RootState) => state.visitReport.viewReport.isActive
   );
@@ -23,12 +28,11 @@ const DashboardReportPage = () => {
     } else {
       dispatch(activateNewReport(!act));
     }
-    dispatch(clearReport())
+    dispatch(clearReport());
   };
 
-  // ! IMPORTANTE: QUITAR REDERIZACIÓN DE LA DATA, SE PUSO PARA CODIFICAR MÁS FÁCIL
-  // ! IMPORTANTE: ALLOW THE OPTION TO TTACHED FILES AS PDF,.DOCX AND IMAGES
-  // const data = useSelector((state: RootState) => state.visitReport.data);
+    // ! IMPORTANTE: ALLOW THE OPTION TO ATTACHED FILES AS PDF,.DOCX AND IMAGES
+ 
 
   return (
     <>
@@ -45,8 +49,8 @@ const DashboardReportPage = () => {
         todos tus reportes de visita de obra de manera fácil y rápida.
       </p>
       <button
-        className="w-40 bg-gradient-to-b from-red-500 to-red-600 uppercase p-2 text-white font-bold rounded hover:bg-gradient-to-b
-       hover:from-gray-500 hover:to-gray-700 my-4 text-xs sm:text-md shadow-gray-400 shadow-md"
+        className="w-40 bg-gradient-to-b from-red-500 to-red-600 uppercase p-2 text-white font-bold rounded 
+       hover:from-gray-500 hover:to-gray-700 my-4 text-xs shadow-gray-400 shadow-md"
         onClick={isActive}
       >
         {actNewReport ? "Volver" : "Nuevo Informe"}
@@ -55,7 +59,7 @@ const DashboardReportPage = () => {
         <ReportForm />
       ) : isActiveReport ? (
         <ViewReport />
-      ) : data.length === 0 ? (
+      ) : report.length === 0 ? (
         <p className="font-semibold">
           No hay Informe para mostrar. <br />{" "}
           <span className="text-blue-500 font-bold">Diligencia</span> el

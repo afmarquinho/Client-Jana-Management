@@ -90,6 +90,7 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
           </label>
           <input
             type="date"
+            id="dueDate"
             className="border-gray-400 border-2 rounded-md px-2 w-full py-1 outline-customRed"
             {...register("dueDate")}
           />
