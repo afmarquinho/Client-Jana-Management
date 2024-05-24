@@ -7,7 +7,7 @@ export type material = {
   amount: number;
   unit: string;
 };
-type data ={
+type report ={
   visitDate: string;
   name: string;
   customerName: string;
@@ -24,7 +24,7 @@ type data ={
   description: string;
 }
 
-export const dataReport: data[] = [
+export const dataReport: report[] = [
   {
     visitDate: "2024-05-01",
     name: "Project Alpha",

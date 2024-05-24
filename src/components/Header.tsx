@@ -3,8 +3,8 @@ import Logo from "./Logo";
 const Header = () => {
   return (
     <>
-      <div className="bg-customBgGray py-5 sm:py-2 ">
-        <div className="w-11/12 max-w-[1100px] mx-auto flex flex-col sm:flex-row justify-between items-center">
+      <div className="bg-customBgGray pb-5 ">
+        <div className="w-11/12 max-w-[1100px] mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
           <Logo />
           <div className="text-xs flex flex-col sm:flex-row gap-2 sm:gap-8 items-center">
             <span className="text-white ">Bienvenido: John Doe </span>

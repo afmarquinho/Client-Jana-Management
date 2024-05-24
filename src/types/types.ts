@@ -1,6 +1,3 @@
-// Define a generic object, as workforce y material have a no difine number of elements
-export type GenericObject = { [key: string]: number };
-
 export type workForce = {
   workForce: string;
   workShift: number;

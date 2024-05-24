@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { VisitReport } from "../../types/types";
 
 type ReportState = {
-  data: VisitReport[];
+  report: VisitReport[];
   viewReport: {
     isActive: boolean;
     report: VisitReport | null;
@@ -12,7 +12,7 @@ type ReportState = {
 };
 
 const initialState: ReportState = {
-  data: [],
+  report: [],
   viewReport: {
     isActive: false,
     report: null,
@@ -27,15 +27,15 @@ const visitReportSlice = createSlice({
   reducers: {
     addItem: (state, action: PayloadAction<VisitReport>) => {
       const item = action.payload;
-      state.data = [...state.data, item];
+      state.report = [...state.report, item];
     },
     removeItem: (state, action: PayloadAction<VisitReport>) => {
       const item = action.payload;
-      state.data = state.data.filter((newItem) => newItem.id !== item.id);
+      state.report = state.report.filter((newItem) => newItem.id !== item.id);
     },
     updateItem: (state, action: PayloadAction<VisitReport>) => {
       const updatedItem = action.payload;
-      state.data = state.data.map((item) =>
+      state.report = state.report.map((item) =>
         item.id === updatedItem.id ? updatedItem : item
       );
     },
@@ -55,7 +55,7 @@ const visitReportSlice = createSlice({
     clearReport: (state) => {
       state.updatedReport = null;
     },
-    activateNewReport: (state, action:PayloadAction<boolean>) => {
+    activateNewReport: (state, action: PayloadAction<boolean>) => {
       state.actNewReport = action.payload;
     },
   },
