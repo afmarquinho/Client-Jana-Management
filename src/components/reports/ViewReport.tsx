@@ -91,7 +91,7 @@ const ViewReport = () => {
           <span className="font-normal text-black">
             {report?.priority === "high"
               ? "Alta"
-              : report?.priority === "middle"
+              : report?.priority === "medium"
               ? "Media"
               : "Baja"}
           </span>
