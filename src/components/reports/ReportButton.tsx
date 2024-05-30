@@ -19,7 +19,7 @@ const ReportButton: React.FC<Props> = ({ item }) => {
       className={`${
         item.priority === "high"
           ? "border-l-customRed"
-          : item.priority === "middle"
+          : item.priority === "medium"
           ? "border-l-yellow-400"
           : "border-l-blue-600"
       } w-full p-2 text-xs md:text-sm border border-l-[3px] flex flex-col bg-white hover:bg-zinc-200`}
