@@ -10,8 +10,8 @@ const Report = () => {
     const hightPriority = report.filter(
     (report: VisitReport) => report.priority === "high"
   );
-  const middlePriority = report.filter(
-    (report: VisitReport) => report.priority === "middle"
+  const mediumPriority = report.filter(
+    (report: VisitReport) => report.priority === "medium"
   );
   const lowPriority = report.filter(
     (report: VisitReport) => report.priority === "low"
@@ -34,7 +34,7 @@ const Report = () => {
           Media
         </h2>
         <div className="w-full flex flex-col gap-2">
-          {middlePriority.map((item: VisitReport) => (
+          {mediumPriority.map((item: VisitReport) => (
             <ReportButton key={item.id} item={item} />
           ))}
         </div>
