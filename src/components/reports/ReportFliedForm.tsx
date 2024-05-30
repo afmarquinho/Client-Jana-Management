@@ -271,7 +271,7 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
       <select className="outline-customRed" {...register("priority")}>
         <option value="">--Seleccione-- </option>
         <option value="high">Alta</option>
-        <option value="middle">Medio</option>
+        <option value="medium">Medio</option>
         <option value="low">Baja</option>
       </select>
     </div>
