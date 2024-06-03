@@ -40,8 +40,6 @@ const DashboardReportPage = () => {
         Informe de <span className="text-customRed">Visita de Obra</span>
       </h1>
       <p className="text-xs sm:text-sm">
-        <span className="font-semibold">Visualiza </span>tus informes aquí.
-        <br />
         Puedes{" "}
         <span className="font-semibold text-sm">
           crear, filtrar, buscar y revisar
