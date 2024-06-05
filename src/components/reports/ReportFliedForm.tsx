@@ -1,17 +1,17 @@
 import { TrashIcon } from "@heroicons/react/16/solid";
 import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { VisitReport } from "../../types/types";
-import { workForce } from "../../types/types";
+import { workforce } from "../../types/types";
 import { material } from "../../types/types";
-import {  useState } from "react";
+import { useState } from "react";
 
 type ChildInputProps = {
   register: UseFormRegister<VisitReport>;
   setValue: UseFormSetValue<VisitReport>;
-  setWorkForceArray: (data: workForce[]) => void;
+  setWorkForceArray: (data: workforce[]) => void;
   setMaterialArray: (data: material[]) => void;
 
-  workForceArray: workForce[];
+  workForceArray: workforce[];
   materialArray: material[];
 };
 
@@ -21,17 +21,19 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
   setMaterialArray,
   workForceArray,
   materialArray,
-  
 }) => {
-  const [workForce, setWorkForce] = useState<string>("");
-  const [workShift, setWorkShift] = useState<number>(0);
+  const [workforce, setWorkForce] = useState<string>("");
+  const [workshift, setWorkShift] = useState<number>(0);
   const [material, setMaterial] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
   const [unit, setUnit] = useState<string>("");
- 
-  const addWorkForce = () => {
-    if (workForce && workShift > 0) {
-      setWorkForceArray([...workForceArray, { workForce, workShift }]);
+
+  const addWorkforce = () => {
+    if (workforce && workshift > 0) {
+      setWorkForceArray([
+        ...workForceArray,
+        { workforce: workforce, workshift: workshift },
+      ]);
       //* Otra manera de resolver el llenado del array
       // * setWorkForceArray( prevWorkForceArray =>[...prevWorkForceArray, {workForce, workShift}])
 
@@ -69,7 +71,6 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
         type="text"
         placeholder="Nombre"
         className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-customRed"
-        id="name"
         {...register("name")}
       />
       <div className="flex flex-col sm:flex-row gap-2">
@@ -80,8 +81,7 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
           <input
             type="date"
             className="border-gray-400 border-2 rounded-md px-2 w-full py-1 outline-customRed"
-            id="visitDate"
-            {...register("customerName")}
+            {...register("visitDate")}
           />
         </div>
         <div className="w-full sm:w-1/2">
@@ -90,13 +90,13 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
           </label>
           <input
             type="date"
-            id="dueDate"
             className="border-gray-400 border-2 rounded-md px-2 w-full py-1 outline-customRed"
             {...register("dueDate")}
           />
         </div>
       </div>
-
+      <hr className="m-0 border-gray-400" />
+      <small>Datos del Cliente</small>
       <div className="flex flex-col sm:flex-row gap-2">
         <input
           type="text"
@@ -125,10 +125,18 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
         className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-customRed"
         {...register("nit")}
       />
+      <hr className="m-0 border-gray-400" />
+      <small>Datos de contacto</small>
+      <input
+        type="text"
+        placeholder="Contacto p.e. John Doe"
+        className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-customRed"
+        {...register("contactName")}
+      />
 
       <div className="flex flex-col sm:flex-row gap-2">
         <input
-          type="phone"
+          type="text"
           placeholder="Teléfono p.e. +573121234567"
           className="border-gray-400 border-2 rounded-md px-2 py-1 w-full sm:w-1/2 outline-customRed"
           {...register("phoneNumber")}
@@ -141,6 +149,7 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
           {...register("email")}
         />
       </div>
+      <hr className="m-0 border-gray-400" />
       <textarea
         placeholder="Descripción"
         className="border-gray-400 border-2 rounded-md px-2 py-1 w-full h-20 resize-none outline-customRed"
@@ -158,7 +167,7 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
           type="text"
           placeholder="Mano de Obra"
           className="border-gray-400 border-2 rounded-md px-2 py-1 w-full sm:w-2/3 outline-customRed"
-          value={workForce}
+          value={workforce}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setWorkForce(e.target.value)
           }
@@ -167,7 +176,7 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
           type="number"
           placeholder="Cantidad"
           className="border-gray-400 border-2 rounded-md px-2 py-1 w-full sm:w-1/3 outline-customRed"
-          value={workShift}
+          value={workshift}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setWorkShift(parseInt(e.target.value))
           }
@@ -177,7 +186,7 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
         className="text-xs text-white font-bold bg-blue-500 py-1 px-2 rounded-md
      hover:bg-green-800"
         type="button"
-        onClick={addWorkForce}
+        onClick={addWorkforce}
       >
         Agregar
       </button>
@@ -186,7 +195,7 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
         {workForceArray.map((item, index) => (
           <li key={index} className="flex justify-between items-center">
             <span>
-              {index + 1}. {item.workForce} -- {item.workShift} Turnos{" "}
+              {index + 1}. {item.workforce} -- {item.workshift} Turnos{" "}
             </span>
             <button onClick={() => deleteWorkForce(index)}>
               <TrashIcon className="text-red-500 h-4" />
@@ -225,7 +234,6 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
               Unidades
             </label>
             <select
-              id="unit"
               name="unit"
               className="outline-customRed"
               value={unit}

@@ -9,7 +9,7 @@ const Header = () => {
           <div className="text-xs flex flex-col sm:flex-row gap-2 sm:gap-8 items-center">
             <span className="text-white ">Bienvenido: John Doe </span>
             <button
-              className="py-1 px-2 rounded-md bg-cyan-100 hover:bg-customCyan"
+              className="py-1 px-2 rounded-md bg-gradient-to-b from-cyan-500 to-cyan-600 hover:from-red-600 hover:to-red-700 text-white shadow shadow-gray-700"
               type="button"
             >
               Cerrar Sesión

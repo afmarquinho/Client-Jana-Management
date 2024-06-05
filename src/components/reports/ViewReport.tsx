@@ -102,7 +102,7 @@ const ViewReport = () => {
             <ul>
               {report?.workforce.map((item, index) => (
                 <li key={index} className="ps-2 md:ps-7">
-                  {item.workForce} -- {item.workShift} Turnos
+                  {item.workforce} -- {item.workshift} Turnos
                 </li>
               ))}
             </ul>
@@ -112,7 +112,7 @@ const ViewReport = () => {
           Materiales:{" "}
           <span className="font-normal text-black">
             <ul>
-              {report?.materials.map((item, index) => (
+              {report?.material.map((item, index) => (
                 <li key={index} className="ps-2 md:ps-7">
                   {item.material} -- {item.amount} {item.unit}
                 </li>

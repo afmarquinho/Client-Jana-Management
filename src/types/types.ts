@@ -1,6 +1,6 @@
-export type workForce = {
-  workForce: string;
-  workShift: number;
+export type workforce = {
+  workforce: string;
+  workshift: number;
 };
 export type material = {
   material: string;
@@ -9,19 +9,20 @@ export type material = {
 };
 
 export type VisitReport = {
-  visitDate: string;
+  visitDate: Date;
+  dueDate: Date;
   name: string;
   customerName: string;
   nit:number;
-  id: string;
+  ref: string;
   city: string;
   address: string;
+  contactName: string,
   phoneNumber: string;
   email: string;
-  dueDate: string;
   priority: string;
-  // priority: string; this is another option
-  workforce: workForce[];
-  materials: material[];
   description: string;
+  // priority: string; this is another option
+  workforce: workforce[];
+  material: material[];
 };

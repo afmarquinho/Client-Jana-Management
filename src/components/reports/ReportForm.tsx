@@ -2,15 +2,16 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { VisitReport } from "../../types/types";
 import ReportFliedForm from "./ReportFliedForm";
 import { useEffect, useState } from "react";
-import { workForce } from "../../types/types";
+import { workforce } from "../../types/types";
 import { material } from "../../types/types";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { addItem } from "../../redux/tenders/visitReportSlice";
 import { RootState } from "../../redux/store";
+import { sendReportToApi } from "../../services/ReportService";
 
 const ReportForm: React.FC = () => {
-  const [workForceArray, setWorkForceArray] = useState<workForce[]>([]);
+  const [workForceArray, setWorkForceArray] = useState<workforce[]>([]);
   const [materialArray, setMaterialArray] = useState<material[]>([]);
 
   const dispatch = useDispatch();
@@ -21,9 +22,8 @@ const ReportForm: React.FC = () => {
   );
 
   useEffect(() => {
-     // ? Fill the form with updatedReport data
+    // ? Fill the form with updatedReport data
     if (updatedReport) {
-      
       setValue("name", updatedReport.name);
       setValue("visitDate", updatedReport.visitDate);
       setValue("dueDate", updatedReport.dueDate);
@@ -31,26 +31,32 @@ const ReportForm: React.FC = () => {
       setValue("nit", updatedReport.nit);
       setValue("city", updatedReport.city);
       setValue("address", updatedReport.address);
+      setValue("contactName", updatedReport.contactName);
       setValue("phoneNumber", updatedReport.phoneNumber);
       setValue("email", updatedReport.email);
       setValue("priority", updatedReport.priority);
       setValue("description", updatedReport.description);
       setWorkForceArray(updatedReport.workforce);
-      setMaterialArray(updatedReport.materials);
+      setMaterialArray(updatedReport.material);
     }
 
-    return () => {
-      
-    };
+    return () => {};
   }, [updatedReport, setValue]);
-
-  
 
   const onSubmit: SubmitHandler<VisitReport> = (data) => {
     data.workforce = workForceArray;
-    data.materials = materialArray;
-    data.id = uuidv4();
+    data.material = materialArray;
+    if (workForceArray.length === 0) {
+      alert("Debe haber al menos una mano de obra");
+      return;
+    }
+    if (materialArray.length === 0) {
+      alert("Debe haber al menos un material");
+      return;
+    }
+    data.ref = uuidv4();
     dispatch(addItem(data));
+    sendReportToApi(data)
   };
 
   return (
@@ -76,7 +82,7 @@ const ReportForm: React.FC = () => {
         hover:from-gray-500 hover:to-gray-700
             rounded shadow-gray-400 shadow-md outline-none text-white font-bold cursor-pointer 
             uppercase text-xs self-end"
-        value={updatedReport ? "Editar":"Guardar"}
+        value={updatedReport ? "Editar" : "Guardar"}
       />
     </form>
   );
