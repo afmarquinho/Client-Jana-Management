@@ -1,34 +1,63 @@
 import { useDispatch } from "react-redux";
 import { actReport } from "../../redux/tenders/visitReportSlice";
-import { VisitReport } from "../../types/types";
+import { VisitReportApi } from "../../types/types";
+
+function formatearFecha(date: Date) {
+  const fechaCompleta = new Date(date);
+  return fechaCompleta.toISOString().slice(0, 10);
+}
 
 type Props = {
-  item: VisitReport;
+  item: VisitReportApi;
+  dias: string;
 };
 
-const ReportButton: React.FC<Props> = ({ item }) => {
+const ReportButton: React.FC<Props> = ({ item, dias = "Días Restantes" }) => {
   const dispatch = useDispatch();
-  
+
+  const remainingDays = (date: any) => {
+    const futureDate = new Date(date);
+    // Get the current date
+    const currentDate = new Date();
+
+    // Convert dates to milliseconds
+    const currentTime = currentDate.getTime();
+    const futureTime = futureDate.getTime();
+
+    // Calculate the difference in milliseconds
+    const difference = futureTime - currentTime;
+
+    // Convert difference to days
+    const remainingDays = Math.abs(Math.ceil(difference / (1000 * 3600 * 24)));
+
+    return remainingDays;
+  };
+
   const handleClick = () => {
-    dispatch(actReport(item))
+    dispatch(actReport(item));
   };
 
   return (
     <button
-      key={item.id}
+      key={item.ref}
       className={`${
         item.priority === "high"
-          ? "border-l-customRed"
+          ? "border-l-customRed hover:bg-red-100"
           : item.priority === "medium"
-          ? "border-l-yellow-400"
-          : "border-l-blue-600"
-      } w-full p-2 text-xs md:text-sm border border-l-[3px] flex flex-col bg-white hover:bg-zinc-200`}
+          ? "border-l-yellow-400 hover:bg-yellow-100"
+          : "border-l-blue-600 hover:bg-blue-100"
+      } w-full px-3 py-2 text-xs md:text-sm border border-l-[4px] flex flex-col bg-white space-y-2`}
       onClick={handleClick}
     >
       <h3 className="font-bold text-left"> {item.name}</h3>
       <h4 className="text-orange-600 font-semibold">{item.customerName}</h4>
-      <h5 className="italic text-end w-full text-xs">{item.dueDate}</h5>
-      <p className="text-left text-xs">{item.description}</p>
+      <p className="italic text-left w-full text-xs">
+        Vence:{" "}
+        <span className=" font-semibold">{formatearFecha(item.dueDate)}</span>
+      </p>
+      <small>
+        {dias}:{" "}<span className="font-semibold">{remainingDays(item.dueDate)}</span>
+      </small>
       <span className="text-xs w-full text-right">Ver Mas +</span>
     </button>
   );

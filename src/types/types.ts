@@ -10,14 +10,14 @@ export type material = {
 
 export type VisitReport = {
   visitDate: Date;
-  dueDate: Date;
+dueDate: Date;
   name: string;
   customerName: string;
-  nit:number;
+  nit: number;
   ref: string;
   city: string;
   address: string;
-  contactName: string,
+  contactName: string;
   phoneNumber: string;
   email: string;
   priority: string;
@@ -25,4 +25,10 @@ export type VisitReport = {
   // priority: string; this is another option
   workforce: workforce[];
   material: material[];
+};
+
+export type VisitReportApi = VisitReport & {
+  processed: boolean;
+  tenderID: number | null;
+  id: number;
 };

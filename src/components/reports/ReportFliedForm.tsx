@@ -57,12 +57,10 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
   const deleteWorkForce = (index: number) => {
     const newList = workForceArray.filter((_, i) => i !== index);
     setWorkForceArray(newList);
-    console.log(workForceArray);
   };
   const deleteMaterial = (index: number) => {
     const newList = materialArray.filter((_, i) => i !== index);
     setMaterialArray(newList);
-    console.log(materialArray);
   };
 
   return (
@@ -240,12 +238,16 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
               onChange={(e) => setUnit(e.target.value)}
             >
               <option value="">--Seleccione-- </option>
-              <option value="m">Metro</option>
+              <option value="centimetro">Centímetro</option>
+              <option value="galon">Galón</option>
+              <option value="gramo">Gramo</option>
+              <option value="kilogramo">Kilogramo</option>
+              <option value="kit">Kit</option>
+              <option value="litro">Litro</option>
+              <option value="metro">Metro</option>
               <option value="m2">m2</option>
-              <option value="kg">Kilogramo</option>
-              <option value="g">Gramo</option>
-              <option value="l">Litro</option>
               <option value="m3">m3</option>
+              <option value="tonelada">Tonelada</option>
               <option value="u">Unidad</option>
             </select>
           </div>

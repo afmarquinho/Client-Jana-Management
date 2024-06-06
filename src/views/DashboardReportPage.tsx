@@ -1,24 +1,24 @@
 import Report from "../components/reports/Report";
 import ReportForm from "../components/reports/ReportForm";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import { RootState, AppDispatch } from "../redux/store";
 import ViewReport from "../components/reports/ViewReport";
+import { useEffect } from "react";
 import {
   activateNewReport,
-  clearReport,
+  clearReport
 } from "../redux/tenders/visitReportSlice";
+import { getReportsApi } from "../redux/thunks/reportThunks";
+
 const DashboardReportPage = () => {
   // !IMPORTANTE: VARIABLE QUE VOY A PASAR COMO PARAMETRO PARA ACTIAR Y DESACTIVAR EL FORMULARIO
   const act: boolean = false;
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const actNewReport = useSelector(
     (state: RootState) => state.visitReport.actNewReport
   );
-  const report = useSelector(
-    (state: RootState) => state.visitReport.report
-  );
-  
-  
+  const report = useSelector((state: RootState) => state.visitReport.report);
+
   const isActiveReport = useSelector(
     (state: RootState) => state.visitReport.viewReport.isActive
   );
@@ -31,12 +31,19 @@ const DashboardReportPage = () => {
     dispatch(clearReport());
   };
 
-    // ! IMPORTANTE: ALLOW THE OPTION TO ATTACHED FILES AS PDF,.DOCX AND IMAGES
- 
+  // ! IMPORTANTE: ALLOW THE OPTION TO ATTACHED FILES AS PDF,.DOCX AND IMAGES
+
+  useEffect(() => {
+    dispatch(getReportsApi());
+  }, []);
+
+  /**  useEffect(() => {
+    dispatch(getReportsApi);
+  }, [report]); **/
 
   return (
     <>
-      <h1 className="text-customGray font-black uppercase text-sm sm:text-xl">
+      <h1 className="text-gray-500 font-black uppercase text-sm sm:text-xl">
         Informe de <span className="text-customRed">Visita de Obra</span>
       </h1>
       <p className="text-xs sm:text-sm">

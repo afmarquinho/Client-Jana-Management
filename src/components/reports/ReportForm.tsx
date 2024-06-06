@@ -6,20 +6,20 @@ import { workforce } from "../../types/types";
 import { material } from "../../types/types";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import { addItem } from "../../redux/tenders/visitReportSlice";
-import { RootState } from "../../redux/store";
-import { sendReportToApi } from "../../services/ReportService";
+import { RootState, AppDispatch } from "../../redux/store";
+import {
+  sendReportToApi,
+  updateReportApi,
+} from "../../redux/thunks/reportThunks";
 
 const ReportForm: React.FC = () => {
   const [workForceArray, setWorkForceArray] = useState<workforce[]>([]);
   const [materialArray, setMaterialArray] = useState<material[]>([]);
-
-  const dispatch = useDispatch();
-
   const { register, handleSubmit, setValue } = useForm<VisitReport>();
   const updatedReport = useSelector(
     (state: RootState) => state.visitReport.updatedReport
   );
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     // ? Fill the form with updatedReport data
@@ -43,7 +43,7 @@ const ReportForm: React.FC = () => {
     return () => {};
   }, [updatedReport, setValue]);
 
-  const onSubmit: SubmitHandler<VisitReport> = (data) => {
+  const onSubmit: SubmitHandler<VisitReport> = async (data) => {
     data.workforce = workForceArray;
     data.material = materialArray;
     if (workForceArray.length === 0) {
@@ -55,8 +55,16 @@ const ReportForm: React.FC = () => {
       return;
     }
     data.ref = uuidv4();
-    dispatch(addItem(data));
-    sendReportToApi(data)
+
+    if (updatedReport) {
+      let report: any = data;
+      report.processed = updatedReport.processed;
+      report.tenderID = updatedReport.tenderID;
+      report.id = updatedReport.id;
+      dispatch(updateReportApi(updatedReport.id, report));
+      return
+    }
+    dispatch(sendReportToApi(data));
   };
 
   return (
@@ -78,7 +86,7 @@ const ReportForm: React.FC = () => {
       />
       <input
         type="submit"
-        className="w-full max-w-40 p-2 bg-gradient-to-b from-red-500 to-red-600 hover:bg-gradient-to-b
+        className="w-full max-w-40 p-2 bg-gradient-to-b from-cyan-700 to-cyan-800 hover:bg-gradient-to-b
         hover:from-gray-500 hover:to-gray-700
             rounded shadow-gray-400 shadow-md outline-none text-white font-bold cursor-pointer 
             uppercase text-xs self-end"

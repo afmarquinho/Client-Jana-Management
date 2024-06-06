@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { VisitReport } from "../../types/types";
+import { VisitReportApi } from "../../types/types";
 
 type ReportState = {
-  report: VisitReport[];
+  report: VisitReportApi[];
   viewReport: {
     isActive: boolean;
-    report: VisitReport | null;
+    reportObject: VisitReportApi | null;
   };
-  updatedReport: VisitReport | null;
+  updatedReport: VisitReportApi | null;
   actNewReport: boolean;
 };
 
@@ -15,7 +15,7 @@ const initialState: ReportState = {
   report: [],
   viewReport: {
     isActive: false,
-    report: null,
+    reportObject: null,
   },
   updatedReport: null,
   actNewReport: false,
@@ -25,30 +25,33 @@ const visitReportSlice = createSlice({
   name: "visitReport",
   initialState,
   reducers: {
-    addItem: (state, action: PayloadAction<VisitReport>) => {
+    getRports: (state, action: PayloadAction<VisitReportApi[]>) => {
       const item = action.payload;
-      state.report = [...state.report, item];
+      state.report = item;
     },
-    removeItem: (state, action: PayloadAction<VisitReport>) => {
+    addItem: (state, action: PayloadAction<VisitReportApi>) => {
+      state.report = [...state.report, action.payload];
+    },
+    removeItem: (state, action: PayloadAction<VisitReportApi>) => {
       const item = action.payload;
-      state.report = state.report.filter((newItem) => newItem.id !== item.id);
+      state.report = state.report.filter((newItem) => newItem.ref !== item.ref);
     },
-    updateItem: (state, action: PayloadAction<VisitReport>) => {
+    updateItem: (state, action: PayloadAction<VisitReportApi>) => {
       const updatedItem = action.payload;
       state.report = state.report.map((item) =>
-        item.id === updatedItem.id ? updatedItem : item
+        item.ref === updatedItem.ref ? updatedItem : item
       );
     },
-    actReport: (state, action: PayloadAction<VisitReport>) => {
-      state.viewReport.report = action.payload;
+    actReport: (state, action: PayloadAction<VisitReportApi>) => {
+      state.viewReport.reportObject = action.payload;
       state.viewReport.isActive = true;
     },
     deactReport: (state) => {
       state.viewReport.isActive = false;
-      state.viewReport.report = null;
+      state.viewReport.reportObject = null;
     },
     // ! importante: Estado para llenar el formulario cuando se activa el editar reporte
-    setReport: (state, action: PayloadAction<VisitReport>) => {
+    setReport: (state, action: PayloadAction<VisitReportApi>) => {
       state.updatedReport = action.payload;
     },
     // !importante: Estado para vaciar el objeto una vez se cierra el formulario al terminar de editar
@@ -62,6 +65,7 @@ const visitReportSlice = createSlice({
 });
 
 export const {
+  getRports,
   addItem,
   removeItem,
   updateItem,
