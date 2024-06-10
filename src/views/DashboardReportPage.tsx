@@ -14,16 +14,16 @@ const DashboardReportPage = () => {
   // !IMPORTANTE: VARIABLE QUE VOY A PASAR COMO PARAMETRO PARA ACTIAR Y DESACTIVAR EL FORMULARIO
   const act: boolean = false;
   const dispatch = useDispatch<AppDispatch>();
-  const actNewReport = useSelector(
+  const isActiveNewReport = useSelector(
     (state: RootState) => state.visitReport.actNewReport
   );
   const report = useSelector((state: RootState) => state.visitReport.report);
 
-  const isActiveReport = useSelector(
+  const isActiveViewReport = useSelector(
     (state: RootState) => state.visitReport.viewReport.isActive
   );
   const isActive = () => {
-    if (actNewReport) {
+    if (isActiveNewReport) {
       dispatch(activateNewReport(act));
     } else {
       dispatch(activateNewReport(!act));
@@ -37,9 +37,10 @@ const DashboardReportPage = () => {
     dispatch(getReportsApi());
   }, []);
 
-  /**  useEffect(() => {
-    dispatch(getReportsApi);
-  }, [report]); **/
+  /**useEffect(() => {
+    dispatch(getReportsApi());
+  }, [report]);
+  */
 
   return (
     <>
@@ -58,11 +59,11 @@ const DashboardReportPage = () => {
        hover:from-cyan-700 hover:to-cyan-800 my-4 text-xs shadow-gray-400 shadow-md"
         onClick={isActive}
       >
-        {actNewReport ? "Volver" : "Nuevo Informe"}
+        {isActiveNewReport ? "Volver" : "Nuevo Informe"}
       </button>
-      {actNewReport ? (
+      {isActiveNewReport ? (
         <ReportForm />
-      ) : isActiveReport ? (
+      ) : isActiveViewReport ? (
         <ViewReport />
       ) : report.length === 0 ? (
         <p className="font-semibold">

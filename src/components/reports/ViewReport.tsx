@@ -2,20 +2,20 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   activateNewReport,
   deactReport,
-  removeItem,
   setReport,
 } from "../../redux/tenders/visitReportSlice";
-import { RootState } from "../../redux/store";
+import { AppDispatch, RootState } from "../../redux/store";
 import {
   CheckBadgeIcon,
   PencilIcon,
   TrashIcon,
   XMarkIcon,
 } from "@heroicons/react/16/solid";
-import { VisitReportApi } from "../../types/types";
+import { removeReportApi } from "../../redux/thunks/reportThunks";
+
 
 const ViewReport = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const reportObject = useSelector(
     (state: RootState) => state.visitReport.viewReport.reportObject
   );
@@ -36,23 +36,19 @@ const ViewReport = () => {
     console.error("Error formatting date:", error);
   }
 
-
-  // Assuming 'report' won't be null
-  const validReport: VisitReportApi = reportObject as VisitReportApi;
-
   const onClose = () => {
     
     dispatch(deactReport());
 
   };
   const handleRemove = () => {
+    dispatch(removeReportApi(reportObject))
     dispatch(deactReport());
-    dispatch(removeItem(validReport));
   };
 
   const act: boolean = true;
   const hanbdleEdit = () => {
-    dispatch(setReport(validReport));
+    dispatch(setReport(reportObject));
     dispatch(deactReport());
     dispatch(activateNewReport(act));
   };

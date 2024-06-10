@@ -42,11 +42,11 @@ const ReportButton: React.FC<Props> = ({ item, dias = "Días Restantes" }) => {
       key={item.ref}
       className={`${
         item.priority === "high"
-          ? "border-l-customRed hover:bg-red-100"
+          ? "border-l-red-600 hover:bg-red-100"
           : item.priority === "medium"
-          ? "border-l-yellow-400 hover:bg-yellow-100"
+          ? "border-l-violet-700 hover:bg-yellow-100"
           : "border-l-blue-600 hover:bg-blue-100"
-      } w-full px-3 py-2 text-xs md:text-sm border border-l-[4px] flex flex-col bg-white space-y-2`}
+      } w-full px-3 py-2 text-xs md:text-sm border border-l-[6px] flex flex-col bg-white space-y-2`}
       onClick={handleClick}
     >
       <h3 className="font-bold text-left"> {item.name}</h3>

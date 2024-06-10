@@ -5,13 +5,12 @@ import { RootState } from "../../redux/store";
 
 const Report = () => {
   const report = useSelector((state: RootState) => state.visitReport.report);
-  
+
   //? ARRAY WITH NOT OVERDUED REPORTS TO RENDER
-  const notOverDueArray =  report.filter((report: VisitReportApi) => {
+  const notOverDueArray = report.filter((report: VisitReportApi) => {
     return new Date(report.dueDate) > new Date();
   });
-  
-  
+
   const hightPriorityArray = notOverDueArray.filter(
     (report: VisitReportApi) => report.priority === "high"
   );
@@ -29,9 +28,9 @@ const Report = () => {
   // TODO: SEPARAR EL BOTON EN UN COMPONENTE
 
   return (
-    <div className="w-full max-w-[55rem] mx-auto flex-grow flex flex-col md:flex-row justify-between items-start gap-5">
-      <div className="w-full h-full space-y-2">
-        <h2 className="text-sm py-1 px-2 border-b-8 border-customRed bg-red-200 text-center text-customRed uppercase font-bold">
+    <div className="w-full mx-auto flex flex-grow flex-col sm:flex-row justify-between items-start flex-wrap md:flex-nowrap sm:gap-3 md:gap-5">
+      <div className="w-full sm:w-[17rem] md:w-full h-full space-y-2">
+        <h2 className="text-sm py-1 px-2 border-b-8 border-b-red-400 bg-gradient-to-b from-red-400 to-red-700 text-center text-white uppercase font-bold">
           Alta
         </h2>
         <div className="w-full flex flex-col gap-2">
@@ -40,8 +39,8 @@ const Report = () => {
           ))}
         </div>
       </div>
-      <div className="w-full h-full space-y-2">
-        <h2 className="text-sm py-1 px-2 border-b-8 border-yellow-500 bg-yellow-200 text-center text-yellow-600 uppercase font-bold">
+      <div className="w-full sm:w-[17rem] md:w-full h-full space-y-2">
+        <h2 className="text-sm py-1 px-2 border-b-8 border-b-violet-400 bg-gradient-to-b from-violet-600 to-violet-800 text-center text-white uppercase font-bold">
           Media
         </h2>
         <div className="w-full flex flex-col gap-2">
@@ -50,8 +49,8 @@ const Report = () => {
           ))}
         </div>
       </div>
-      <div className="w-full h-full space-y-2">
-        <h2 className="text-sm py-1 px-2 border-b-8 border-blue-600 bg-blue-200 text-center text-blue-600 uppercase font-bold">
+      <div className="w-full sm:w-[17rem] md:w-full h-full space-y-2">
+        <h2 className="text-sm py-1 px-2 border-b-8 bg-gradient-to-b from-blue-500 to-blue-700 border-b-blue-400 text-center text-white uppercase font-bold">
           Baja
         </h2>
         <div className="w-full flex flex-col gap-2">
@@ -60,8 +59,8 @@ const Report = () => {
           ))}
         </div>
       </div>
-      <div className="w-full h-full space-y-2">
-        <h2 className="text-sm py-1 px-2 border-b-8 border-gray-500 bg-black text-center text-gray-200 uppercase font-bold">
+      <div className="w-full sm:w-[17rem] md:w-full h-full space-y-2">
+        <h2 className="text-sm py-1 px-2 border-b-8 border-gray-500 text-center text-gray-200 uppercase font-bold bg-gradient-to-b from-gray-700 to-black">
           Vencidas
         </h2>
         <div className="w-full flex flex-col gap-2">

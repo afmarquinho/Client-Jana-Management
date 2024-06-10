@@ -11,6 +11,10 @@ import {
   sendReportToApi,
   updateReportApi,
 } from "../../redux/thunks/reportThunks";
+import {
+  deactReport,
+  activateNewReport,
+} from "../../redux/tenders/visitReportSlice";
 
 const ReportForm: React.FC = () => {
   const [workForceArray, setWorkForceArray] = useState<workforce[]>([]);
@@ -20,10 +24,17 @@ const ReportForm: React.FC = () => {
     (state: RootState) => state.visitReport.updatedReport
   );
   const dispatch = useDispatch<AppDispatch>();
+  let act: boolean = true;
 
   useEffect(() => {
     // ? Fill the form with updatedReport data
     if (updatedReport) {
+      const visitDate = new Date(updatedReport.visitDate)
+        .toISOString()
+        .split("T")[0];
+      const dueDate = new Date(updatedReport.dueDate)
+        .toISOString()
+        .split("T")[0];
       setValue("name", updatedReport.name);
       setValue("visitDate", updatedReport.visitDate);
       setValue("dueDate", updatedReport.dueDate);
@@ -61,10 +72,14 @@ const ReportForm: React.FC = () => {
       report.processed = updatedReport.processed;
       report.tenderID = updatedReport.tenderID;
       report.id = updatedReport.id;
-      dispatch(updateReportApi(updatedReport.id, report));
-      return
+      dispatch(updateReportApi(report));
+      dispatch(deactReport());
+      dispatch(activateNewReport(!act))
+      return;
     }
     dispatch(sendReportToApi(data));
+    dispatch(deactReport());
+    dispatch(activateNewReport(!act))
   };
 
   return (
@@ -72,6 +87,7 @@ const ReportForm: React.FC = () => {
       action=""
       className="bg-white w-full max-w-2xl mx-auto mb-5 px-8 md:px-16 py-12 space-y-5 flex flex-col items-center"
       onSubmit={handleSubmit(onSubmit)}
+      autoComplete="on"
     >
       <h2 className="text-center font-black text-customRed uppercase">
         Ingresar informe de visita

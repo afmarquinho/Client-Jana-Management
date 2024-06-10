@@ -8,7 +8,7 @@ type ReportState = {
     reportObject: VisitReportApi | null;
   };
   updatedReport: VisitReportApi | null;
-  actNewReport: boolean;
+  actNewReport: boolean; // form to create a new report
 };
 
 const initialState: ReportState = {
@@ -34,12 +34,12 @@ const visitReportSlice = createSlice({
     },
     removeItem: (state, action: PayloadAction<VisitReportApi>) => {
       const item = action.payload;
-      state.report = state.report.filter((newItem) => newItem.ref !== item.ref);
+      state.report = state.report.filter((newItem) => newItem.id !== item.id);
     },
     updateItem: (state, action: PayloadAction<VisitReportApi>) => {
       const updatedItem = action.payload;
       state.report = state.report.map((item) =>
-        item.ref === updatedItem.ref ? updatedItem : item
+        item.id === updatedItem.id ? updatedItem : item
       );
     },
     actReport: (state, action: PayloadAction<VisitReportApi>) => {
