@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { VisitReport } from "../../types/types";
-import ReportFliedForm from "./ReportFliedForm";
+import ReportFieldForm from "./ReportFieldForm";
 import { useEffect, useState } from "react";
 import { workforce } from "../../types/types";
 import { material } from "../../types/types";
@@ -11,6 +11,11 @@ import {
   sendReportToApi,
   updateReportApi,
 } from "../../redux/thunks/reportThunks";
+import {
+  deactReport,
+  activateNewReport,
+} from "../../redux/tenders/visitReportSlice";
+import { useNavigate } from "react-router-dom";
 
 const ReportForm: React.FC = () => {
   const [workForceArray, setWorkForceArray] = useState<workforce[]>([]);
@@ -20,17 +25,23 @@ const ReportForm: React.FC = () => {
     (state: RootState) => state.visitReport.updatedReport
   );
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  let act: boolean = true;
 
   useEffect(() => {
     // ? Fill the form with updatedReport data
     if (updatedReport) {
+      const visitDate = new Date(updatedReport.visitDate)
+        .toISOString()
+        .split("T")[0];
+      const dueDate = new Date(updatedReport.dueDate)
+        .toISOString()
+        .split("T")[0];
       setValue("name", updatedReport.name);
       setValue("visitDate", updatedReport.visitDate);
       setValue("dueDate", updatedReport.dueDate);
       setValue("customerName", updatedReport.customerName);
-      setValue("nit", updatedReport.nit);
       setValue("city", updatedReport.city);
-      setValue("address", updatedReport.address);
       setValue("contactName", updatedReport.contactName);
       setValue("phoneNumber", updatedReport.phoneNumber);
       setValue("email", updatedReport.email);
@@ -61,10 +72,17 @@ const ReportForm: React.FC = () => {
       report.processed = updatedReport.processed;
       report.tenderID = updatedReport.tenderID;
       report.id = updatedReport.id;
-      dispatch(updateReportApi(updatedReport.id, report));
-      return
+      dispatch(updateReportApi(report));
+      dispatch(deactReport());
+      dispatch(activateNewReport(!act));
+      navigate("/dashboard-report");
+      return;
     }
     dispatch(sendReportToApi(data));
+    dispatch(deactReport());
+    dispatch(activateNewReport(!act));
+    navigate("/dashboard-report");
+   
   };
 
   return (
@@ -72,11 +90,12 @@ const ReportForm: React.FC = () => {
       action=""
       className="bg-white w-full max-w-2xl mx-auto mb-5 px-8 md:px-16 py-12 space-y-5 flex flex-col items-center"
       onSubmit={handleSubmit(onSubmit)}
+      autoComplete="on"
     >
-      <h2 className="text-center font-black text-customRed uppercase">
-        Ingresar informe de visita
+      <h2 className="text-center font-black text-red-600 uppercase text-base md:text-xl">
+        Informe de <span className="text-gray-500">Visita de Obra</span>
       </h2>
-      <ReportFliedForm
+      <ReportFieldForm
         register={register}
         setWorkForceArray={setWorkForceArray}
         setMaterialArray={setMaterialArray}

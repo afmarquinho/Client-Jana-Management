@@ -10,13 +10,11 @@ export type material = {
 
 export type VisitReport = {
   visitDate: Date;
-dueDate: Date;
+  dueDate: Date;
   name: string;
   customerName: string;
-  nit: number;
   ref: string;
   city: string;
-  address: string;
   contactName: string;
   phoneNumber: string;
   email: string;

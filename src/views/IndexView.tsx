@@ -1,7 +1,7 @@
 import LoginForm from "../components/LoginForm";
 import Logo from "../components/Logo";
 
-const IndexPage = () => {
+const IndexView = () => {
   return (
     <div className="h-screen flex justify-center items-center relative">
       <div className="w-1/2 h-full absolute top-0 left-0 bg-cyan-800 "></div>
@@ -36,4 +36,4 @@ const IndexPage = () => {
   );
 };
 
-export default IndexPage;
+export default IndexView;

@@ -15,7 +15,7 @@ type ChildInputProps = {
   materialArray: material[];
 };
 
-const ReportFliedForm: React.FC<ChildInputProps> = ({
+const ReportFieldForm: React.FC<ChildInputProps> = ({
   register,
   setWorkForceArray,
   setMaterialArray,
@@ -67,7 +67,7 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
     <div className="space-y-4">
       <input
         type="text"
-        placeholder="Nombre"
+        placeholder="Nombre de la cotización"
         className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-customRed"
         {...register("name")}
       />
@@ -111,18 +111,7 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
         />
       </div>
 
-      <input
-        type="text"
-        placeholder="Dirección p.e. Calle 35 # 10-45"
-        className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-customRed"
-        {...register("address")}
-      />
-      <input
-        type="number"
-        placeholder="nit p.e. 254781247"
-        className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-customRed"
-        {...register("nit")}
-      />
+     
       <hr className="m-0 border-gray-400" />
       <small>Datos de contacto</small>
       <input
@@ -248,7 +237,7 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
               <option value="m2">m2</option>
               <option value="m3">m3</option>
               <option value="tonelada">Tonelada</option>
-              <option value="u">Unidad</option>
+              <option value="unidad">Unidad</option>
             </select>
           </div>
         </div>
@@ -288,4 +277,4 @@ const ReportFliedForm: React.FC<ChildInputProps> = ({
   );
 };
 
-export default ReportFliedForm;
+export default ReportFieldForm;

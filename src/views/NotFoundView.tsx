@@ -1,4 +1,4 @@
-const NotFoundPage = () => {
+const NotFoundView = () => {
   return (
     <div className="h-screen space-y-5 text-center flex flex-col justify-center align-middle">
       <p className="text-5xl md:text-7xl font-black text-customRed600">
@@ -19,4 +19,4 @@ const NotFoundPage = () => {
   );
 };
 
-export default NotFoundPage;
+export default NotFoundView;

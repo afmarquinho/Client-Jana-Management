@@ -8,7 +8,8 @@ type ReportState = {
     reportObject: VisitReportApi | null;
   };
   updatedReport: VisitReportApi | null;
-  actNewReport: boolean;
+  actNewReport: boolean; // form to create a new report
+  isOpenDelteModal: boolean;
 };
 
 const initialState: ReportState = {
@@ -19,6 +20,7 @@ const initialState: ReportState = {
   },
   updatedReport: null,
   actNewReport: false,
+  isOpenDelteModal: false,
 };
 
 const visitReportSlice = createSlice({
@@ -34,12 +36,12 @@ const visitReportSlice = createSlice({
     },
     removeItem: (state, action: PayloadAction<VisitReportApi>) => {
       const item = action.payload;
-      state.report = state.report.filter((newItem) => newItem.ref !== item.ref);
+      state.report = state.report.filter((newItem) => newItem.id !== item.id);
     },
     updateItem: (state, action: PayloadAction<VisitReportApi>) => {
       const updatedItem = action.payload;
       state.report = state.report.map((item) =>
-        item.ref === updatedItem.ref ? updatedItem : item
+        item.id === updatedItem.id ? updatedItem : item
       );
     },
     actReport: (state, action: PayloadAction<VisitReportApi>) => {
@@ -61,6 +63,9 @@ const visitReportSlice = createSlice({
     activateNewReport: (state, action: PayloadAction<boolean>) => {
       state.actNewReport = action.payload;
     },
+    openCloseModal:(state)=>{
+      state.isOpenDelteModal = !state.isOpenDelteModal
+    }
   },
 });
 
@@ -74,5 +79,6 @@ export const {
   setReport,
   clearReport,
   activateNewReport,
+  openCloseModal
 } = visitReportSlice.actions;
 export default visitReportSlice.reducer;
