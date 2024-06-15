@@ -1,8 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-const LayoutReport = () => {
-
-  
+const LayoutTender = () => {
   return (
     <>
       <h1 className="text-gray-500 font-black uppercase text-sm sm:text-xl">
@@ -15,8 +13,8 @@ const LayoutReport = () => {
         </span>{" "}
         todos tus reportes de visita de obra de manera fácil y rápida.
       </p>
-      <Outlet/>
+      <Outlet />
     </>
   );
 };
-export default LayoutReport;
+export default LayoutTender;
