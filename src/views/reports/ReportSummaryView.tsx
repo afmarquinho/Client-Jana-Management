@@ -16,6 +16,8 @@ import ModalDeleteReport from "../../components/reports/ModalDeleteReport";
 import { useEffect } from "react";
 import { processReport } from "../../redux/thunks/reportThunks";
 
+//TODO: BLOQUEDAR EL BOTON DE PROCESAR SI LA FECHA ES VENCIDA
+
 const ReportSummaryView = () => {
   const isModalOpen = useSelector(
     (state: RootState) => state.visitReport.isOpenDelteModal
