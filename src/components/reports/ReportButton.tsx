@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { actReport } from "../../redux/tenders/visitReportSlice";
 import { VisitReportApi } from "../../types/types";
+import { useNavigate } from "react-router-dom";
 
 function formatearFecha(date: Date) {
   const fechaCompleta = new Date(date);
@@ -13,6 +14,7 @@ type Props = {
 };
 
 const ReportButton: React.FC<Props> = ({ item, dias = "Días Restantes" }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const remainingDays = (date: any) => {
@@ -34,6 +36,7 @@ const ReportButton: React.FC<Props> = ({ item, dias = "Días Restantes" }) => {
   };
 
   const handleClick = () => {
+    navigate("/report-summary");
     dispatch(actReport(item));
   };
 
@@ -42,11 +45,11 @@ const ReportButton: React.FC<Props> = ({ item, dias = "Días Restantes" }) => {
       key={item.ref}
       className={`${
         item.priority === "high"
-          ? "border-l-red-600 hover:bg-red-100"
+          ? "border-l-red-600"
           : item.priority === "medium"
-          ? "border-l-violet-700 hover:bg-yellow-100"
-          : "border-l-blue-600 hover:bg-blue-100"
-      } w-full px-3 py-2 text-xs md:text-sm border border-l-[6px] flex flex-col bg-white space-y-2`}
+          ? "border-l-violet-700"
+          : "border-l-blue-600"
+      } w-full px-3 py-2 text-xs md:text-sm border border-l-[6px] flex flex-col bg-white space-y-2 hover:bg-gray-300`}
       onClick={handleClick}
     >
       <h3 className="font-bold text-left"> {item.name}</h3>
@@ -56,7 +59,8 @@ const ReportButton: React.FC<Props> = ({ item, dias = "Días Restantes" }) => {
         <span className=" font-semibold">{formatearFecha(item.dueDate)}</span>
       </p>
       <small>
-        {dias}:{" "}<span className="font-semibold">{remainingDays(item.dueDate)}</span>
+        {dias}:{" "}
+        <span className="font-semibold">{remainingDays(item.dueDate)}</span>
       </small>
       <span className="text-xs w-full text-right">Ver Mas +</span>
     </button>

@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { VisitReport } from "../../types/types";
-import ReportFliedForm from "./ReportFliedForm";
+import ReportFieldForm from "./ReportFieldForm";
 import { useEffect, useState } from "react";
 import { workforce } from "../../types/types";
 import { material } from "../../types/types";
@@ -15,6 +15,7 @@ import {
   deactReport,
   activateNewReport,
 } from "../../redux/tenders/visitReportSlice";
+import { useNavigate } from "react-router-dom";
 
 const ReportForm: React.FC = () => {
   const [workForceArray, setWorkForceArray] = useState<workforce[]>([]);
@@ -24,6 +25,7 @@ const ReportForm: React.FC = () => {
     (state: RootState) => state.visitReport.updatedReport
   );
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   let act: boolean = true;
 
   useEffect(() => {
@@ -39,9 +41,7 @@ const ReportForm: React.FC = () => {
       setValue("visitDate", updatedReport.visitDate);
       setValue("dueDate", updatedReport.dueDate);
       setValue("customerName", updatedReport.customerName);
-      setValue("nit", updatedReport.nit);
       setValue("city", updatedReport.city);
-      setValue("address", updatedReport.address);
       setValue("contactName", updatedReport.contactName);
       setValue("phoneNumber", updatedReport.phoneNumber);
       setValue("email", updatedReport.email);
@@ -74,12 +74,15 @@ const ReportForm: React.FC = () => {
       report.id = updatedReport.id;
       dispatch(updateReportApi(report));
       dispatch(deactReport());
-      dispatch(activateNewReport(!act))
+      dispatch(activateNewReport(!act));
+      navigate("/dashboard-report");
       return;
     }
     dispatch(sendReportToApi(data));
     dispatch(deactReport());
-    dispatch(activateNewReport(!act))
+    dispatch(activateNewReport(!act));
+    navigate("/dashboard-report");
+   
   };
 
   return (
@@ -89,10 +92,10 @@ const ReportForm: React.FC = () => {
       onSubmit={handleSubmit(onSubmit)}
       autoComplete="on"
     >
-      <h2 className="text-center font-black text-customRed uppercase">
-        Ingresar informe de visita
+      <h2 className="text-center font-black text-red-600 uppercase text-base md:text-xl">
+        Informe de <span className="text-gray-500">Visita de Obra</span>
       </h2>
-      <ReportFliedForm
+      <ReportFieldForm
         register={register}
         setWorkForceArray={setWorkForceArray}
         setMaterialArray={setMaterialArray}

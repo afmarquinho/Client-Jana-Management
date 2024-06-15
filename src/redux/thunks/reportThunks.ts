@@ -1,7 +1,12 @@
 import { VisitReport, VisitReportApi } from "../../types/types";
 import axios from "axios";
 import { AppDispatch } from "../store";
-import { addItem, getRports, removeItem, updateItem } from "../tenders/visitReportSlice";
+import {
+  addItem,
+  getRports,
+  removeItem,
+  updateItem,
+} from "../tenders/visitReportSlice";
 
 export const sendReportToApi = (report: VisitReport) => {
   return async (dispatch: AppDispatch) => {
@@ -38,13 +43,23 @@ export const updateReportApi = (report: VisitReportApi) => {
     }
   };
 };
-export const removeReportApi = (report: VisitReportApi) => {
+export const removeReportApi = (id:number) => {
   return async (dispatch: AppDispatch) => {
-    alert("¿Estás seguro que deseas eliminar este reporte?");
     try {
-      const url = `${import.meta.env.VITE_API_URL}/api/report/${report.id}`;
+      const url = `${import.meta.env.VITE_API_URL}/api/report/${id}`;
       await axios.delete(url);
-      dispatch(removeItem(report));
+      //dispatch(removeItem(report));
+    } catch (error: any) {
+      console.log(error.response.data.errors[0].msg);
+    }
+  };
+};
+
+export const processReport = (id: number) => {
+  return async () => {
+    try {
+      const url = `${import.meta.env.VITE_API_URL}/api/report/${id}`;
+      await axios.patch(url);
     } catch (error: any) {
       console.log(error.response.data.errors[0].msg);
     }

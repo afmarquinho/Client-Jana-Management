@@ -3,7 +3,7 @@ import { VisitReportApi } from "../../types/types";
 import ReportButton from "./ReportButton";
 import { RootState } from "../../redux/store";
 
-const Report = () => {
+const AllReports = () => {
   const report = useSelector((state: RootState) => state.visitReport.report);
 
   //? ARRAY WITH NOT OVERDUED REPORTS TO RENDER
@@ -73,4 +73,4 @@ const Report = () => {
   );
 };
 
-export default Report;
+export default AllReports;
