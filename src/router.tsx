@@ -10,6 +10,8 @@ import EditReportView from "./views/reports/EditReportView";
 import NewReportView from "./views/reports/NewReportView";
 import DashboardTenderView from "./views/tender/DashboardTenderView";
 import LayoutTender from "./components/tender/LayoutTender";
+import TenderToProcessView from "./views/tender/TenderToProcessView";
+
 
 const AppRouter = () => {
   return (
@@ -31,6 +33,7 @@ const AppRouter = () => {
           </Route>
           <Route element={<LayoutTender />}>
           <Route index path="/dashboard-tender" element={<DashboardTenderView/>}/>
+          <Route path="/tender-to-process" element={<TenderToProcessView/>}/>
           </Route>
         </Route>
       </Routes>
