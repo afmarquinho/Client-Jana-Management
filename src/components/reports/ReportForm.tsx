@@ -105,7 +105,7 @@ const ReportForm: React.FC = () => {
       />
       <input
         type="submit"
-        className="w-full max-w-40 p-2 bg-gradient-to-b from-cyan-700 to-cyan-800 hover:bg-gradient-to-b
+        className="w-full max-w-40 p-2 bg-gradient-to-b from-cyan-700 to-cyan-800
         hover:from-gray-500 hover:to-gray-700
             rounded shadow-gray-400 shadow-md outline-none text-white font-bold cursor-pointer 
             uppercase text-xs self-end"

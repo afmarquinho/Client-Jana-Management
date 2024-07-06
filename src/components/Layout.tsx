@@ -9,8 +9,8 @@ const Layout = () => {
         <Outlet />
       </main>
       
-      <footer className="bg-red-600 self-bottom">
-        <p className="text-xs text-center text-white p-1">
+      <footer className="bg-green-400 self-bottom">
+        <p className="text-xs text-center p-1">
           Derechos Reservados &copy; {new Date().getFullYear()} Kassya Dev
         </p>
       </footer>
