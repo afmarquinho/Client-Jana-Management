@@ -11,6 +11,11 @@ import NewReportView from "./views/reports/NewReportView";
 import DashboardTenderView from "./views/tender/DashboardTenderView";
 import LayoutTender from "./components/tender/LayoutTender";
 import TenderToProcessView from "./views/tender/TenderToProcessView";
+import NewTenderView from "./views/tender/NewTenderView";
+import NewUser from "./views/user/NewUser";
+import LayoutUser from "./components/user/LayoutUser";
+import DashboardUser from "./views/user/DashboardUser";
+import ProfileUser from "./views/user/ProfileUser";
 
 
 const AppRouter = () => {
@@ -21,6 +26,12 @@ const AppRouter = () => {
         <Route path="*" element={<NotFoundView />} />
         <Route element={<Layout />}>
           <Route path="/home" element={<InicioPage />} />
+          <Route element={<LayoutUser />}>
+          <Route index path="/dashboard-user" element={<DashboardUser/>}/>
+            <Route path="/profile/:id" element={<ProfileUser />} />
+            <Route path="/new-user" element={<NewUser />} />
+          </Route>
+
           <Route element={<LayoutReport />}>
             <Route
               index
@@ -32,8 +43,16 @@ const AppRouter = () => {
             <Route path="/edit-report" element={<EditReportView />} />
           </Route>
           <Route element={<LayoutTender />}>
-          <Route index path="/dashboard-tender" element={<DashboardTenderView/>}/>
-          <Route path="/tender-to-process" element={<TenderToProcessView/>}/>
+            <Route
+              index
+              path="/dashboard-tender"
+              element={<DashboardTenderView />}
+            />
+            <Route
+              path="/tender-to-process"
+              element={<TenderToProcessView />}
+            />
+            <Route path="/new-tender" element={<NewTenderView />} />
           </Route>
         </Route>
       </Routes>

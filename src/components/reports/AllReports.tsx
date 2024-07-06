@@ -5,9 +5,13 @@ import { RootState } from "../../redux/store";
 
 const AllReports = () => {
   const report = useSelector((state: RootState) => state.visitReport.report);
+  //? ARRAY WITH ONLY NOT PROCESSEDS REPORTS
+  const notProcessedArray = report.filter((report : VisitReportApi) =>{
+    return report.processed === false 
+  })
 
   //? ARRAY WITH NOT OVERDUED REPORTS TO RENDER
-  const notOverDueArray = report.filter((report: VisitReportApi) => {
+  const notOverDueArray = notProcessedArray.filter((report: VisitReportApi) => {
     return new Date(report.dueDate) > new Date();
   });
 
@@ -22,7 +26,7 @@ const AllReports = () => {
   );
 
   //? ARRAY WITH OVERDUED REPORTS TO RENDER
-  const overDueArray = report.filter((report: VisitReportApi) => {
+  const overDueArray = notProcessedArray.filter((report: VisitReportApi) => {
     return new Date(report.dueDate) < new Date();
   });
   // TODO: SEPARAR EL BOTON EN UN COMPONENTE
