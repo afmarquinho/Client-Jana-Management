@@ -1,21 +1,25 @@
 import { VisitReport, VisitReportApi } from "../../types/types";
-import axios from "axios";
 import { AppDispatch } from "../store";
 import {
   addItem,
+  cleanViewSummaryReport,
+  errorMessage,
   getRports,
   removeItem,
   updateItem,
+  viewSummaryReport,
 } from "../tenders/visitReportSlice";
+import axiosClient from "../../axiosClient";
 
 export const sendReportToApi = (report: VisitReport) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const url = `${import.meta.env.VITE_API_URL}/api/report`;
-      const response = await axios.post(url, report);
+      const response = await axiosClient.post("/reports", report);
       dispatch(addItem(response.data.data));
+      dispatch(cleanViewSummaryReport());
+      dispatch(errorMessage(""));
     } catch (error: any) {
-      console.log(error.response.data.errors[0].msg);
+      dispatch(errorMessage(error.response.data.errors[0].msg));
     }
   };
 };
@@ -23,8 +27,7 @@ export const sendReportToApi = (report: VisitReport) => {
 export const getReportsApi = () => {
   return async (dispatch: AppDispatch) => {
     try {
-      const url = `${import.meta.env.VITE_API_URL}/api/report/`;
-      const { data } = await axios.get(url);
+      const { data } = await axiosClient.get("/reports");
       dispatch(getRports(data.data));
     } catch (error: any) {
       console.log(error.response.data.errors[0].msg);
@@ -35,19 +38,19 @@ export const getReportsApi = () => {
 export const updateReportApi = (report: VisitReportApi) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const url = `${import.meta.env.VITE_API_URL}/api/report/${report.id}`;
-      await axios.put(url, report);
+      await axiosClient.put(`/reports/${report.id}`, report);
       dispatch(updateItem(report));
+      dispatch(viewSummaryReport(report));
+      dispatch(errorMessage(""));
     } catch (error: any) {
-      console.log(error.response.data.errors[0].msg);
+      dispatch(errorMessage(error.response.data.errors[0].msg));
     }
   };
 };
-export const removeReportApi = (id:number) => {
+export const removeReportApi = (id: number) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const url = `${import.meta.env.VITE_API_URL}/api/report/${id}`;
-      await axios.delete(url);
+      await axiosClient.delete(`/reports/${id}`);
       //dispatch(removeItem(report));
     } catch (error: any) {
       console.log(error.response.data.errors[0].msg);
@@ -55,13 +58,14 @@ export const removeReportApi = (id:number) => {
   };
 };
 
-export const processReport = (id: number) => {
-  return async () => {
+export const processReport = (id: number, dueDate: any) => {
+  return async (dispatch: AppDispatch) => {
     try {
-      const url = `${import.meta.env.VITE_API_URL}/api/report/${id}`;
-      await axios.patch(url);
+      await axiosClient.patch(`/reports/${id}`, { dueDate });
+      dispatch(removeItem(id));
+      dispatch(errorMessage(""));
     } catch (error: any) {
-      console.log(error.response.data.errors[0].msg);
+      dispatch(errorMessage(error.response.data.errors[0].msg));
     }
   };
 };

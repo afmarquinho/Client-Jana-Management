@@ -25,7 +25,7 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
   const [workforce, setWorkForce] = useState<string>("");
   const [workshift, setWorkShift] = useState<number>(0);
   const [material, setMaterial] = useState<string>("");
-  const [amount, setAmount] = useState<number>(0);
+  const [quantity, setQuantity] = useState<number>(0);
   const [unit, setUnit] = useState<string>("");
 
   const addWorkforce = () => {
@@ -44,10 +44,13 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
     }
   };
   const addMaterial = () => {
-    if (material && unit && amount > 0) {
-      setMaterialArray([...materialArray, { material, amount, unit }]);
+    if (material && unit && quantity > 0) {
+      setMaterialArray([
+        ...materialArray,
+        { material, quantity: quantity, unit },
+      ]);
       setMaterial("");
-      setAmount(0);
+      setQuantity(0);
       setUnit("");
     } else {
       alert("Debe completar los campos de materiales");
@@ -64,7 +67,7 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-full">
       <input
         type="text"
         placeholder="Nombre de la cotización"
@@ -111,7 +114,6 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
         />
       </div>
 
-     
       <hr className="m-0 border-gray-400" />
       <small>Datos de contacto</small>
       <input
@@ -211,9 +213,9 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
             type="number"
             placeholder="Cantidad"
             className="border-gray-400 border-2 rounded-md px-2 py-1 w-full sm:w-1/2 outline-customRed"
-            value={amount}
+            value={quantity}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setAmount(parseInt(e.target.value))
+              setQuantity(parseInt(e.target.value))
             }
           />
           <div className="w-full sm:w-1/2">
@@ -254,7 +256,7 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
         {materialArray.map((item, index) => (
           <li key={index} className="flex justify-between">
             <span>
-              {index + 1}. {item.material} -- {item.amount} {item.unit}
+              {index + 1}. {item.material} -- {item.quantity} {item.unit}
             </span>
             <button onClick={() => deleteMaterial(index)}>
               <TrashIcon className="text-red-500 h-4" />

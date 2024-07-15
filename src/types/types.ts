@@ -4,13 +4,13 @@ export type workforce = {
 };
 export type material = {
   material: string;
-  amount: number;
+  quantity: number;
   unit: string;
 };
 
 export type VisitReport = {
-  visitDate: Date;
-  dueDate: Date;
+  visitDate: any;
+  dueDate: any;
   name: string;
   customerName: string;
   ref: string;
@@ -26,7 +26,7 @@ export type VisitReport = {
 };
 
 export type VisitReportApi = VisitReport & {
-  processed: boolean;
-  tenderID: number | null;
   id: number;
+  processed: boolean;
+  tenderID: number;
 };

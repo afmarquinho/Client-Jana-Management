@@ -6,7 +6,6 @@ import InicioPage from "./views/InicioPage";
 import DashboardReportView from "./views/reports/DashboardReportView";
 import LayoutReport from "./components/reports/LayoutReport";
 import ReportSummaryView from "./views/reports/ReportSummaryView";
-import EditReportView from "./views/reports/EditReportView";
 import NewReportView from "./views/reports/NewReportView";
 import DashboardTenderView from "./views/tender/DashboardTenderView";
 import LayoutTender from "./components/tender/LayoutTender";
@@ -39,8 +38,7 @@ const AppRouter = () => {
               element={<DashboardReportView />}
             />
             <Route path="/report-summary" element={<ReportSummaryView />} />
-            <Route path="/new-report" element={<NewReportView />} />
-            <Route path="/edit-report" element={<EditReportView />} />
+            <Route path="/report-form" element={<NewReportView />} />
           </Route>
           <Route element={<LayoutTender />}>
             <Route

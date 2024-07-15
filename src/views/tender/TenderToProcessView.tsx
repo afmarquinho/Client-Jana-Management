@@ -11,7 +11,6 @@ const TenderToProcessView = () => {
 
   useEffect(() => {
     dispatch(getReportsApi());
-    console.log(report);
   }, []);
 
   const toProcessArray = report.filter((report: VisitReportApi) => {
@@ -40,7 +39,7 @@ const TenderToProcessView = () => {
                       {report.customerName}
                     </p>
                     <p className="text-sm italic">
-                      Fecha de Entrega: {}
+                      Fecha de Entrega: {report.dueDate}
                     </p>
                   </div>
                   <button className="text-sm bg-gradient-to-b from-blue-800 to-blue-950 shadow rounded px-2 py-1 text-white  hover:from-emerald-700 hover:to-emerald-800">
