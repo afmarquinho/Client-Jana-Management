@@ -11,11 +11,9 @@ import {
   sendReportToApi,
   updateReportApi,
 } from "../../redux/thunks/reportThunks";
-import {
-  deactReport,
-  activateNewReport,
-} from "../../redux/tenders/visitReportSlice";
 import { useNavigate } from "react-router-dom";
+import { formatServerDate } from "../../helpers/helpers";
+import Alert from "../Alert";
 
 const ReportForm: React.FC = () => {
   const [workForceArray, setWorkForceArray] = useState<workforce[]>([]);
@@ -24,22 +22,20 @@ const ReportForm: React.FC = () => {
   const updatedReport = useSelector(
     (state: RootState) => state.visitReport.updatedReport
   );
+  const errorMsg = useSelector(
+    (state: RootState) => state.visitReport.errorMsg
+  );
+  const [successfulSubmitting, setSuccessfulSubmitting] = useState<String>(""); //* estado local para evitar la redirección automatica en el effect
+
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  let act: boolean = true;
 
   useEffect(() => {
     // ? Fill the form with updatedReport data
     if (updatedReport) {
-      const visitDate = new Date(updatedReport.visitDate)
-        .toISOString()
-        .split("T")[0];
-      const dueDate = new Date(updatedReport.dueDate)
-        .toISOString()
-        .split("T")[0];
       setValue("name", updatedReport.name);
-      setValue("visitDate", updatedReport.visitDate);
-      setValue("dueDate", updatedReport.dueDate);
+      setValue("visitDate", formatServerDate(updatedReport.visitDate));
+      setValue("dueDate", formatServerDate(updatedReport.dueDate));
       setValue("customerName", updatedReport.customerName);
       setValue("city", updatedReport.city);
       setValue("contactName", updatedReport.contactName);
@@ -69,32 +65,39 @@ const ReportForm: React.FC = () => {
 
     if (updatedReport) {
       let report: any = data;
-      report.processed = updatedReport.processed;
       report.tenderID = updatedReport.tenderID;
+      report.processed = updatedReport.processed;
       report.id = updatedReport.id;
-      dispatch(updateReportApi(report));
-      dispatch(deactReport());
-      dispatch(activateNewReport(!act));
-      navigate("/dashboard-report");
-      return;
+      await dispatch(updateReportApi(report));
+      return setSuccessfulSubmitting("ok");
+    } else {
+      await dispatch(sendReportToApi(data));
+      return setSuccessfulSubmitting("ok");
     }
-    dispatch(sendReportToApi(data));
-    dispatch(deactReport());
-    dispatch(activateNewReport(!act));
-    navigate("/dashboard-report");
-   
   };
+
+  useEffect(() => {
+    if (successfulSubmitting === "ok") {
+      if (!errorMsg) {
+        navigate(-1);
+      } else {
+        console.log(errorMsg);
+        setSuccessfulSubmitting("");
+      }
+    }
+  }, [errorMsg, navigate, successfulSubmitting]);
 
   return (
     <form
       action=""
-      className="bg-white w-full max-w-2xl mx-auto mb-5 px-8 md:px-16 py-12 space-y-5 flex flex-col items-center"
       onSubmit={handleSubmit(onSubmit)}
       autoComplete="on"
+      className="bg-white w-full max-w-2xl mx-auto mb-5 px-10 md:px-16 py-12 space-y-5 flex flex-col items-center shadow-md rounded-lg overflow-hidden"
     >
       <h2 className="text-center font-black text-red-600 uppercase text-base md:text-xl">
         Informe de <span className="text-gray-500">Visita de Obra</span>
       </h2>
+      {errorMsg && <Alert msg={errorMsg} />}
       <ReportFieldForm
         register={register}
         setWorkForceArray={setWorkForceArray}
@@ -106,9 +109,7 @@ const ReportForm: React.FC = () => {
       <input
         type="submit"
         className="w-full max-w-40 p-2 bg-gradient-to-b from-cyan-700 to-cyan-800
-        hover:from-gray-500 hover:to-gray-700
-            rounded shadow-gray-400 shadow-md outline-none text-white font-bold cursor-pointer 
-            uppercase text-xs self-end"
+        hover:from-gray-500 hover:to-gray-700 cursor-pointer uppercase text-xs self-end text-white font-semibold"
         value={updatedReport ? "Editar" : "Guardar"}
       />
     </form>

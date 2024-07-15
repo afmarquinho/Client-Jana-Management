@@ -1,12 +1,8 @@
 import { useDispatch } from "react-redux";
-import { actReport } from "../../redux/tenders/visitReportSlice";
+import { viewSummaryReport } from "../../redux/tenders/visitReportSlice";
 import { VisitReportApi } from "../../types/types";
 import { useNavigate } from "react-router-dom";
-
-function formatearFecha(date: Date) {
-  const fechaCompleta = new Date(date);
-  return fechaCompleta.toISOString().slice(0, 10);
-}
+import { formatServerDate } from "../../helpers/helpers";
 
 type Props = {
   item: VisitReportApi;
@@ -37,7 +33,8 @@ const ReportButton: React.FC<Props> = ({ item, dias = "Días Restantes" }) => {
 
   const handleClick = () => {
     navigate("/report-summary");
-    dispatch(actReport(item));
+    dispatch(viewSummaryReport(item));
+    
   };
 
   return (
@@ -48,7 +45,7 @@ const ReportButton: React.FC<Props> = ({ item, dias = "Días Restantes" }) => {
           ? "border-l-red-600"
           : item.priority === "medium"
           ? "border-l-violet-700"
-          : "border-l-blue-600"
+          : "border-l-blue-500"
       } w-full px-3 py-2 text-xs md:text-sm border border-l-[6px] flex flex-col bg-white space-y-2 hover:bg-gray-300`}
       onClick={handleClick}
     >
@@ -56,7 +53,7 @@ const ReportButton: React.FC<Props> = ({ item, dias = "Días Restantes" }) => {
       <h4 className="text-orange-600 font-semibold">{item.customerName}</h4>
       <p className="italic text-left w-full text-xs">
         Vence:{" "}
-        <span className=" font-semibold">{formatearFecha(item.dueDate)}</span>
+        <span className=" font-semibold">{formatServerDate(item.dueDate)}</span>
       </p>
       <small>
         {dias}:{" "}

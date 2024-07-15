@@ -13,13 +13,32 @@ const LayoutTender = () => {
         </span>{" "}
         todas las cotizaciones pendientes y en proceso.
       </p>
-      <nav>
-        <div className="flex flex-col">
-            <Link to="#">Por procesar</Link>
-            <Link to="#">En edición</Link>
-            <Link to="#">Pendientes de aprobación</Link>
-            <Link to="#">Aprobadas</Link>
-        </div>
+      <nav className="w-full flex space-x-3 justify-end
+      ">
+        <Link
+          to="#"
+          className="bg-gradient-to-b from-blue-400 to-blue-600 rounded-md text-white px-4 py-1 shadow-lg text-xs sm:text-base"
+        >
+          Por procesar
+        </Link>
+        <Link
+          to="#"
+          className="bg-gradient-to-b from-orange-400 to-orange-600 rounded-md text-white px-4 py-1 shadow-lg"
+        >
+          En edición
+        </Link>
+        <Link
+          to="#"
+          className="bg-gradient-to-b from-violet-700 to-violet-800 rounded-md text-white px-4 py-1 shadow-lg"
+        >
+          Pendientes
+        </Link>
+        <Link
+          to="#"
+          className="bg-gradient-to-b from-green-400 to-green-600 rounded-md text-white px-4 py-1 shadow-lg"
+        >
+          Aprobadas
+        </Link>
       </nav>
       <Outlet />
     </>

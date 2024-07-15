@@ -5,7 +5,9 @@ const Header = () => {
     <>
       <div className="bg-green-600 py-2">
         <div className="w-11/12 max-w-[70rem] mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
-          <Logo />
+          <div className="w-52">
+            <Logo />
+          </div>
           <div className="text-xs flex flex-col sm:flex-row gap-2 sm:gap-8 items-center">
             <span className="text-white ">Bienvenido: John Doe </span>
             <button

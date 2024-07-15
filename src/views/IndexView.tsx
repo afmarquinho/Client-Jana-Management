@@ -18,16 +18,20 @@ const IndexView = () => {
             backgroundPosition: "30% 50%",
           }}
         >
-          <div className="">
-            <Logo />
-            <p className="font-bold text-2xl mb-2 tracking-widest">Bienvenido!!!</p>
-            
-              <small className="hidden sm:block font-semibold text-lg w-2/3 leading-5">
-                {" "}
-                <span className="font-bold">Optimiza</span> tus procesos,{" "}
-                <span className="font-bold">maximiza</span> tu éxito.
-              </small>
-            
+          <div className="w-full">
+            <div className="w-2/3">
+              <Logo />
+            </div>
+            <small className="text-black font-semibold hidden sm:block text-sm ">
+              "Gestión eficiente, resultados poderosos."
+            </small>
+            <h1 className="text-3xl font-black text-blue-950 mt-8 mb-4">
+              ¡Bienvenido a Jana!
+            </h1>
+            <p className="text-black font-bold mb-6">
+              Gestione sus procesos con eficiencia y precisión. Inicie sesión
+              para comenzar.
+            </p>
           </div>
         </div>
         <LoginForm />
