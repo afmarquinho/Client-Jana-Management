@@ -11,10 +11,10 @@ import { RootState } from "../../redux/store";
 const DescriptionTable: React.FC = () => {
   const tender = useSelector((state: RootState) => state.tender.tender);
 
-  // const totalSum = tenderInputs.description?.reduce(
-  //   (acc, desc) => acc + desc.totalValue,
-  //   0
-  // );
+  const totalSum = tender.description?.reduce(
+    (acc, desc) => acc + desc.totalValue,
+    0
+  );
 
   // const onEdit = (index: number, desc: Description) => {
   //   setIndex(index);
@@ -88,10 +88,10 @@ const DescriptionTable: React.FC = () => {
       <div className="flex flex-col items-end w-full mt-5">
         <h3 className="text-xl font-bold">
           Total Cotización:{" "}
-          {/* {totalSum?.toLocaleString("en-US", {
+          {totalSum?.toLocaleString("en-US", {
             style: "currency",
             currency: "USD",
-          })} */}
+          })} 
         </h3>
         <small className="italic">*Valor en cop</small>
       </div>

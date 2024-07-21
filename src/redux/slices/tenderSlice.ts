@@ -21,7 +21,7 @@ const initialState: TenderState = {
   error: null,
 };
 
-//* THUNKS TO INTERACT TO API
+//* THUNKS
 export const fetchTenders = createAsyncThunk("api/tenders/getAll", async () => {
   const tenders = await getTendersService();
   return tenders;
@@ -29,15 +29,15 @@ export const fetchTenders = createAsyncThunk("api/tenders/getAll", async () => {
 
 export const updateTender = createAsyncThunk(
   "tenders/updateTender",
-  async ({ id, data }: { id: number; data: Tender }, { rejectWithValue }) => {
+  async (data: Tender, { rejectWithValue }) => {
     try {
-      await updateTenderService(id, data);
-      return { id, data }; // Puedes devolver los datos actualizados si es necesario
+      await updateTenderService(data);
+      return { data }; // Puedes devolver los datos actualizados si es necesario
     } catch (error) {
       if (isAxiosError(error)) {
-        return rejectWithValue(error.response?.data.message || error.message);
+        return rejectWithValue(error.message);
       } else {
-        return rejectWithValue("An unknown error occurred");
+        return rejectWithValue("Error desconocido");
       }
     }
   }
@@ -51,7 +51,6 @@ const tenderSlice = createSlice({
     tenderToEdit: (state, action: PayloadAction<Tender>) => {
       state.tender = action.payload;
     },
-    
   },
   extraReducers: (builder) => {
     builder
@@ -67,16 +66,15 @@ const tenderSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to fetch tenders";
       })
-      .addCase(updateTender.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(updateTender.fulfilled, (state, action) => {
         state.loading = false;
-        state.tender = action.payload.data;
-        state.tenders = state.tenders.map((tender: Tender) =>
-          tender.id === action.payload.id ? state.tender : tender
-        );
+        const updatedTender = action.payload?.data;
+        if (updatedTender) {
+          state.tender = updatedTender;
+          state.tenders = state.tenders.map((tender) =>
+            tender.id === updatedTender.id ? updatedTender : tender
+          );
+        }
       })
       .addCase(updateTender.rejected, (state, action) => {
         state.loading = false;
