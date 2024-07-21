@@ -4,7 +4,7 @@ import {
   errorMessage,
   openCloseModal,
   setReport,
-} from "../../redux/tenders/visitReportSlice";
+} from "../../redux/slices/visitReportSlice";
 import { AppDispatch, RootState } from "../../redux/store";
 import {
   CheckBadgeIcon,
@@ -17,8 +17,9 @@ import { useEffect} from "react";
 import { processReport } from "../../redux/thunks/reportThunks";
 import { formatServerDate, isDateValid } from "../../helpers/helpers";
 import { VisitReportApi } from "../../types/types";
+import { createTenderService } from "../../services/tenderServices";
 
-//TODO: BLOQUEDAR EL BOTON DE PROCESAR SI LA FECHA ES VENCIDA
+//TODO: quitar la columnda de cerrado, ya no es necesario
 
 const ReportSummaryView = () => {
   const isModalOpen = useSelector(
@@ -29,9 +30,7 @@ const ReportSummaryView = () => {
   const viewReport = useSelector(
     (state: RootState) => state.visitReport.viewReport
   );
-  const errorMsg = useSelector(
-    (state: RootState) => state.visitReport.errorMsg
-  );
+  
 
   if (!viewReport) {
     return <div>No report available</div>;
@@ -54,8 +53,14 @@ const ReportSummaryView = () => {
         processReport(report.id, formatServerDate(report.dueDate))
       );
       navigate(-1);
+    
+      await createTenderService({
+        reportId: report.id,
+        createdBy: "John Doe",
+      });
       return;
     }
+
   };
 
   const onBack = () => {
@@ -125,7 +130,7 @@ const ReportSummaryView = () => {
             <th className="text-left p-4 text-gray-600 w-1/3 border-e">
               Ciudad
             </th>
-            <td className="text-left p-4 w-/3 not-italic">{viewReport.city}</td>
+            <td className="text-left p-4 w-/3 not-italic">{viewReport.customerCity}</td>
           </tr>
           <tr className="border-b last:border-b-0">
             <th className="text-left p-4 text-gray-600 w-1/3 border-e">

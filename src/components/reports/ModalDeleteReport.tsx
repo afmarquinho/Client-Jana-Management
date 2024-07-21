@@ -1,6 +1,6 @@
 import { ExclamationTriangleIcon } from "@heroicons/react/16/solid";
 import { useDispatch } from "react-redux";
-import { openCloseModal } from "../../redux/tenders/visitReportSlice";
+import { openCloseModal } from "../../redux/slices/visitReportSlice";
 import { AppDispatch } from "../../redux/store";
 import { removeReportApi } from "../../redux/thunks/reportThunks";
 import { useNavigate } from "react-router-dom";

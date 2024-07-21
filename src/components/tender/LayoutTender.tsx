@@ -1,3 +1,4 @@
+import { PlusIcon } from "@heroicons/react/16/solid";
 import { Link, Outlet } from "react-router-dom";
 
 const LayoutTender = () => {
@@ -13,33 +14,58 @@ const LayoutTender = () => {
         </span>{" "}
         todas las cotizaciones pendientes y en proceso.
       </p>
-      <nav className="w-full flex space-x-3 justify-end
-      ">
+      <nav
+        className="w-full flex space-x-3 justify-between mt-2
+      "
+      >
         <Link
-          to="#"
-          className="bg-gradient-to-b from-blue-400 to-blue-600 rounded-md text-white px-4 py-1 shadow-lg text-xs sm:text-base"
+          to="/report-form"
+          className="bg-blue-900 text-white flex items-center px-2 py-1 rounded hover:bg-green-700"
         >
-          Por procesar
+          <PlusIcon className="h-5" /> Crear Cotización
         </Link>
-        <Link
-          to="#"
-          className="bg-gradient-to-b from-orange-400 to-orange-600 rounded-md text-white px-4 py-1 shadow-lg"
-        >
-          En edición
-        </Link>
-        <Link
-          to="#"
-          className="bg-gradient-to-b from-violet-700 to-violet-800 rounded-md text-white px-4 py-1 shadow-lg"
-        >
-          Pendientes
-        </Link>
-        <Link
-          to="#"
-          className="bg-gradient-to-b from-green-400 to-green-600 rounded-md text-white px-4 py-1 shadow-lg"
-        >
-          Aprobadas
-        </Link>
+
+        <div className="flex gap-3">
+          <Link
+            to="/tender-draft"
+            className="bg-gradient-to-b from-orange-400 to-orange-600 rounded-md text-white px-2 py-1 sm:px-4 sm:py-1 shadow-lg text-xs sm:text-base"
+          >
+            En edición
+          </Link>
+          <Link
+            to="#"
+            className="bg-gradient-to-b from-violet-700 to-violet-800 rounded-md text-white px-2 py-1 sm:px-4 sm:py-1 shadow-lg text-xs sm:text-base"
+          >
+            Pendientes
+          </Link>
+          <Link
+            to="#"
+            className="bg-gradient-to-b from-green-400 to-green-600 rounded-md text-white px-2 py-1 sm:px-4 sm:py-1 shadow-lg text-xs sm:text-base"
+          >
+            Aprobadas
+          </Link>
+          <Link
+            to="#"
+            className="bg-gradient-to-b from-green-400 to-green-600 rounded-md text-white px-2 py-1 sm:px-4 sm:py-1 shadow-lg text-xs sm:text-base"
+          >
+            Rechazadas
+          </Link>
+
+          <Link
+            to="#"
+            className="bg-gradient-to-b from-green-400 to-green-600 rounded-md text-white px-2 py-1 sm:px-4 sm:py-1 shadow-lg text-xs sm:text-base"
+          >
+            Enviadas
+          </Link>
+          <Link
+            to="/dashboard-tender"
+            className="bg-gradient-to-b from-red-500 to-red-800 rounded-md text-white px-5 py-1 sm:px-4 sm:py-1 shadow-lg text-xs sm:text-base"
+          >
+            Atrás
+          </Link>
+        </div>
       </nav>
+
       <Outlet />
     </>
   );

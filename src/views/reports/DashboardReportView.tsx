@@ -10,11 +10,12 @@ const DashboardReportView = () => {
   const dispatch = useDispatch<AppDispatch>();
   const report = useSelector((state: RootState) => state.visitReport.report);
 
-  // ! IMPORTANTE: ALLOW THE OPTION TO ATTACHED FILES AS PDF,.DOCX AND IMAGES
+  // TODO: ALLOW THE OPTION TO ATTACHED FILES AS PDF,.DOCX AND IMAGES
+  // TODO: ADD BUTTON TOO SEE PROCESSED REPORTS AS HISTORY
 
   useEffect(() => {
     dispatch(getReportsApi());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
