@@ -25,7 +25,7 @@ const DescriptionsTenderView = () => {
       description: updatedDescriptions,
     };
 
-    await updateTenderService(updatedTender.id, updatedTender);
+    await updateTenderService(updatedTender);
 
     reset();
   };

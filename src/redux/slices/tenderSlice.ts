@@ -29,10 +29,10 @@ export const fetchTenders = createAsyncThunk("api/tenders/getAll", async () => {
 
 export const updateTender = createAsyncThunk(
   "tenders/updateTender",
-  async ({ id, data }: { id: number; data: Tender }, { rejectWithValue }) => {
+  async ({ data }: { id: number; data: Tender }, { rejectWithValue }) => {
     try {
-      await updateTenderService(id, data);
-      return { id, data }; // Puedes devolver los datos actualizados si es necesario
+      await updateTenderService(data);
+      return { data }; // Puedes devolver los datos actualizados si es necesario
     } catch (error) {
       if (isAxiosError(error)) {
         return rejectWithValue(error.response?.data.message || error.message);
@@ -75,7 +75,7 @@ const tenderSlice = createSlice({
         state.loading = false;
         state.tender = action.payload.data;
         state.tenders = state.tenders.map((tender: Tender) =>
-          tender.id === action.payload.id ? state.tender : tender
+          tender.id === action.payload.data.id ? state.tender : tender
         );
       })
       .addCase(updateTender.rejected, (state, action) => {
