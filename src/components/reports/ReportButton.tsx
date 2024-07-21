@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { viewSummaryReport } from "../../redux/tenders/visitReportSlice";
+import { viewSummaryReport } from "../../redux/slices/visitReportSlice";
 import { VisitReportApi } from "../../types/types";
 import { useNavigate } from "react-router-dom";
 import { formatServerDate } from "../../helpers/helpers";

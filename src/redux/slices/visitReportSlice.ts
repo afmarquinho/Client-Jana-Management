@@ -25,9 +25,8 @@ const visitReportSlice = createSlice({
   reducers: {
     //* GETS REPORTS FROM API
     getRports: (state, action: PayloadAction<VisitReportApi[]>) => {
-      const items = action.payload;
-      state.fullReports = items;
-      state.report = items.filter((item) => item.processed === false)
+      state.fullReports = action.payload;
+      state.report = state.fullReports.filter((item) => item.processed === false)
     },
 
     //* ADD ITEMS TO STATUS TO RENDER
@@ -65,7 +64,7 @@ const visitReportSlice = createSlice({
     },
 
     //* CLEAN THE STATE ONCE THE REPORT WAS EDIT ON FORM
-    clearReport: (state) => {
+    cleanReport: (state) => {
       state.updatedReport = null;
     },
 
@@ -77,6 +76,8 @@ const visitReportSlice = createSlice({
     errorMessage: (state, action: PayloadAction<string>) => {
       state.errorMsg = action.payload;
     },
+
+   
   },
 });
 
@@ -88,7 +89,7 @@ export const {
   viewSummaryReport,
   cleanViewSummaryReport,
   setReport,
-  clearReport,
+  cleanReport,
   openCloseModal,
   errorMessage,
 } = visitReportSlice.actions;

@@ -15,9 +15,12 @@ import { useNavigate } from "react-router-dom";
 import { formatServerDate } from "../../helpers/helpers";
 import Alert from "../Alert";
 
+// TODO: SI EL USUARIO QUIE CREA EL REPORTE TIENE ROL DE ING DE COTIZACIONES ENTONCES QUE SE CREE Y PROCESE DE UNA VEZ, DE ESA MANERA EL ING DE OBRA NO VE ESA COTIZACIÓN EN SU PANEL
+
 const ReportForm: React.FC = () => {
   const [workForceArray, setWorkForceArray] = useState<workforce[]>([]);
   const [materialArray, setMaterialArray] = useState<material[]>([]);
+
   const { register, handleSubmit, setValue } = useForm<VisitReport>();
   const updatedReport = useSelector(
     (state: RootState) => state.visitReport.updatedReport
@@ -25,7 +28,7 @@ const ReportForm: React.FC = () => {
   const errorMsg = useSelector(
     (state: RootState) => state.visitReport.errorMsg
   );
-  const [successfulSubmitting, setSuccessfulSubmitting] = useState<String>(""); //* estado local para evitar la redirección automatica en el effect
+  const [successfulSubmitting, setSuccessfulSubmitting] = useState<string>(""); //* estado local para evitar la redirección automatica en el effect
 
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -37,7 +40,7 @@ const ReportForm: React.FC = () => {
       setValue("visitDate", formatServerDate(updatedReport.visitDate));
       setValue("dueDate", formatServerDate(updatedReport.dueDate));
       setValue("customerName", updatedReport.customerName);
-      setValue("city", updatedReport.city);
+      setValue("customerCity", updatedReport.customerCity);
       setValue("contactName", updatedReport.contactName);
       setValue("phoneNumber", updatedReport.phoneNumber);
       setValue("email", updatedReport.email);
@@ -46,8 +49,6 @@ const ReportForm: React.FC = () => {
       setWorkForceArray(updatedReport.workforce);
       setMaterialArray(updatedReport.material);
     }
-
-    return () => {};
   }, [updatedReport, setValue]);
 
   const onSubmit: SubmitHandler<VisitReport> = async (data) => {
@@ -62,9 +63,10 @@ const ReportForm: React.FC = () => {
       return;
     }
     data.ref = uuidv4();
+    data.createdBy = "John Doe";
 
     if (updatedReport) {
-      let report: any = data;
+      const report: any = data;
       report.tenderID = updatedReport.tenderID;
       report.processed = updatedReport.processed;
       report.id = updatedReport.id;

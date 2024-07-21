@@ -27,7 +27,7 @@ const AllReports = () => {
   const overDueArray = reportArray.filter((report: VisitReportApi) => {
     return new Date(report.dueDate) < new Date();
   });
-  // TODO: SEPARAR EL BOTON EN UN COMPONENTE
+  
 
   return (
    

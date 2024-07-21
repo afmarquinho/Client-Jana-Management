@@ -8,7 +8,7 @@ import {
   removeItem,
   updateItem,
   viewSummaryReport,
-} from "../tenders/visitReportSlice";
+} from "../slices/visitReportSlice";
 import axiosClient from "../../axiosClient";
 
 export const sendReportToApi = (report: VisitReport) => {
@@ -51,7 +51,7 @@ export const removeReportApi = (id: number) => {
   return async (dispatch: AppDispatch) => {
     try {
       await axiosClient.delete(`/reports/${id}`);
-      //dispatch(removeItem(report));
+      dispatch(removeItem(id));
     } catch (error: any) {
       console.log(error.response.data.errors[0].msg);
     }
@@ -64,6 +64,16 @@ export const processReport = (id: number, dueDate: any) => {
       await axiosClient.patch(`/reports/${id}`, { dueDate });
       dispatch(removeItem(id));
       dispatch(errorMessage(""));
+    } catch (error: any) {
+      dispatch(errorMessage(error.response.data.errors[0].msg));
+    }
+  };
+};
+
+export const closeReport = (id: number) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      await axiosClient.patch(`/reports/close/${id}`);
     } catch (error: any) {
       dispatch(errorMessage(error.response.data.errors[0].msg));
     }

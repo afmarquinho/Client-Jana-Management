@@ -110,7 +110,7 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
           type="text"
           placeholder="Cuidad"
           className="border-gray-400 border-2 rounded-md px-2 py-1 w-full sm:w-1/2 outline-customRed"
-          {...register("city")}
+          {...register("customerCity")}
         />
       </div>
 
