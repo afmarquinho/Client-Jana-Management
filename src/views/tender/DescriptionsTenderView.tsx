@@ -3,11 +3,13 @@ import DescriptionsFiledForm from "../../components/tender/DescriptionsFiledForm
 import TenderNav from "../../components/tender/TenderNav";
 import { Description, Tender } from "../../types/types";
 import DescriptionTable from "../../components/tender/DescriptionTable";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import { updateTenderService } from "../../services/tenderServices";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import { updateTender } from "../../redux/slices/tenderSlice";
+
 
 const DescriptionsTenderView = () => {
+  const dispatch = useDispatch<AppDispatch>()
   const tender = useSelector((state: RootState) => state.tender.tender);
   const { register, handleSubmit, watch, reset } = useForm<Description>({
     defaultValues: {
@@ -25,9 +27,25 @@ const DescriptionsTenderView = () => {
       description: updatedDescriptions,
     };
 
-    await updateTenderService(updatedTender);
+    try {
+      const resultAction = await dispatch(updateTender(updatedTender));
 
-    reset();
+      if (updateTender.fulfilled.match(resultAction)) {
+        // La actualización fue exitosa
+        alert("¡Cotización Actualizada correctamente!");
+        reset();
+      } else {
+        if (resultAction.payload) {
+          // La actualización falló con un mensaje de error del backend
+          console.error(resultAction.payload);
+        } else {
+          // La actualización falló con un error desconocido
+          console.error("Failed to update tender.");
+        }
+      }
+    } catch (error) {
+      console.error("An unexpected error occurred:", error);
+    }
   };
 
   return (

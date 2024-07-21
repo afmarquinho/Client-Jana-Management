@@ -34,11 +34,10 @@ export const createTenderService = async (data: DataCreateType) => {
   }
 };
 
-export const updateTenderService = async (
-  data: Tender
-) => {
+
+export const updateTenderService = async (data: Tender) => {
   try {
-    await axiosClient.put(`/tenders/${data.id}`, data);   
+    await axiosClient.put(`/tenders/${data.id}`, data);
   } catch (error) {
     if (isAxiosError(error)) {
       // Extrae el mensaje de error si está disponible
