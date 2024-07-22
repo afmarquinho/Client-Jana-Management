@@ -1,14 +1,15 @@
 import { useSelector } from "react-redux";
 // import { Description, Tender } from "../../types/types";
 import { RootState } from "../../redux/store";
+import { Description } from "../../types/types";
 
-// type ChildInputProps = {
-//   tenderInputs: Tender;
-//   setIndex: (index: number) => void;
-//   setDescEdit: (descEdit: Description) => void;
-// };
+type ChildInputProps = {
+  setIndex: React.Dispatch<React.SetStateAction<number | null>>;
+  setDescEdit: React.Dispatch<React.SetStateAction<Description>>;
+  handleDelete: (index: number) => void;
+};
 
-const DescriptionTable: React.FC = () => {
+const DescriptionTable: React.FC<ChildInputProps> = ({setIndex, setDescEdit, handleDelete}) => {
   const tender = useSelector((state: RootState) => state.tender.tender);
 
   const totalSum = tender.description?.reduce(
@@ -16,10 +17,10 @@ const DescriptionTable: React.FC = () => {
     0
   );
 
-  // const onEdit = (index: number, desc: Description) => {
-  //   setIndex(index);
-  //   setDescEdit(desc);
-  // };
+  const onEdit = (index: number, desc: Description) => {
+    setIndex(index);
+    setDescEdit(desc);
+  };
 
   return (
     <>
@@ -73,13 +74,13 @@ const DescriptionTable: React.FC = () => {
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                 <button
                   className="font-semibold"
-                  // onClick={() => onEdit(index, desc)}
+                  onClick={() => onEdit(index, desc)}
                 >
                   Editar
                 </button>
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
-                <button className="text-red-500 font-semibold">Eliminar</button>
+                <button className="text-red-500 font-semibold" onClick={()=>handleDelete(index)}>Eliminar</button>
               </td>
             </tr>
           ))}
@@ -91,7 +92,7 @@ const DescriptionTable: React.FC = () => {
           {totalSum?.toLocaleString("en-US", {
             style: "currency",
             currency: "USD",
-          })} 
+          })}
         </h3>
         <small className="italic">*Valor en cop</small>
       </div>
