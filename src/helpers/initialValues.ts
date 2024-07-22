@@ -22,7 +22,7 @@ export const initValTender: Tender = {
   ref: "",
 };
 
-export const initValDescription: Description = {
+export const initValHeadingTender: Description = {
   item: "",
   description: "",
   unit: "",
