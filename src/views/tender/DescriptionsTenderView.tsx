@@ -35,12 +35,12 @@ const DescriptionsTenderView = () => {
       setValue("unitValue", descEdit.unitValue);
       setValue("totalValue", descEdit.totalValue);
     }
-  }, [setValue, descEdit]);
+  }, [setValue, descEdit, index]);
 
   const handleDelete = async (index: number) => {
     //* CREA UN NUEVO ARRAY CON LA DESCRIPCIÓN EN EL ÍNDICE DADO
     const updatedDescriptions = tender.description.filter(
-      (_, i) => i !== index
+      (_, i:number) => i !== index
     );
 
     //* Crea un nuevo objeto `Tender` con la lista actualizada de descripciones

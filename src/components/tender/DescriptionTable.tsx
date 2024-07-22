@@ -18,8 +18,6 @@ const DescriptionTable: React.FC<ChildInputProps> = ({setIndex, setDescEdit, han
   );
 
   const onEdit = (index: number, desc: Description) => {
-    console.log(desc)
-    console.log(index)
     setIndex(index);
     setDescEdit(desc);
   };
