@@ -1,7 +1,7 @@
 import { UseFormRegister } from "react-hook-form";
-import { Tender } from "../../types/types";
+import { HeadingTender } from "../../types/types";
 type ChildInputProps = {
-  register: UseFormRegister<Tender>;
+  register: UseFormRegister<HeadingTender>;
 };
 
 const HeadingFiledForm: React.FC<ChildInputProps> = ({ register }) => {

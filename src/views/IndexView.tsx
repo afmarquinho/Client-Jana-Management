@@ -1,6 +1,7 @@
 import LoginForm from "../components/LoginForm";
 import Logo from "../components/Logo";
 
+
 const IndexView = () => {
   return (
     <div className="h-screen flex justify-center items-center relative">

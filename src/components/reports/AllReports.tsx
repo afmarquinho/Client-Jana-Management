@@ -6,8 +6,6 @@ import { RootState } from "../../redux/store";
 const AllReports = () => {
   const reportArray = useSelector((state: RootState) => state.visitReport.report);
 
-  
-
   //? ARRAY WITH NOT OVERDUED REPORTS TO RENDER
   const notOverDueArray = reportArray.filter((report: VisitReportApi) => {
     return new Date(report.dueDate) > new Date();

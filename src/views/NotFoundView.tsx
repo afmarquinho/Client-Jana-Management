@@ -1,7 +1,7 @@
 const NotFoundView = () => {
   return (
     <div className="h-screen space-y-5 text-center flex flex-col justify-center align-middle">
-      <p className="text-5xl md:text-7xl font-black text-customRed600">
+      <p className="text-5xl md:text-[200px] font-black text-green-600">
         ¡Oops!
       </p>
       <p className="text-sm md:text-xl font-black">

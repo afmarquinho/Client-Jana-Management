@@ -8,7 +8,12 @@ import { RootState } from "../../redux/store";
 //   setDescEdit: (descEdit: Description) => void;
 // };
 
-const DescriptionTable: React.FC = () => {
+
+const DescriptionTable: React.FC<ChildInputProps> = ({
+  setIndex,
+  setDescEdit,
+  handleDelete,
+
   const tender = useSelector((state: RootState) => state.tender.tender);
 
   const totalSum = tender.description?.reduce(
@@ -79,7 +84,14 @@ const DescriptionTable: React.FC = () => {
                 </button>
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
-                <button className="text-red-500 font-semibold">Eliminar</button>
+
+                <button
+                  className="text-red-500 font-semibold"
+                  onClick={() => handleDelete(index)}
+                >
+                  Eliminar
+                </button>
+
               </td>
             </tr>
           ))}

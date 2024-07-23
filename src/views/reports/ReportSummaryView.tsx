@@ -184,7 +184,7 @@ const ReportSummaryView = () => {
               <ol className="list-decimal ps-4">
                 {viewReport?.workforce.map((item, index) => (
                   <li key={index} className="">
-                    {item.workforce} -- {item.workshift} Turnos
+                    {item.role} -- {item.workshift} Turnos
                   </li>
                 ))}
               </ol>

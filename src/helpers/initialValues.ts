@@ -1,4 +1,4 @@
-import { Description, Tender } from "../types/types";
+import { Description, LaborType, Tender } from "../types/types";
 
 export const initValTender: Tender = {
   id: 0,
@@ -20,6 +20,7 @@ export const initValTender: Tender = {
   status: "",
   reportId: 0,
   ref: "",
+  workforce:[]
 };
 
 export const initValHeadingTender: Description = {
@@ -29,4 +30,12 @@ export const initValHeadingTender: Description = {
   quantity: 0,
   unitValue: 0,
   totalValue: 0,
+}
+export const initValWorkforce: LaborType = {
+  role: "",
+  workers: 0,
+  rate: 0,
+  workshift: 0,
+  profit: 0,
+  profitAmount: 0,
 }
