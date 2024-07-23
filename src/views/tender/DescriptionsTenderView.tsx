@@ -9,6 +9,7 @@ import { updateTender } from "../../redux/slices/tenderSlice";
 import HourglassSpinner from "../../components/HourglassSpinner";
 import { useEffect, useState } from "react";
 import { initValDescription } from "../../helpers/initialValues";
+import TenderName from "../../components/tender/TenderName";
 
 const DescriptionsTenderView = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -24,7 +25,7 @@ const DescriptionsTenderView = () => {
         unitValue: 0,
         quantity: 0,
         totalValue: 0,
-      }
+      },
     });
   useEffect(() => {
     if (index !== null) {
@@ -40,7 +41,7 @@ const DescriptionsTenderView = () => {
   const handleDelete = async (index: number) => {
     //* CREA UN NUEVO ARRAY CON LA DESCRIPCIÓN EN EL ÍNDICE DADO
     const updatedDescriptions = tender.description.filter(
-      (_, i:number) => i !== index
+      (_, i: number) => i !== index
     );
 
     //* Crea un nuevo objeto `Tender` con la lista actualizada de descripciones
@@ -113,9 +114,7 @@ const DescriptionsTenderView = () => {
         <>
           <TenderNav />
           <div className="w-full">
-            <h2 className="italic text-gray-800 text-lg sm:text-2xl font-semibold mb-4">
-              {tender.name}
-            </h2>
+            <TenderName name={tender.name} />
             <form
               className="bg-white w-full max-w-[600px] mx-auto px-4 md:px-16 py-12 space-y-5 flex flex-col items-center"
               onSubmit={handleSubmit(onSubmit)}
@@ -126,7 +125,7 @@ const DescriptionsTenderView = () => {
               <DescriptionsFiledForm register={register} watch={watch} />
               <input
                 type="submit"
-                value={"Agregar"}
+                value={index!==null ? "Editar" : "Guardar"}
                 className="mx-auto bg-gradient-to-b from-cyan-700 to-cyan-800 hover:bg-gradient-to-b
         hover:from-gray-500 hover:to-gray-700
         rounded shadow-gray-400 shadow-md outline-none text-white font-bold cursor-pointer 

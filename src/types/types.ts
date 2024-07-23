@@ -1,8 +1,8 @@
-export type workforce = {
-  workforce: string;
+export type WorkforceType = {
+  role: string;
   workshift: number;
 };
-export type material = {
+export type MaterialType = {
   material: string;
   quantity: number;
   unit: string;
@@ -21,9 +21,8 @@ export type VisitReport = {
   priority: string;
   description: string;
   // priority: string; this is another option
-  workforce: workforce[];
-  material: material[];
-  close: boolean;
+  workforce: WorkforceType[];
+  material: MaterialType[];
   createdBy: string;
 };
 
@@ -45,9 +44,9 @@ export type Description = {
 export type Note = string;
 
 //* SE COLOCA "?" PARA PODER USAR EL TYPE EN VARIABLES QUE NO VIENEN CON TODAS LAS PROPIEDADES
-export type Tender = {
+
+export type HeadingTender = {
   id: number;
-  tender: string;
   name: string;
   customerName: string;
   contactName: string;
@@ -60,10 +59,23 @@ export type Tender = {
   leadTime: string;
   paymentMethod: string;
   proposalValidity: string;
+};
+
+export type LaborType = {
+  role: string;
+  workers: number;
+  rate: number;
+  workshift: number;
+  profit: number;
+  profitAmount: number;
+};
+
+export type Tender = HeadingTender & {
+  tender: string;
   description: Description[];
   notes: Note[];
   status: string;
   reportId: number;
   ref: string;
+  workforce: LaborType[];
 };
-

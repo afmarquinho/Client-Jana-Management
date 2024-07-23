@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Tender } from "../../types/types";
 import { updateTender } from "../../redux/slices/tenderSlice";
 import HourglassSpinner from "../../components/HourglassSpinner";
+import TenderName from "../../components/tender/TenderName";
 
 type FormFields = {
   note: string;
@@ -52,41 +53,40 @@ const NotesTenderView = () => {
     //* DESPARA EL THUNK
   };
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    const updatedNotesArray:string[] =
+    const updatedNotesArray: string[] =
       index !== null
         ? tender.notes.map((note: string, i: number) =>
             i === index ? data.note : note
           )
         : [...tender.notes, data.note];
 
-    
     const updatedTender: Tender = {
       ...tender,
       notes: updatedNotesArray,
     };
-    
-     try {
-       const resultAction = await dispatch(updateTender(updatedTender));
 
-       if (updateTender.fulfilled.match(resultAction)) {
-         // La actualización fue exitosa
-         alert("¡Cotización Actualizada correctamente!");
+    try {
+      const resultAction = await dispatch(updateTender(updatedTender));
 
-         setIndex(null);
-         setNoteEdit("");
-         reset();
-       } else {
-         if (resultAction.payload) {
-            //La actualización falló con un mensaje de error del backend
-           console.error(resultAction.payload);
-         } else {
-           // La actualización falló con un error desconocido
-           console.error("Falló la actualización de la cotización");
-         }
-       }
-     } catch (error) {
-       console.error("Error inesperado:", error);
-     }
+      if (updateTender.fulfilled.match(resultAction)) {
+        // La actualización fue exitosa
+        alert("¡Cotización Actualizada correctamente!");
+
+        setIndex(null);
+        setNoteEdit("");
+        reset();
+      } else {
+        if (resultAction.payload) {
+          //La actualización falló con un mensaje de error del backend
+          console.error(resultAction.payload);
+        } else {
+          // La actualización falló con un error desconocido
+          console.error("Falló la actualización de la cotización");
+        }
+      }
+    } catch (error) {
+      console.error("Error inesperado:", error);
+    }
   };
 
   useEffect(() => {
@@ -102,9 +102,7 @@ const NotesTenderView = () => {
         <HourglassSpinner />
       ) : (
         <div className="w-full">
-          <h2 className="italic text-gray-800 text-lg sm:text-2xl font-semibold mb-4">
-            {tender.name}
-          </h2>
+          <TenderName name={tender.name} />
           <form action="" onSubmit={handleSubmit(onSubmit)}>
             <h2 className="text-center font-black text-gray-500 uppercase text-base md:text-xl">
               Notas <span className="text-red-500">Adicionales</span>
@@ -119,9 +117,14 @@ const NotesTenderView = () => {
               />
             </div>
             <div className="w-full flex justify-center my-5">
-              <button className="bg-gradient-to-b from-violet-700 to-violet-900 hover:from-indigo-800 hover:to-indigo-950 rounded-sm font-semibold text-white px-5 py-1 text-sm">
-                Agregar
-              </button>
+              <input
+                type="submit"
+                value={index!==null ? "Editar" : "Guardar"}
+                className="bg-gradient-to-b from-cyan-700 to-cyan-800 hover:bg-gradient-to-b
+        hover:from-gray-500 hover:to-gray-700
+            rounded shadow-gray-400 shadow-md outline-none text-white font-bold cursor-pointer 
+            uppercase text-center px-16 py-2 text-sm"
+              />
             </div>
           </form>
           <NotesTable

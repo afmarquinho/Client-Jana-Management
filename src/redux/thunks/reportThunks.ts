@@ -70,12 +70,4 @@ export const processReport = (id: number, dueDate: any) => {
   };
 };
 
-export const closeReport = (id: number) => {
-  return async (dispatch: AppDispatch) => {
-    try {
-      await axiosClient.patch(`/reports/close/${id}`);
-    } catch (error: any) {
-      dispatch(errorMessage(error.response.data.errors[0].msg));
-    }
-  };
-};
+

@@ -14,10 +14,10 @@ import NewUser from "./views/user/NewUser";
 import LayoutUser from "./components/user/LayoutUser";
 import DashboardUser from "./views/user/DashboardUser";
 import ProfileUser from "./views/user/ProfileUser";
-import TenderToProcessView from "./views/tender/TenderToProcessView";
-import DraftTendersView from "./views/tender/DraftTendersView";
 import DescriptionsTenderView from "./views/tender/DescriptionsTenderView";
 import NotesTenderView from "./views/tender/NotesTenderView";
+import WorkforceView from "./views/tender/WorkforceView";
+import MaterialsView from "./views/tender/MaterialsView";
 
 const AppRouter = () => {
   return (
@@ -51,10 +51,13 @@ const AppRouter = () => {
               element={<DashboardTenderView />}
             />
             <Route path="/tender-editing-heading" element={<NewTenderView />} />
-            <Route path="/tender-editing-descriptions" element={<DescriptionsTenderView />} />
-            <Route path="/tender-editing-notes" element={<NotesTenderView/>} />
-            <Route path="/tender-to-process/:id" element={<TenderToProcessView />} />
-            <Route path="/tender-draft" element={<DraftTendersView />} />
+            <Route
+              path="/tender-editing-descriptions"
+              element={<DescriptionsTenderView />}
+            />
+            <Route path="/tender-editing-notes" element={<NotesTenderView />} />
+            <Route path="/tender-editing-workforce" element={<WorkforceView />} />
+            <Route path="/tender-editing-materials" element={<MaterialsView />} />
           </Route>
         </Route>
       </Routes>

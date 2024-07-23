@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Tender } from "../../types/types";
+import { HeadingTender } from "../../types/types";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import HeadingFiledForm from "./HeadingFieldForm";
@@ -12,7 +12,7 @@ const HeadingForm = () => {
   const tender = useSelector((state: RootState) => state.tender.tender);
   const loading = useSelector((state: RootState) => state.tender.loading);
 
-  const { register, handleSubmit } = useForm<Tender>({
+  const { register, handleSubmit } = useForm<HeadingTender>({
     defaultValues: {
       id: tender.id,
       name: tender.name,
@@ -29,11 +29,11 @@ const HeadingForm = () => {
       proposalValidity: tender.proposalValidity,
     },
   });
-  const onSubmit: SubmitHandler<Tender> = async (data) => {
+  const onSubmit: SubmitHandler<HeadingTender> = async (data) => {
     const tend = { ...tender, ...data };
 
     try {
-      await dispatch(updateTender({ id: tend.id, data: tend }));
+      await dispatch(updateTender(tend));
      
       alert("Tender actualizado exitosamente");
     } catch (error) {

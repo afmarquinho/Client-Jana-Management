@@ -23,7 +23,7 @@ const TenderNav: React.FC = () => {
           Encabezado
         </NavLink>
         <NavLink
-          to="/ruta"
+          to="/tender-editing-workforce"
           className={({ isActive }) =>
             isActive
               ? "text-black border-l-4 ps-3 py-3 border-l-green-300 bg-green-400 block w-full"
@@ -33,7 +33,7 @@ const TenderNav: React.FC = () => {
           Mano de Obra
         </NavLink>
         <NavLink
-          to="/ruta/2"
+          to="/tender-editing-materials"
           className={({ isActive }) =>
             isActive
               ? "text-black border-l-4 ps-3 py-3 border-l-green-300 bg-green-400 block w-full"
