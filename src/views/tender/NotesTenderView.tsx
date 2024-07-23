@@ -1,5 +1,3 @@
-import { SubmitHandler, useForm } from "react-hook-form";
-import NotesTable from "../../components/tender/NotesTable";
 import TenderNav from "../../components/tender/TenderNav";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";

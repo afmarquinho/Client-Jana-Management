@@ -6,14 +6,16 @@ import DescriptionTable from "../../components/tender/DescriptionTable";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { updateTender } from "../../redux/slices/tenderSlice";
+
 import HourglassSpinner from "../../components/HourglassSpinner";
 import { useEffect, useState } from "react";
 import { initValDescription } from "../../helpers/initialValues";
 import TenderName from "../../components/tender/TenderName";
 
 const DescriptionsTenderView = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>()
   const tender = useSelector((state: RootState) => state.tender.tender);
+
   const loading = useSelector((state: RootState) => state.tender.loading);
 
   const [index, setIndex] = useState<number | null>(null);
@@ -69,17 +71,10 @@ const DescriptionsTenderView = () => {
 
   const onSubmit: SubmitHandler<Description> = async (data) => {
     data.totalValue = data.quantity * data.unitValue;
-
-    const updatedDescriptionsArray: Description[] =
-      index !== null
-        ? tender.description.map((desc: Description, i: number) =>
-            i === index ? data : desc
-          )
-        : [...tender.description, data];
-
+    const updatedDescriptions: Description[] = [...tender.description, data];
     const updatedTender: Tender = {
       ...tender,
-      description: updatedDescriptionsArray,
+      description: updatedDescriptions,
     };
 
     try {
@@ -88,9 +83,6 @@ const DescriptionsTenderView = () => {
       if (updateTender.fulfilled.match(resultAction)) {
         // La actualización fue exitosa
         alert("¡Cotización Actualizada correctamente!");
-
-        setIndex(null);
-        setDescEdit(initValDescription);
         reset();
       } else {
         if (resultAction.payload) {
@@ -98,16 +90,17 @@ const DescriptionsTenderView = () => {
           console.error(resultAction.payload);
         } else {
           // La actualización falló con un error desconocido
-          console.error("Falló la actualización de la cotización");
+          console.error("Failed to update tender.");
         }
       }
     } catch (error) {
-      console.error("Error inesperado:", error);
+      console.error("An unexpected error occurred:", error);
     }
   };
 
   return (
     <div className="my-5 flex gap-5">
+
       {loading ? (
         <HourglassSpinner />
       ) : (
@@ -127,19 +120,14 @@ const DescriptionsTenderView = () => {
                 type="submit"
                 value={index!==null ? "Editar" : "Guardar"}
                 className="mx-auto bg-gradient-to-b from-cyan-700 to-cyan-800 hover:bg-gradient-to-b
+
         hover:from-gray-500 hover:to-gray-700
         rounded shadow-gray-400 shadow-md outline-none text-white font-bold cursor-pointer 
         uppercase text-center px-16 py-2 text-sm"
-              />
-            </form>
-            <DescriptionTable
-              setIndex={setIndex}
-              setDescEdit={setDescEdit}
-              handleDelete={handleDelete}
-            />
-          </div>
-        </>
-      )}
+          />
+        </form>
+        <DescriptionTable />
+      </div>
     </div>
   );
 };

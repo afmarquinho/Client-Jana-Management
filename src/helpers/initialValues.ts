@@ -23,7 +23,7 @@ export const initValTender: Tender = {
   workforce:[]
 };
 
-export const initValDescription: Description = {
+export const initValHeadingTender: Description = {
   item: "",
   description: "",
   unit: "",
