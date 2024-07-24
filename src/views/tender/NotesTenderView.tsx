@@ -1,5 +1,3 @@
-import { SubmitHandler, useForm } from "react-hook-form";
-import NotesTable from "../../components/tender/NotesTable";
 import TenderNav from "../../components/tender/TenderNav";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +6,8 @@ import { Tender } from "../../types/types";
 import { updateTender } from "../../redux/slices/tenderSlice";
 import HourglassSpinner from "../../components/HourglassSpinner";
 import TenderName from "../../components/tender/TenderName";
+import { SubmitHandler, useForm } from "react-hook-form";
+import NotesTable from "../../components/tender/NotesTable";
 
 type FormFields = {
   note: string;
@@ -25,6 +25,12 @@ const NotesTenderView = () => {
       note: "",
     },
   });
+
+  useEffect(() => {
+    if (index !== null) {
+      setValue("note", noteEdit);
+    }
+  }, [setValue, noteEdit, index]);
 
   const handleDelete = async (index: number) => {
     //* CREA UN NUEVO ARRAY CON LA DESCRIPCIÓN EN EL ÍNDICE DADO
@@ -47,6 +53,7 @@ const NotesTenderView = () => {
           console.error("Falló la eliminación");
         }
       }
+      setIndex(null);
     } catch (error) {
       console.error("Error inesperado:", error);
     }
@@ -103,7 +110,7 @@ const NotesTenderView = () => {
       ) : (
         <div className="w-full">
           <TenderName name={tender.name} />
-          <form action="" onSubmit={handleSubmit(onSubmit)}>
+          <form  onSubmit={handleSubmit(onSubmit)}>
             <h2 className="text-center font-black text-gray-500 uppercase text-base md:text-xl">
               Notas <span className="text-red-500">Adicionales</span>
             </h2>
@@ -129,8 +136,8 @@ const NotesTenderView = () => {
           </form>
           <NotesTable
             setIndex={setIndex}
-            setNoteEdit={setNoteEdit}
-            handleDelete={handleDelete}
+             setNoteEdit={setNoteEdit}
+             handleDelete={handleDelete}
           />
         </div>
       )}

@@ -41,7 +41,6 @@ export type Description = {
   unitValue: number;
   totalValue: number;
 };
-export type Note = string;
 
 //* SE COLOCA "?" PARA PODER USAR EL TYPE EN VARIABLES QUE NO VIENEN CON TODAS LAS PROPIEDADES
 
@@ -82,7 +81,7 @@ export type SupplyType = {
 export type Tender = HeadingTender & {
   tender: string;
   description: Description[];
-  notes: Note[];
+  notes: string[];
   status: string;
   reportId: number;
   ref: string;

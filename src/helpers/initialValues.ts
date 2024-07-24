@@ -24,7 +24,7 @@ export const initValTender: Tender = {
   material: [],
 };
 
-export const initValDescription: Description = {
+export const initValHeadingTender: Description = {
   item: "",
   description: "",
   unit: "",
@@ -48,4 +48,12 @@ export const initValMaterial: SupplyType = {
   totalCost: 0,
   profit: 0,
   profitAmount: 0,
+};
+export const initValDescription: Description = {
+  item: "",
+  description: "",
+  unit: "",
+  quantity: 0,
+  unitValue: 0,
+  totalValue: 0
 };

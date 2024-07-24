@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
-// import { Description, Tender } from "../../types/types";
+import { Description} from "../../types/types";
 import { RootState } from "../../redux/store";
-import { Description } from "../../types/types";
 
 //TODO: AGREFGAR TARIFAS DE MANO DE OBRA PARA 2024
 
@@ -14,8 +13,8 @@ type ChildInputProps = {
 const DescriptionTable: React.FC<ChildInputProps> = ({
   setIndex,
   setDescEdit,
-  handleDelete,
-}) => {
+  handleDelete}) =>{
+
   const tender = useSelector((state: RootState) => state.tender.tender);
 
   const totalSum = tender.description?.reduce(
@@ -25,8 +24,8 @@ const DescriptionTable: React.FC<ChildInputProps> = ({
 
   const onEdit = (index: number, desc: Description) => {
     setIndex(index);
-    setDescEdit(desc);
-  };
+  setDescEdit(desc);
+ };
 
   return (
     <>
@@ -92,12 +91,14 @@ const DescriptionTable: React.FC<ChildInputProps> = ({
                 </button>
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+
                 <button
                   className="text-red-500 font-semibold"
                   onClick={() => handleDelete(index)}
                 >
                   Eliminar
                 </button>
+
               </td>
             </tr>
           ))}
@@ -109,7 +110,7 @@ const DescriptionTable: React.FC<ChildInputProps> = ({
           {totalSum?.toLocaleString("en-US", {
             style: "currency",
             currency: "USD",
-          })}
+          })} 
         </h3>
         <small className="italic">*Valor en cop</small>
       </div>

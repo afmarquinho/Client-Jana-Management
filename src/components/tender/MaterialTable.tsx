@@ -3,6 +3,8 @@ import { RootState } from "../../redux/store";
 import { SupplyType } from "../../types/types";
 
 //TODO: AGREGAR UN BOTON PARA LIMPIAR EL FORMULARIO SI TE ARREPIENTES DE EDITAR
+//TODO: AGREGAR BOTON Y RUTA PARA GASTOS LOGISTICOS Y OTRO GASTOS
+//TODO:RESUMEN EL VISTA DEL DESCRIPCIONES PARA QUE EL USURIO PUEDE HACER LA DESCRIPCION MAS FACIL
 
 type ChildInputProps = {
   setIndex: React.Dispatch<React.SetStateAction<number | null>>;
@@ -35,8 +37,9 @@ const MaterialTable: React.FC<ChildInputProps> = ({
   }, 0);
 
   return (
-    <div>
-      <table className="w-full mt-5">
+    <>
+       <h2 className="italic font-bold mt-5">Resumen Materiales</h2>
+      <table className="w-full">
         <thead className="bg-gray-200">
           <tr>
             <th className="ps-1 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap">
@@ -187,7 +190,7 @@ const MaterialTable: React.FC<ChildInputProps> = ({
         </h3>
         <small className="italic">*Valores en COP</small>
       </div>
-    </div>
+    </>
   );
 };
 export default MaterialTable;
