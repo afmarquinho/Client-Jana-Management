@@ -41,7 +41,6 @@ export type Description = {
   unitValue: number;
   totalValue: number;
 };
-export type Note = string;
 
 //* SE COLOCA "?" PARA PODER USAR EL TYPE EN VARIABLES QUE NO VIENEN CON TODAS LAS PROPIEDADES
 
@@ -69,13 +68,23 @@ export type LaborType = {
   profit: number;
   profitAmount: number;
 };
+export type SupplyType = {
+  material: string;
+  unit: string;
+  quantity: number;
+  unitCost: number;
+  totalCost: number;
+  profit: number;
+  profitAmount: number;
+};
 
 export type Tender = HeadingTender & {
   tender: string;
   description: Description[];
-  notes: Note[];
+  notes: string[];
   status: string;
   reportId: number;
   ref: string;
   workforce: LaborType[];
+  material: SupplyType[];
 };

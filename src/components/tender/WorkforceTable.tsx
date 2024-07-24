@@ -17,10 +17,10 @@ const WorkforceTable: React.FC<ChildInputProps> = ({
 
   //* MATH FUNCTIONS
   const totalSum = tender.workforce.reduce(
-    (acc, desc) => acc + desc.profitAmount,
+    (acc:number, desc) => acc + desc.profitAmount,
     0
   );
-  const workforceTotalCost = tender.workforce.reduce((total, item) => {
+  const totalCostWorkforce = tender.workforce.reduce((total, item) => {
     return total + item.workers * item.workshift * item.rate;
   }, 0);
   const totalMargin = tender.workforce.reduce((total, item) => {
@@ -151,7 +151,7 @@ const WorkforceTable: React.FC<ChildInputProps> = ({
                 Costo de Mano de Obra Directa (CMD)
               </th>
               <td className="px-4 whitespace-normal text-sm text-gray-900 text-right font-semibold">
-                {workforceTotalCost.toLocaleString("en-US", {
+                {totalCostWorkforce.toLocaleString("en-US", {
                   style: "currency",
                   currency: "USD",
                 })}
@@ -162,7 +162,7 @@ const WorkforceTable: React.FC<ChildInputProps> = ({
                 Margen de Contribución(%)
               </th>
               <td className="px-4 whitespace-normal text-sm text-gray-900 text-right font-semibold">
-                {((totalMargin / workforceTotalCost) * 100).toFixed(2)} %
+                {((totalMargin / totalCostWorkforce) * 100).toFixed(2)} %
               </td>
             </tr>
             <tr>
@@ -181,7 +181,7 @@ const WorkforceTable: React.FC<ChildInputProps> = ({
                 Costo TotaL Mano de Obra = CMD + MCT
               </th>
               <td className="px-4 whitespace-normal text-sm text-gray-900 text-right font-semibold bg-gray-200">
-                {(totalMargin + workforceTotalCost).toLocaleString("en-US", {
+                {(totalMargin + totalCostWorkforce).toLocaleString("en-US", {
                   style: "currency",
                   currency: "USD",
                 })}

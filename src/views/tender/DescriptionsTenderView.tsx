@@ -13,7 +13,7 @@ import { initValDescription } from "../../helpers/initialValues";
 import TenderName from "../../components/tender/TenderName";
 
 const DescriptionsTenderView = () => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>();
   const tender = useSelector((state: RootState) => state.tender.tender);
 
   const loading = useSelector((state: RootState) => state.tender.loading);
@@ -63,6 +63,7 @@ const DescriptionsTenderView = () => {
           console.error("Falló la eliminación");
         }
       }
+      setIndex(null);
     } catch (error) {
       console.error("Error inesperado:", error);
     }
@@ -71,11 +72,16 @@ const DescriptionsTenderView = () => {
 
   const onSubmit: SubmitHandler<Description> = async (data) => {
     data.totalValue = data.quantity * data.unitValue;
-    const updatedDescriptions: Description[] = [...tender.description, data];
+    
+    const updatedDescriptions: Description[] =
+    index !== null ? tender.description.map((desc:Description, i:number)=>
+      i === index ? data : desc
+    ) : [...tender.description, data];
+
     const updatedTender: Tender = {
-      ...tender,
-      description: updatedDescriptions,
-    };
+       ...tender,
+       description: updatedDescriptions,
+     };
 
     try {
       const resultAction = await dispatch(updateTender(updatedTender));
@@ -93,6 +99,9 @@ const DescriptionsTenderView = () => {
           console.error("Failed to update tender.");
         }
       }
+      setIndex(null)
+      setDescEdit(initValDescription)
+
     } catch (error) {
       console.error("An unexpected error occurred:", error);
     }
@@ -100,7 +109,6 @@ const DescriptionsTenderView = () => {
 
   return (
     <div className="my-5 flex gap-5">
-
       {loading ? (
         <HourglassSpinner />
       ) : (
@@ -118,16 +126,22 @@ const DescriptionsTenderView = () => {
               <DescriptionsFiledForm register={register} watch={watch} />
               <input
                 type="submit"
-                value={index!==null ? "Editar" : "Guardar"}
+                value={index !== null ? "Editar" : "Guardar"}
                 className="mx-auto bg-gradient-to-b from-cyan-700 to-cyan-800 hover:bg-gradient-to-b
 
-        hover:from-gray-500 hover:to-gray-700
-        rounded shadow-gray-400 shadow-md outline-none text-white font-bold cursor-pointer 
-        uppercase text-center px-16 py-2 text-sm"
-          />
-        </form>
-        <DescriptionTable />
-      </div>
+                hover:from-gray-500 hover:to-gray-700
+                rounded shadow-gray-400 shadow-md outline-none text-white font-bold cursor-pointer 
+                uppercase text-center px-16 py-2 text-sm"
+              />
+            </form>
+            <DescriptionTable
+              setIndex={setIndex}
+              setDescEdit={setDescEdit}
+              handleDelete={handleDelete}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };
