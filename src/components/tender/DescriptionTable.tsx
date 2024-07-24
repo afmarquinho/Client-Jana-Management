@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Description } from "../../types/types";
 
+//TODO: AGREFGAR TARIFAS DE MANO DE OBRA PARA 2024
+
 type ChildInputProps = {
   setIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setDescEdit: React.Dispatch<React.SetStateAction<Description>>;
@@ -70,10 +72,16 @@ const DescriptionTable: React.FC<ChildInputProps> = ({
                 {desc.quantity}
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
-                {desc.unitValue}
+                {desc.unitValue.toLocaleString("en-Us", {
+                  style: "currency",
+                  currency: "USD",
+                })}
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
-                {desc.totalValue}
+                {desc.totalValue.toLocaleString("en-Us", {
+                  style: "currency",
+                  currency: "USD",
+                })}
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                 <button

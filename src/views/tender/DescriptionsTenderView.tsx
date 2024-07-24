@@ -61,6 +61,7 @@ const DescriptionsTenderView = () => {
           console.error("Falló la eliminación");
         }
       }
+      setIndex(null);
     } catch (error) {
       console.error("Error inesperado:", error);
     }

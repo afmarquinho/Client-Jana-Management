@@ -112,14 +112,14 @@ const NotesTenderView = () => {
                 Observación
               </label>
               <textarea
-                className="w-full h-32 bg-gray-200 outline-none px-2 resize-none"
+                className="w-full h-32 bg-white outline-none px-2 resize-none"
                 {...register("note")}
               />
             </div>
             <div className="w-full flex justify-center my-5">
               <input
                 type="submit"
-                value={index!==null ? "Editar" : "Guardar"}
+                value={index !== null ? "Editar" : "Guardar"}
                 className="bg-gradient-to-b from-cyan-700 to-cyan-800 hover:bg-gradient-to-b
         hover:from-gray-500 hover:to-gray-700
             rounded shadow-gray-400 shadow-md outline-none text-white font-bold cursor-pointer 

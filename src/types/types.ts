@@ -69,6 +69,15 @@ export type LaborType = {
   profit: number;
   profitAmount: number;
 };
+export type SupplyType = {
+  material: string;
+  unit: string;
+  quantity: number;
+  unitCost: number;
+  totalCost: number;
+  profit: number;
+  profitAmount: number;
+};
 
 export type Tender = HeadingTender & {
   tender: string;
@@ -78,4 +87,5 @@ export type Tender = HeadingTender & {
   reportId: number;
   ref: string;
   workforce: LaborType[];
+  material: SupplyType[];
 };

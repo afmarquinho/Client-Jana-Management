@@ -5,7 +5,7 @@ import TenderName from "../../components/tender/TenderName";
 import { useForm, SubmitHandler } from "react-hook-form";
 import WorkforceFiledsForm from "../../components/tender/WorkforceFiledsForm";
 import { LaborType, Tender } from "../../types/types";
-import WorkforceTable from "./WorkforceTable";
+import WorkforceTable from "../../components/tender/WorkforceTable";
 import { useEffect, useState } from "react";
 import { updateTender } from "../../redux/slices/tenderSlice";
 import { initValWorkforce } from "../../helpers/initialValues";
@@ -55,7 +55,7 @@ const WorkforceView = () => {
     try {
       const resultAction = await dispatch(updateTender(updatedTender));
       if (updateTender.fulfilled.match(resultAction)) {
-        alert("¡Descripción eliminada correctamente!");
+        alert("¡Mano de obra eliminada correctamente!");
       } else {
         if (resultAction.payload) {
           console.error(resultAction.payload);
@@ -63,6 +63,7 @@ const WorkforceView = () => {
           console.error("Falló la eliminación");
         }
       }
+      setIndex(null);
     } catch (error) {
       console.error("Error inesperado:", error);
     }
@@ -125,14 +126,14 @@ const WorkforceView = () => {
           <div className="pt-5 w-full flex justify-center items-center">
             <input
               type="submit"
-              value="Agregar"
-              // value={index!==null ? "Editar" : "Guardar"}
+              value={index !== null ? "Editar" : "Guardar"}
               className="bg-gradient-to-b from-cyan-700 to-cyan-800 hover:bg-gradient-to-b
             hover:from-gray-500 hover:to-gray-700
             rounded shadow-gray-400 shadow-md outline-none text-white font-bold cursor-pointer 
             uppercase text-center px-16 py-2 text-sm"
             />
           </div>
+          
         </form>
         <WorkforceTable
           setIndex={setIndex}
