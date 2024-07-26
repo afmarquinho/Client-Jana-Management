@@ -1,4 +1,11 @@
-import { Description, LaborType, SupplyType, Tender } from "../types/types";
+import {
+  Description,
+  LaborType,
+  OfferSummary,
+  OtherExpenses,
+  SupplyType,
+  Tender,
+} from "../types/types";
 
 export const initValTender: Tender = {
   id: 0,
@@ -21,10 +28,12 @@ export const initValTender: Tender = {
   reportId: 0,
   ref: "",
   workforce: [],
-  material: [],
+  materials: [],
+  otherExpenses: [],
+  summary: [],
 };
 
-export const initValHeadingTender: Description = {
+export const initValDescription: Description = {
   item: "",
   description: "",
   unit: "",
@@ -32,28 +41,44 @@ export const initValHeadingTender: Description = {
   unitValue: 0,
   totalValue: 0,
 };
+
 export const initValWorkforce: LaborType = {
   role: "",
   workers: 0,
+  shiftType: "",
   rate: 0,
-  workshift: 0,
+  shiftCount: 0,
+  partialCost: 0,
   profit: 0,
   profitAmount: 0,
+  totalValue: 0,
 };
+
 export const initValMaterial: SupplyType = {
-  material: "",
-  unit: "",
-  quantity: 0,
-  unitCost: 0,
-  totalCost: 0,
-  profit: 0,
-  profitAmount: 0,
-};
-export const initValDescription: Description = {
-  item: "",
   description: "",
   unit: "",
   quantity: 0,
-  unitValue: 0,
-  totalValue: 0
+  unitCost: 0,
+  partialCost: 0,
+  profit: 0,
+  profitAmount: 0,
+  totalValue: 0,
+};
+export const initValOtherExpenses: OtherExpenses = {
+  description: "",
+  shiftType: "",
+  unit: "",
+  amount: 0,
+  unitCost: 0,
+  partialCost: 0,
+  profit: 0,
+  profitAmount: 0,
+  totalValue: 0,
+};
+export const initOfferSummary: OfferSummary = {
+  materials: 0,
+  preparation: 0,
+  day: 0,
+  night: 0,
+  total: 0,
 };

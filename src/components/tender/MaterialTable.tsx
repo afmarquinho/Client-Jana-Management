@@ -168,7 +168,7 @@ const MaterialTable: React.FC<ChildInputProps> = ({
             </tr>
             <tr>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap bg-gray-200 border-r border-r-gray-400">
-                Costo TotaL Mano de Obra = CM + MCT
+                Costo TotaL Materiales = CM + MCT
               </th>
               <td className="px-4 whitespace-normal text-sm text-gray-900 text-right font-semibold bg-gray-200">
                  {(totalMargin + totalCostMaterial).toLocaleString("en-US", {
@@ -182,7 +182,7 @@ const MaterialTable: React.FC<ChildInputProps> = ({
       </div>
       <div className="flex flex-col items-end w-full mt-5">
         <h3 className="text-xl font-bold">
-          Total Mano de Obra:{" "}
+          Total Materiales:{" "}
           {totalSum.toLocaleString("en-US", {
             style: "currency",
             currency: "USD",

@@ -5,7 +5,7 @@ type ChildInputProps = {
   register: UseFormRegister<Description>;
   watch: UseFormWatch<Description>;
 };
-const DescriptionsFiledForm: React.FC<ChildInputProps> = ({
+const DescriptionsFieldsForm: React.FC<ChildInputProps> = ({
   register,
   watch,
 }) => {
@@ -81,4 +81,4 @@ const DescriptionsFiledForm: React.FC<ChildInputProps> = ({
     </>
   );
 };
-export default DescriptionsFiledForm;
+export default DescriptionsFieldsForm;

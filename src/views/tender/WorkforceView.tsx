@@ -3,12 +3,14 @@ import TenderNav from "../../components/tender/TenderNav";
 import { AppDispatch, RootState } from "../../redux/store";
 import TenderName from "../../components/tender/TenderName";
 import { useForm, SubmitHandler } from "react-hook-form";
-import WorkforceFiledsForm from "../../components/tender/WorkforceFiledsForm";
+import WorkforceFiledsForm from "../../components/tender/WorkforceFieldsForm";
 import { LaborType, Tender } from "../../types/types";
 import WorkforceTable from "../../components/tender/WorkforceTable";
 import { useEffect, useState } from "react";
 import { updateTender } from "../../redux/slices/tenderSlice";
 import { initValWorkforce } from "../../helpers/initialValues";
+import WorkforceSummary from "../../components/tender/WorkforceSummary";
+//TODO: VALIDAR PARA QUE NO SE ENVÍEN NULOS, SI SE ENVIA EL TURNO VACIO LUEGO NO LO PUEDO VER PERO SI ESTA SUMANDO
 
 const WorkforceView = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,10 +23,13 @@ const WorkforceView = () => {
       defaultValues: {
         role: "",
         workers: 0,
+        shiftType: "",
         rate: 0,
-        workshift: 0,
+        shiftCount: 0,
+        partialCost: 0,
         profit: 0,
         profitAmount: 0,
+        totalValue: 0,
       },
     }
   );
@@ -32,10 +37,10 @@ const WorkforceView = () => {
     if (index !== null) {
       setValue("role", wfEdit.role);
       setValue("workers", wfEdit.workers);
+      setValue("shiftType", wfEdit.shiftType);
       setValue("rate", wfEdit.rate);
-      setValue("workshift", wfEdit.workshift);
+      setValue("shiftCount", wfEdit.shiftCount);
       setValue("profit", wfEdit.profit);
-      setValue("profitAmount", wfEdit.profitAmount);
     }
   }, [wfEdit, index, setValue]);
 
@@ -71,8 +76,9 @@ const WorkforceView = () => {
   };
 
   const onSubmit: SubmitHandler<LaborType> = async (data) => {
-    data.profitAmount =
-      (data.profit / 100 + 1) * data.rate * data.workers * data.workshift;
+    data.partialCost = data.rate * data.workers * data.shiftCount;
+    data.profitAmount = (data.profit / 100) * data.partialCost;
+    data.totalValue = data.profitAmount + data.partialCost;
 
     const updatedWorkforceArray: LaborType[] =
       index !== null
@@ -133,13 +139,27 @@ const WorkforceView = () => {
             uppercase text-center px-16 py-2 text-sm"
             />
           </div>
-          
         </form>
+        <h2 className="italic font-bold mt-5 uppercase">Mano de Obra</h2>
         <WorkforceTable
           setIndex={setIndex}
           setWfEdit={setWfEdit}
           handleDelete={handleDelete}
+          shift={"preparation"}
         />
+        <WorkforceTable
+          setIndex={setIndex}
+          setWfEdit={setWfEdit}
+          handleDelete={handleDelete}
+          shift={"day"}
+        />
+        <WorkforceTable
+          setIndex={setIndex}
+          setWfEdit={setWfEdit}
+          handleDelete={handleDelete}
+          shift={"night"}
+        />
+        <WorkforceSummary />
       </div>
     </div>
   );

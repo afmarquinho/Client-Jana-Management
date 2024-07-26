@@ -1,4 +1,4 @@
-import NewUserFiledsForm from "../../views/user/NewUserFiledsForm";
+import NewUserFiledsForm from "../../views/user/NewUserFieldsForm";
 
 const NewUserForm = () => {
   return (

@@ -10,6 +10,8 @@ import { Tender } from "../../types/types";
 type TenderState = {
   tenders: Tender[];
   tender: Tender;
+  totalWf:number
+  totalMt:number
   loading: boolean;
   error: string | null;
 };
@@ -17,6 +19,8 @@ type TenderState = {
 const initialState: TenderState = {
   tenders: [],
   tender: initValTender,
+  totalMt:0,
+  totalWf:0,
   loading: false,
   error: null,
 };
@@ -61,6 +65,12 @@ const tenderSlice = createSlice({
       .addCase(fetchTenders.fulfilled, (state, action) => {
         state.loading = false;
         state.tenders = action.payload;
+        state.totalMt = state.tender.materials.reduce((total, item) => {
+          return total + item.profitAmount;
+        }, 0);
+        state.totalWf = state.tender.workforce.reduce((total, item) => {
+          return total + item.profitAmount;
+        }, 0);
       })
       .addCase(fetchTenders.rejected, (state, action) => {
         state.loading = false;
