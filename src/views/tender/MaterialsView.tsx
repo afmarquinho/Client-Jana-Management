@@ -9,6 +9,8 @@ import { initValMaterial } from "../../helpers/initialValues";
 import { updateTender } from "../../redux/slices/tenderSlice";
 import MaterialFieldForm from "../../components/tender/MaterialFieldForm";
 import MaterialTable from "../../components/tender/MaterialTable";
+import MaterialSummary from "../../components/tender/MaterialSummary";
+
 //TODO: COLOCAR TABLA DE MANO DE OBRA Y MATERIALES PARA FACILITAR LA DESCRIPCION
 
 const MaterialsView = () => {
@@ -17,42 +19,44 @@ const MaterialsView = () => {
   const [index, setIndex] = useState<number | null>(null);
   const [mtEdit, setMtEdit] = useState<SupplyType>(initValMaterial);
 
-  const { register, handleSubmit, reset, setValue, watch } = useForm<SupplyType>({
-    defaultValues: {
-      material: "",
-      unit: "",
-      quantity: 0,
-      unitCost: 0,
-      profit: 0,
-      totalCost: 0,
-    },
-  });
+  const { register, handleSubmit, reset, setValue, watch } =
+    useForm<SupplyType>({
+      defaultValues: {
+        description: "",
+        unit: "",
+        quantity: 0,
+        unitCost: 0,
+        partialCost: 0,
+        profit: 0,
+        profitAmount: 0,
+        totalValue: 0,
+      },
+    });
 
   useEffect(() => {
     if (index !== null) {
-      setValue("material", mtEdit.material);
+      setValue("description", mtEdit.description);
       setValue("unit", mtEdit.unit);
+      setValue("quantity", mtEdit.quantity);
       setValue("unitCost", mtEdit.unitCost);
-      setValue("totalCost", mtEdit.totalCost);
+      setValue("partialCost", mtEdit.partialCost);
       setValue("profit", mtEdit.profit);
       setValue("profitAmount", mtEdit.profitAmount);
-      setValue("quantity", mtEdit.quantity);
+      setValue("totalValue", mtEdit.totalValue);
     }
   }, [mtEdit, index, setValue]);
-
- 
 
   const handleDelete = async (index: number) => {
     //* CREA UN NUEVO ARRAY CON LA DESCRIPCIÓN EN EL ÍNDICE DADO
 
-    const updatedMaterialArray: SupplyType[] = tender.material.filter(
+    const updatedMaterialArray: SupplyType[] = tender.materials.filter(
       (_, i: number) => i !== index
     );
 
     //* Crea un nuevo objeto `Tender` con la lista actualizada de descripciones
     const updatedTender: Tender = {
       ...tender,
-      material: updatedMaterialArray,
+      materials: updatedMaterialArray,
     };
 
     try {
@@ -80,19 +84,20 @@ const MaterialsView = () => {
   };
 
   const onSubmit: SubmitHandler<SupplyType> = async (data) => {
-    data.totalCost = data.unitCost * data.quantity;
-    data.profitAmount = (data.profit / 100 + 1) * data.totalCost;
+    data.partialCost = data.unitCost * data.quantity;
+    data.profitAmount = (data.profit / 100) * data.partialCost;
+    data.totalValue = data.partialCost + data.profitAmount
 
     const updatedMaterialArray: SupplyType[] =
       index !== null
-        ? tender.material.map((mt: SupplyType, i: number) =>
+        ? tender.materials.map((mt: SupplyType, i: number) =>
             i === index ? data : mt
           )
-        : [...tender.material, data];
+        : [...tender.materials, data];
 
     const updatedTender: Tender = {
       ...tender,
-      material: updatedMaterialArray,
+      materials: updatedMaterialArray,
     };
 
     try {
@@ -133,7 +138,6 @@ const MaterialsView = () => {
           </h2>
           <MaterialFieldForm register={register} watch={watch} />
 
-    
           <div className="pt-5 w-full flex justify-center items-center">
             <input
               type="submit"
@@ -145,7 +149,12 @@ const MaterialsView = () => {
             />
           </div>
         </form>
-       <MaterialTable setIndex={setIndex} setMtEdit={setMtEdit} handleDelete={handleDelete}/>
+        <MaterialTable
+          setIndex={setIndex}
+          setMtEdit={setMtEdit}
+          handleDelete={handleDelete}
+        />
+        <MaterialSummary/>
       </div>
     </div>
   );
