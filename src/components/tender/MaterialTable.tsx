@@ -24,21 +24,9 @@ const MaterialTable: React.FC<ChildInputProps> = ({
     setMtEdit(mt);
   };
 
-  const totalSum = tender.material.reduce(
-    (acc: number, desc) => acc + desc.profitAmount,
-    0
-  );
-  const totalCostMaterial = tender.material.reduce((total, item) => {
-    return total + item.totalCost;
-  }, 0);
-
-  const totalMargin = tender.material.reduce((total, item) => {
-    return total + (item.totalCost* (item.profit / 100));
-  }, 0);
-
   return (
     <>
-       <h2 className="italic font-bold mt-5">Resumen Materiales</h2>
+      <h2 className="italic font-bold mt-5">Resumen Materiales</h2>
       <table className="w-full">
         <thead className="bg-gray-200">
           <tr>
@@ -55,29 +43,32 @@ const MaterialTable: React.FC<ChildInputProps> = ({
               Cantidad
             </th>
             <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
-              Costo Unitario
+              Valor Comercial (CM)
             </th>
             <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
-              Costo Total
+              Valor Parcial
             </th>
             <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
               Margen (%)
             </th>
             <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
-              MC
+              MCT
+            </th>
+            <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
+              TOTAL MAT.
             </th>
             <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center"></th>
             <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap"></th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-400">
-          {tender.material.map((item: SupplyType, index: number) => (
+          {tender.materials.map((item: SupplyType, index: number) => (
             <tr key={index} className="bg-white">
               <td className="ps-1 py-4 whitespace-nowrap text-sm font-medium text-gray-900 bg-gray-200 text-center">
                 {index + 1}
               </td>
               <td className="px-2 py-4 whitespace-normal text-sm text-gray-900 text-center w-1/3">
-                {item.material}
+                {item.description}
               </td>
               <td className="px-2 py-4 whitespace-normal text-sm text-gray-900 text-center">
                 {item.unit}
@@ -89,7 +80,7 @@ const MaterialTable: React.FC<ChildInputProps> = ({
                 {item.unitCost}
               </td>
               <td className="px-2 py-4 whitespace-normal text-sm text-gray-900 text-center w-1/3">
-                {item.totalCost.toLocaleString("en-US", {
+                {(item.partialCost).toLocaleString("en-US", {
                   style: "currency",
                   currency: "USD",
                 })}
@@ -100,6 +91,12 @@ const MaterialTable: React.FC<ChildInputProps> = ({
               </td>
               <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                 {item.profitAmount.toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })}
+              </td>
+              <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                {item.totalValue.toLocaleString("en-US", {
                   style: "currency",
                   currency: "USD",
                 })}
@@ -122,74 +119,26 @@ const MaterialTable: React.FC<ChildInputProps> = ({
               </td>
             </tr>
           ))}
+           <tr className="bg-gray-200">
+            <td
+              className="px-5 py-4 text-right whitespace-nowrap text-sm font-semibold text-gray-900"
+              colSpan={8}
+            >
+              Total
+            </td>
+            <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-900 text-center font-semibold">
+              {tender.materials
+                .reduce((total, item) => total + item.totalValue, 0)
+                .toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })}
+            </td>
+            <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-900 text-center"></td>
+            <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-900 text-center"></td>
+          </tr>
         </tbody>
       </table>
-
-      <div className="w-full flex justify-end">
-        <table className="mt-5 divide-y divide-gray-400">
-          <tbody className="bg-white divide-y divide-gray-400">
-            <tr>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border-r border-r-gray-400">
-                Total Materiales
-              </th>
-              <td className="px-4 whitespace-normal text-sm text-gray-900 text-right font-semibold">
-                {tender.material.length}
-              </td>
-            </tr>
-            <tr>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border-r border-r-gray-400">
-                Costo de Materiales (CM)
-              </th>
-              <td className="px-4 whitespace-normal text-sm text-gray-900 text-right font-semibold">
-                {totalCostMaterial.toLocaleString("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                })}
-              </td>
-            </tr>
-            <tr>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border-r border-r-gray-400">
-                Margen de Contribución(%)
-              </th>
-              <td className="px-4 whitespace-normal text-sm text-gray-900 text-right font-semibold">
-                {((totalMargin /totalCostMaterial) * 100).toFixed(2)} % 
-              </td>
-            </tr>
-            <tr>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap bg-green-100 border-r border-r-gray-400">
-                Margen de Contribución Total (MCT)
-              </th>
-              <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold bg-green-100">
-                {totalMargin.toLocaleString("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                })} 
-              </td>
-            </tr>
-            <tr>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap bg-gray-200 border-r border-r-gray-400">
-                Costo TotaL Materiales = CM + MCT
-              </th>
-              <td className="px-4 whitespace-normal text-sm text-gray-900 text-right font-semibold bg-gray-200">
-                 {(totalMargin + totalCostMaterial).toLocaleString("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                })}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div className="flex flex-col items-end w-full mt-5">
-        <h3 className="text-xl font-bold">
-          Total Materiales:{" "}
-          {totalSum.toLocaleString("en-US", {
-            style: "currency",
-            currency: "USD",
-          })}
-        </h3>
-        <small className="italic">*Valores en COP</small>
-      </div>
     </>
   );
 };

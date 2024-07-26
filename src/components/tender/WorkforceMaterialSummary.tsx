@@ -9,7 +9,7 @@ const WorkforceMaterialSummary = () => {
   }, 0);
  
 
-  const totalMt = tender.material.reduce((total, item) => {
+  const totalMt = tender.materials.reduce((total, item) => {
     return total + item.profitAmount;
   }, 0);
 

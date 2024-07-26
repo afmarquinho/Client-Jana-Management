@@ -149,7 +149,7 @@ const WorkforceTable: React.FC<ChildInputProps> = ({
               </td>
             </tr>
           ))}
-          <tr className="bg-white">
+          <tr className="bg-gray-200">
             <td
               className="px-5 py-4 text-right whitespace-nowrap text-sm font-semibold text-gray-900"
               colSpan={9}

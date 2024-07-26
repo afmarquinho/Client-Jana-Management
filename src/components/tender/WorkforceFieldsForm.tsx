@@ -78,9 +78,7 @@ const WorkforceFieldsForm: React.FC<ChildInputProps> = ({
       </div>
 
       <div className="flex gap-5">
-        <label className="w-1/2 font-semibold">
-          Porcentaje de Ganancia (%):
-        </label>
+        <label className="w-1/2 font-semibold">Margen (%):</label>
         <input
           type="number"
           required
@@ -100,9 +98,9 @@ const WorkforceFieldsForm: React.FC<ChildInputProps> = ({
           )}
         </p>
       </div>
-      <div className="flex gap-5">
-        <p className="w-1/2 font-semibold">Total Mano de Obra: </p>
-        <p className="w-1/2 font-semibold">
+      
+        <p className="w-full text-center font-semibold">
+          Total Mano de Obra:{" "}
           {((profit / 100 + 1) * rate * workers * shiftCount).toLocaleString(
             "en-US",
             {
@@ -112,7 +110,7 @@ const WorkforceFieldsForm: React.FC<ChildInputProps> = ({
           )}
         </p>
       </div>
-    </div>
+    
   );
 };
 export default WorkforceFieldsForm;
