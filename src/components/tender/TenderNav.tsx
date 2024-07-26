@@ -43,6 +43,16 @@ const TenderNav: React.FC = () => {
           Materiales
         </NavLink>
         <NavLink
+          to="#"
+          className={({ isActive }) =>
+            isActive
+              ? "text-black border-l-4 ps-3 py-3 border-l-green-300 bg-green-400 block w-full"
+              : "text-green-100 border-l-4 ps-3 py-3 border-l-green-900 hover:bg-green-700 hover:border-l-green-300 block w-full"
+          }
+        >
+          Otros Gastos
+        </NavLink>
+        <NavLink
           to="/tender-editing-descriptions"
           className={({ isActive }) =>
             isActive

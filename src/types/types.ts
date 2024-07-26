@@ -63,19 +63,43 @@ export type HeadingTender = {
 export type LaborType = {
   role: string;
   workers: number;
+  shiftType: string;
   rate: number;
-  workshift: number;
+  shiftCount: number;
+  partialCost: number;
   profit: number;
   profitAmount: number;
+  totalValue: number;
 };
 export type SupplyType = {
-  material: string;
+  description: string;
   unit: string;
   quantity: number;
   unitCost: number;
-  totalCost: number;
+  partialCost: number;
   profit: number;
   profitAmount: number;
+  totalValue: number;
+};
+
+export type OtherExpenses = {
+  description: string;
+  shiftType: string;
+  unit: string;
+  amount: number;
+  unitCost: number;
+  partialCost: number;
+  profit: number;
+  profitAmount: number;
+  totalValue: number;
+};
+
+export type OfferSummary = {
+  materials: number;
+  preparation: number;
+  day: number;
+  night: number;
+  total:number
 };
 
 export type Tender = HeadingTender & {
@@ -86,5 +110,7 @@ export type Tender = HeadingTender & {
   reportId: number;
   ref: string;
   workforce: LaborType[];
-  material: SupplyType[];
+  materials: SupplyType[];
+  otherExpenses: OtherExpenses[];
+  summary: OfferSummary[];
 };
