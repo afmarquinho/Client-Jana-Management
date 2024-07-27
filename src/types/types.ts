@@ -99,7 +99,12 @@ export type OfferSummaryType = {
   preparation: number;
   day: number;
   night: number;
-  total:number
+  total: number;
+};
+
+export type CommentsTypes = {
+  author: string;
+  comment: string;
 };
 
 export type Tender = HeadingTender & {
@@ -113,4 +118,5 @@ export type Tender = HeadingTender & {
   materials: SupplyType[];
   otherExpenses: OtherExpensesType[];
   summary: OfferSummaryType;
+  comments:CommentsTypes[]
 };

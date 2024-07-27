@@ -37,6 +37,7 @@ export const initValTender: Tender = {
     night: 0,
     total: 0,
   },
+  comments:[]
 };
 
 export const initValDescription: Description = {

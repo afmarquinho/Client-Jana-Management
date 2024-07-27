@@ -21,6 +21,7 @@ import MaterialsView from "./views/tender/MaterialsView";
 import OtherExpView from "./views/tender/OtherExpView";
 import TenderSummaryView from "./views/tender/TenderSummaryView";
 import AnalysisView from "./views/tender/AnalysisView";
+import CommentsView from "./views/tender/CommentsView";
 
 const AppRouter = () => {
   return (
@@ -78,6 +79,10 @@ const AppRouter = () => {
             <Route
               path="/tender-analysis"
               element={<AnalysisView />}
+            />
+            <Route
+              path="/tender-comments"
+              element={<CommentsView />}
             />
           </Route>
         </Route>

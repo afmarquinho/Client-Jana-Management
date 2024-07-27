@@ -27,31 +27,31 @@ const AllTenders = () => {
         {tenders.map((tender: Tender) => (
           <tr key={tender.id}>
             <td>
-              <div className="bg-white p-4 mb-4 flex justify-between items-center">
+              <div className="bg-white p-4 mb-4 flex justify-between items-center hover:bg-gray-200">
                 <div className="">
                   <h3 className="text:sm sm:text-2xl">{tender.name}</h3>
-                  <p className="text-xs sm:text-sm text-red-400 font-semibold">
+                  <p className="text-xs sm:text-base text-red-400 font-semibold">
                     {tender.customerName}
                   </p>
-                  <p className="text-xs sm:text-sm italic">
+                  <p className="text-xs sm:text-base italic">
                     Fecha:{" "}
                     <span className="font-bold">
                       {tender.date && formatServerDate(tender.date)}
                     </span>
                   </p>
-                  <p className="text-xs sm:text-sm italic">
+                  <p className="text-sm sm:text-base italic">
                     Estado:{" "}
                     <span
-                      className={`font-bold ${
+                      className={` ${
                         tender.status === "draft"
-                          ? "text-orange-600"
+                          ? "text-orange-600 font-medium"
                           : tender.status === "review"
-                          ? "text-blue-700"
+                          ? "text-blue-700 font-medium"
                           : tender.status === "approved"
-                          ? "text-green-600"
+                          ? "bg-green-600 text-white px-2 rounded-3xl"
                           : tender.status === "rejected"
-                          ? "text-red-700"
-                          : "text-teal-700"
+                          ? "bg-red-500 text-white px-2 rounded-3xl"
+                          : "bg-fuchsia-700 text-white px-2 rounded-3xl"
                       }`}
                     >
                       {tender.status === "draft"
