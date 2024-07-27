@@ -58,7 +58,7 @@ export function getTodayDateString(): string {
   return `${year}-${month}-${day}`;
 }
 
-export function assignTenderData(data: TenderDataFromBackend): Tender {
+export const assignTenderData = (data: TenderDataFromBackend) => {
   // Función para obtener el día de hoy en formato "YYYY-MM-DD"
   return {
     id: data.id,
@@ -81,4 +81,38 @@ export function assignTenderData(data: TenderDataFromBackend): Tender {
     reportId: data.reportId,
     ref: data.ref,
   };
-}
+};
+
+export const summaryTender = (tender: Tender) => {
+  const materials = tender.materials.reduce(
+    (acc: number, value) => acc + value.totalValue,
+    0
+  );
+
+  const preparation =
+    tender.workforce
+      .filter((item) => item.shiftType === "preparation")
+      .reduce((total, item) => total + item.totalValue, 0) +
+    tender.otherExpenses
+      .filter((item) => item.shiftType === "preparation")
+      .reduce((total, item) => total + item.totalValue, 0);
+
+  const day =
+    tender.workforce
+      .filter((item) => item.shiftType === "day")
+      .reduce((total, item) => total + item.totalValue, 0) +
+    tender.otherExpenses
+      .filter((item) => item.shiftType === "day")
+      .reduce((total, item) => total + item.totalValue, 0);
+
+  const night =
+    tender.workforce
+      .filter((item) => item.shiftType === "night")
+      .reduce((total, item) => total + item.totalValue, 0) +
+    tender.otherExpenses
+      .filter((item) => item.shiftType === "night")
+      .reduce((total, item) => total + item.totalValue, 0);
+
+  const total = materials + preparation + day + night;
+  return { materials, preparation, day, night, total };
+};

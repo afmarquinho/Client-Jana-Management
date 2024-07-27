@@ -4,12 +4,13 @@ import { AppDispatch, RootState } from "../../redux/store";
 import TenderName from "../../components/tender/TenderName";
 import { useForm, SubmitHandler } from "react-hook-form";
 import WorkforceFiledsForm from "../../components/tender/WorkforceFieldsForm";
-import { LaborType, Tender } from "../../types/types";
+import { LaborType, OfferSummaryType, Tender } from "../../types/types";
 import WorkforceTable from "../../components/tender/WorkforceTable";
 import { useEffect, useState } from "react";
 import { updateTender } from "../../redux/slices/tenderSlice";
 import { initValWorkforce } from "../../helpers/initialValues";
 import WorkforceSummary from "../../components/tender/WorkforceSummary";
+import { summaryTender } from "../../helpers/helpers";
 //TODO: VALIDAR PARA QUE NO SE ENVÍEN NULOS, SI SE ENVIA EL TURNO VACIO LUEGO NO LO PUEDO VER PERO SI ESTA SUMANDO
 
 const WorkforceView = () => {
@@ -87,9 +88,17 @@ const WorkforceView = () => {
           )
         : [...tender.workforce, data];
 
-    const updatedTender: Tender = {
-      ...tender,
+    let updatedTender: Tender = {
+      ... tender,
       workforce: updatedWorkforceArray,
+    };
+
+    //*ACTUALIZO EL CAMNPO DE RESUMEN
+    const summary: OfferSummaryType = summaryTender(updatedTender);
+    
+    updatedTender = {
+      ...updatedTender,
+      summary:summary
     };
 
     try {
@@ -145,19 +154,19 @@ const WorkforceView = () => {
           setIndex={setIndex}
           setWfEdit={setWfEdit}
           handleDelete={handleDelete}
-          shift={"preparation"}
+          shiftType="preparation"
         />
         <WorkforceTable
           setIndex={setIndex}
           setWfEdit={setWfEdit}
           handleDelete={handleDelete}
-          shift={"day"}
+          shiftType="day"
         />
         <WorkforceTable
           setIndex={setIndex}
           setWfEdit={setWfEdit}
           handleDelete={handleDelete}
-          shift={"night"}
+          shiftType="night"
         />
         <WorkforceSummary />
       </div>

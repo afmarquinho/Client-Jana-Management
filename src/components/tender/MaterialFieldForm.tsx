@@ -43,16 +43,6 @@ const MaterialFieldForm: React.FC<ChildInputProps> = ({ register, watch }) => {
         </select>
       </div>
 
-      <div className="w-full flex gap-5">
-        <label className="w-1/2 font-semibold">Cantidad</label>
-        <input
-          type="number"
-          required
-          className="w-1/2 bg-gray-200 outline-none px-2"
-          {...register("quantity", { valueAsNumber: true })}
-        />
-      </div>
-
       <div className=" w-full flex gap-5">
         <label className="w-1/2 font-semibold">Costo Unidatario</label>
         <input
@@ -60,6 +50,16 @@ const MaterialFieldForm: React.FC<ChildInputProps> = ({ register, watch }) => {
           required
           className="w-1/2 bg-gray-200 outline-none px-2"
           {...register("unitCost", { valueAsNumber: true })}
+        />
+      </div>
+
+      <div className="w-full flex gap-5">
+        <label className="w-1/2 font-semibold">Cantidad</label>
+        <input
+          type="number"
+          required
+          className="w-1/2 bg-gray-200 outline-none px-2"
+          {...register("quantity", { valueAsNumber: true })}
         />
       </div>
 

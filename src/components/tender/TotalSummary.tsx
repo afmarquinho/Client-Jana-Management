@@ -1,0 +1,70 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+
+const TotalSummary = () => {
+  const tender = useSelector((state: RootState) => state.tender.tender);
+
+  const totalWf = tender.workforce.reduce((total, item) => {
+    return total + item.totalValue;
+  }, 0);
+
+  const totalMt = tender.materials.reduce((total, item) => {
+    return total + item.totalValue;
+  }, 0);
+
+  const totalOtherExp = tender.otherExpenses.reduce((total, item) => {
+    return total + item.totalValue;
+  }, 0);
+
+  return (
+    <table className="my-5 divide-y divide-gray-400">
+      <tbody className="bg-white divide-y divide-gray-400">
+        <tr className="bg-gray-200">
+          <th className="px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border-r border-r-gray-400">
+            Costo Total de Mano de Obra
+          </th>
+          <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold">
+            {totalWf.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+            })}
+          </td>
+        </tr>
+        <tr className="bg-gray-50">
+          <th className="px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border-r border-r-gray-400">
+            Costo Total Materiales
+          </th>
+          <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold">
+            {totalMt.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+            })}
+          </td>
+        </tr>
+        <tr className="bg-gray-200">
+          <th className="px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border-r border-r-gray-400">
+            Otros Gastos y Consumibles
+          </th>
+          <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold">
+            {totalOtherExp.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+            })}
+          </td>
+        </tr>
+        <tr className="bg-orange-100">
+          <th className="px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border-r border-r-gray-400">
+           Total Cotización
+          </th>
+          <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold">
+            {(totalMt + totalWf + totalOtherExp).toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+            })}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  );
+};
+export default TotalSummary;

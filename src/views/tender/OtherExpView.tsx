@@ -1,31 +1,31 @@
 import { useDispatch, useSelector } from "react-redux";
 import TenderNav from "../../components/tender/TenderNav";
 import { AppDispatch, RootState } from "../../redux/store";
-import TenderName from "../../components/tender/TenderName";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { OfferSummaryType, SupplyType, Tender } from "../../types/types";
 import { useEffect, useState } from "react";
-import { initValMaterial } from "../../helpers/initialValues";
+import { OfferSummaryType, OtherExpensesType, Tender } from "../../types/types";
+import { initValOtherExpenses } from "../../helpers/initialValues";
+import OtherExpFieldsForm from "../../components/tender/OtherExpFieldsForm";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { updateTender } from "../../redux/slices/tenderSlice";
-import MaterialFieldForm from "../../components/tender/MaterialFieldForm";
-import MaterialTable from "../../components/tender/MaterialTable";
-import MaterialSummary from "../../components/tender/MaterialSummary";
+import TenderName from "../../components/tender/TenderName";
+import OtherExpTable from "../../components/tender/OtherExpTable";
+import OtherExpSummary from "../../components/tender/OtherExpSummary";
 import { summaryTender } from "../../helpers/helpers";
 
-//TODO: COLOCAR TABLA DE MANO DE OBRA Y MATERIALES PARA FACILITAR LA DESCRIPCION
-
-const MaterialsView = () => {
+const OtherExpView = () => {
   const dispatch = useDispatch<AppDispatch>();
   const tender = useSelector((state: RootState) => state.tender.tender);
   const [index, setIndex] = useState<number | null>(null);
-  const [mtEdit, setMtEdit] = useState<SupplyType>(initValMaterial);
+  const [expEdit, setExpEdit] =
+    useState<OtherExpensesType>(initValOtherExpenses);
 
   const { register, handleSubmit, reset, setValue, watch } =
-    useForm<SupplyType>({
+    useForm<OtherExpensesType>({
       defaultValues: {
         description: "",
+        shiftType: "",
         unit: "",
-        quantity: 0,
+        amount: 0,
         unitCost: 0,
         partialCost: 0,
         profit: 0,
@@ -36,78 +36,75 @@ const MaterialsView = () => {
 
   useEffect(() => {
     if (index !== null) {
-      setValue("description", mtEdit.description);
-      setValue("unit", mtEdit.unit);
-      setValue("quantity", mtEdit.quantity);
-      setValue("unitCost", mtEdit.unitCost);
-      setValue("partialCost", mtEdit.partialCost);
-      setValue("profit", mtEdit.profit);
-      setValue("profitAmount", mtEdit.profitAmount);
-      setValue("totalValue", mtEdit.totalValue);
+      setValue("description", expEdit.description);
+      setValue("shiftType", expEdit.shiftType);
+      setValue("unit", expEdit.unit);
+      setValue("amount", expEdit.amount);
+      setValue("unitCost", expEdit.unitCost);
+      setValue("partialCost", expEdit.partialCost);
+      setValue("profit", expEdit.profit);
+      setValue("profitAmount", expEdit.profitAmount);
+      setValue("totalValue", expEdit.totalValue);
     }
-  }, [mtEdit, index, setValue]);
+  }, [expEdit, index, setValue]);
 
   const handleDelete = async (index: number) => {
     //* CREA UN NUEVO ARRAY CON LA DESCRIPCIÓN EN EL ÍNDICE DADO
 
-    const updatedMaterialArray: SupplyType[] = tender.materials.filter(
-      (_, i: number) => i !== index
-    );
+    const updatedExpensesArray: OtherExpensesType[] =
+      tender.otherExpenses.filter((_, i: number) => i !== index);
 
     //* Crea un nuevo objeto `Tender` con la lista actualizada de descripciones
     const updatedTender: Tender = {
       ...tender,
-      materials: updatedMaterialArray,
+      otherExpenses: updatedExpensesArray,
     };
 
     try {
       const resultAction = await dispatch(updateTender(updatedTender));
-
       if (updateTender.fulfilled.match(resultAction)) {
-        // La actualización fue exitosa
-        alert("¡Material eliminado correctamente!");
-
-        setIndex(null);
-        reset();
+        alert("¡Mano de obra eliminada correctamente!");
       } else {
         if (resultAction.payload) {
-          // La actualización falló con un mensaje de error del backend
           console.error(resultAction.payload);
         } else {
-          // La actualización falló con un error desconocido
           console.error("Falló la eliminación");
         }
       }
+      setIndex(null);
     } catch (error) {
       console.error("Error inesperado:", error);
     }
     //* DESPARA EL THUNK
   };
 
-  const onSubmit: SubmitHandler<SupplyType> = async (data) => {
-    data.partialCost = data.unitCost * data.quantity;
+  const onSubmit: SubmitHandler<OtherExpensesType> = async (data) => {
+    data.partialCost = data.unitCost * data.amount;
     data.profitAmount = (data.profit / 100) * data.partialCost;
     data.totalValue = data.partialCost + data.profitAmount;
 
-    const updatedMaterialArray: SupplyType[] =
+    const updatedOtherExpenses: OtherExpensesType[] =
       index !== null
-        ? tender.materials.map((mt: SupplyType, i: number) =>
-            i === index ? data : mt
+        ? tender.otherExpenses.map((exp: OtherExpensesType, i: number) =>
+            i === index ? data : exp
           )
-        : [...tender.materials, data];
+        : [...tender.otherExpenses, data];
 
     let updatedTender: Tender = {
       ...tender,
-      materials: updatedMaterialArray,
+      otherExpenses: updatedOtherExpenses,
     };
 
-    //*ACTUALIZO EL CAMNPO DE RESUMEN
-    const summary: OfferSummaryType = summaryTender(updatedTender);
+     //*ACTUALIZO EL CAMNPO DE RESUMEN
+     const summary: OfferSummaryType = summaryTender(updatedTender);
+    
+     updatedTender = {
+       ...updatedTender,
+       summary:summary
+     };
 
-    updatedTender = {
-      ...updatedTender,
-      summary: summary,
-    };
+
+
 
     try {
       const resultAction = await dispatch(updateTender(updatedTender));
@@ -117,7 +114,7 @@ const MaterialsView = () => {
         alert("¡Cotización Actualizada correctamente!");
 
         setIndex(null);
-        setMtEdit(initValMaterial);
+        setExpEdit(initValOtherExpenses);
         reset();
       } else {
         if (resultAction.payload) {
@@ -143,10 +140,9 @@ const MaterialsView = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <h2 className="text-center font-black text-red-600 uppercase text-base md:text-xl">
-            Administrar <span className="text-gray-500">Materiales</span>
+            OTROS GASTOS Y <span className="text-gray-500">CONSUMIBLES</span>
           </h2>
-          <MaterialFieldForm register={register} watch={watch} />
-
+          <OtherExpFieldsForm register={register} watch={watch} />
           <div className="pt-5 w-full flex justify-center items-center">
             <input
               type="submit"
@@ -158,15 +154,30 @@ const MaterialsView = () => {
             />
           </div>
         </form>
-        <h2 className="italic font-bold my-5 uppercase">Materiales</h2>
-        <MaterialTable
+        <h2 className="italic font-bold mt-5 uppercase">
+          Otros Gastos y Consumibles
+        </h2>
+        <OtherExpTable
           setIndex={setIndex}
-          setMtEdit={setMtEdit}
+          setExpEdit={setExpEdit}
           handleDelete={handleDelete}
+          shiftType="preparation"
         />
-        <MaterialSummary />
+        <OtherExpTable
+          setIndex={setIndex}
+          setExpEdit={setExpEdit}
+          handleDelete={handleDelete}
+          shiftType="day"
+        />
+        <OtherExpTable
+          setIndex={setIndex}
+          setExpEdit={setExpEdit}
+          handleDelete={handleDelete}
+          shiftType="night"
+        />
+        <OtherExpSummary />
       </div>
     </div>
   );
 };
-export default MaterialsView;
+export default OtherExpView;

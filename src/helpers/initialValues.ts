@@ -1,8 +1,8 @@
 import {
   Description,
   LaborType,
-  OfferSummary,
-  OtherExpenses,
+  OfferSummaryType,
+  OtherExpensesType,
   SupplyType,
   Tender,
 } from "../types/types";
@@ -30,7 +30,13 @@ export const initValTender: Tender = {
   workforce: [],
   materials: [],
   otherExpenses: [],
-  summary: [],
+  summary: {
+    materials: 0,
+    preparation: 0,
+    day: 0,
+    night: 0,
+    total: 0,
+  },
 };
 
 export const initValDescription: Description = {
@@ -64,7 +70,7 @@ export const initValMaterial: SupplyType = {
   profitAmount: 0,
   totalValue: 0,
 };
-export const initValOtherExpenses: OtherExpenses = {
+export const initValOtherExpenses: OtherExpensesType = {
   description: "",
   shiftType: "",
   unit: "",
@@ -75,7 +81,7 @@ export const initValOtherExpenses: OtherExpenses = {
   profitAmount: 0,
   totalValue: 0,
 };
-export const initOfferSummary: OfferSummary = {
+export const initOfferSummary: OfferSummaryType = {
   materials: 0,
   preparation: 0,
   day: 0,

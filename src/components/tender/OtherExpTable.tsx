@@ -1,51 +1,85 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { SupplyType } from "../../types/types";
-
-//TODO: AGREGAR UN BOTON PARA LIMPIAR EL FORMULARIO SI TE ARREPIENTES DE EDITAR
-//TODO: AGREGAR BOTON Y RUTA PARA GASTOS LOGISTICOS Y OTRO GASTOS
-//TODO:RESUMEN EL VISTA DEL DESCRIPCIONES PARA QUE EL USURIO PUEDE HACER LA DESCRIPCION MAS FACIL
+import { OtherExpensesType } from "../../types/types";
 
 type ChildInputProps = {
   setIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  setMtEdit: React.Dispatch<React.SetStateAction<SupplyType>>;
+  setExpEdit: React.Dispatch<React.SetStateAction<OtherExpensesType>>;
   handleDelete: (index: number) => void;
+  shiftType: string;
 };
 
-const MaterialTable: React.FC<ChildInputProps> = ({
+const OtherExpTable: React.FC<ChildInputProps> = ({
   setIndex,
-  setMtEdit,
+  setExpEdit: setWfEdit,
   handleDelete,
+  shiftType,
 }) => {
   const tender = useSelector((state: RootState) => state.tender.tender);
+  const filteredExpArray = tender.otherExpenses.filter(
+    (item: OtherExpensesType) => {
+      return item.shiftType === shiftType;
+    }
+  );
 
-  const onEdit = (index: number, mt: SupplyType) => {
-    setIndex(index);
-    setMtEdit(mt);
+  const onEdit = (selectedItem: OtherExpensesType) => {
+    const originalIndex = tender.otherExpenses.findIndex(
+      (item) => item === selectedItem
+    );
+    setIndex(originalIndex);
+    setWfEdit(selectedItem);
   };
 
+  const onDelete = (selectedItem: OtherExpensesType) => {
+    const originalIndex = tender.otherExpenses.findIndex(
+      (item) => item === selectedItem
+    );
+    handleDelete(originalIndex);
+  };
+
+
+
+
   return (
-    <>
-      <table className="w-full">
-        <thead className="bg-gray-200">
+    <div className="my-5">
+      <table className="w-full divide-y divide-gray-400 table-auto">
+        <caption className="caption-top font-semibold italic">
+          {shiftType === "preparation"
+            ? "Prealistamiento"
+            : shiftType === "day"
+            ? "Turno día"
+            : "Turno Noche"}
+        </caption>
+        <thead
+          className={`${
+            shiftType === "preparation"
+              ? "bg-yellow-100"
+              : shiftType === "day"
+              ? "bg-indigo-100"
+              : "bg-red-100"
+          }`}
+        >
           <tr>
             <th className="ps-1 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap">
               Item
             </th>
             <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
-              Material
+              Descripción
             </th>
             <th className=" px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
+              Turno
+            </th>
+            <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
               Unidad
             </th>
             <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
               Cantidad
             </th>
             <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
-              Valor Comercial (CM)
+              Vr. Unitario
             </th>
             <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
-              Valor Parcial
+              Vr. Parcial
             </th>
             <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
               Margen (%)
@@ -54,39 +88,48 @@ const MaterialTable: React.FC<ChildInputProps> = ({
               MCT
             </th>
             <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
-              TOTAL MAT.
+              Total MO
             </th>
             <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center"></th>
             <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap"></th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-400">
-          {tender.materials.map((item: SupplyType, index: number) => (
+          {filteredExpArray.map((item: OtherExpensesType, index: number) => (
             <tr key={index} className="bg-white">
               <td className="ps-1 py-4 whitespace-nowrap text-sm font-medium text-gray-900 bg-gray-200 text-center">
                 {index + 1}
               </td>
-              <td className="px-2 py-4 whitespace-normal text-sm text-gray-900 text-center w-1/3">
+              <td className="px-2 py-4 whitespace-normal text-sm text-gray-900 text-center ">
                 {item.description}
               </td>
               <td className="px-2 py-4 whitespace-normal text-sm text-gray-900 text-center">
+                {item.shiftType === "day"
+                  ? "Día"
+                  : item.shiftType === "night"
+                  ? "Noche"
+                  : "Prealistamiento"}
+              </td>
+              <td className=" px-2 py-4 whitespace-normal text-sm text-gray-900 text-center">
                 {item.unit}
               </td>
-              <td className="w-10 px-2 py-4 whitespace-normal text-sm text-gray-900 text-center">
-                {item.quantity}
+              <td className=" px-2 py-4 whitespace-normal text-sm text-gray-900 text-center">
+                {item.amount}
               </td>
-              <td className="px-2 py-4 whitespace-normal text-sm text-gray-900 text-center w-1/3">
-                {item.unitCost}
-              </td>
-              <td className="px-2 py-4 whitespace-normal text-sm text-gray-900 text-center w-1/3">
-                {(item.partialCost).toLocaleString("en-US", {
+              <td className="px-2 py-4 whitespace-normal text-sm text-gray-900 text-center ">
+                {item.unitCost.toLocaleString("en-US", {
                   style: "currency",
                   currency: "USD",
                 })}
               </td>
-
-              <td className="px-2 py-4 whitespace-normal text-sm text-gray-900 text-center w-1/3">
-                {item.profit}
+              <td className="px-2 py-4 whitespace-normal text-sm text-gray-900  text-center">
+                {item.partialCost.toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })}
+              </td>
+              <td className="px-2 py-4 whitespace-normal text-sm text-gray-900 text-center ">
+                {item.profit}%
               </td>
               <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                 {item.profitAmount.toLocaleString("en-US", {
@@ -103,7 +146,7 @@ const MaterialTable: React.FC<ChildInputProps> = ({
               <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                 <button
                   className="font-semibold"
-                  onClick={() => onEdit(index, item)}
+                  onClick={() => onEdit(item)}
                 >
                   Editar
                 </button>
@@ -111,22 +154,22 @@ const MaterialTable: React.FC<ChildInputProps> = ({
               <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                 <button
                   className="text-red-500 font-semibold"
-                  onClick={() => handleDelete(index)}
+                  onClick={() => onDelete(item)}
                 >
                   Eliminar
                 </button>
               </td>
             </tr>
           ))}
-           <tr className="bg-gray-200">
+          <tr className="bg-gray-200">
             <td
               className="px-5 py-4 text-right whitespace-nowrap text-sm font-semibold text-gray-900"
-              colSpan={8}
+              colSpan={9}
             >
               Total
             </td>
             <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-900 text-center font-semibold">
-              {tender.materials
+              {filteredExpArray
                 .reduce((total, item) => total + item.totalValue, 0)
                 .toLocaleString("en-US", {
                   style: "currency",
@@ -138,7 +181,7 @@ const MaterialTable: React.FC<ChildInputProps> = ({
           </tr>
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
-export default MaterialTable;
+export default OtherExpTable;
