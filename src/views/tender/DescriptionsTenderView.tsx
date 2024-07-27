@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { initValDescription } from "../../helpers/initialValues";
 import TenderName from "../../components/tender/TenderName";
 import TotalSummary from "../../components/tender/TotalSummary";
+import TenderSummary from "../../components/tender/TenderSummary";
 
 const DescriptionsTenderView = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -73,16 +74,18 @@ const DescriptionsTenderView = () => {
 
   const onSubmit: SubmitHandler<Description> = async (data) => {
     data.totalValue = data.quantity * data.unitValue;
-    
+
     const updatedDescriptions: Description[] =
-    index !== null ? tender.description.map((desc:Description, i:number)=>
-      i === index ? data : desc
-    ) : [...tender.description, data];
+      index !== null
+        ? tender.description.map((desc: Description, i: number) =>
+            i === index ? data : desc
+          )
+        : [...tender.description, data];
 
     const updatedTender: Tender = {
-       ...tender,
-       description: updatedDescriptions,
-     };
+      ...tender,
+      description: updatedDescriptions,
+    };
 
     try {
       const resultAction = await dispatch(updateTender(updatedTender));
@@ -100,9 +103,8 @@ const DescriptionsTenderView = () => {
           console.error("Failed to update tender.");
         }
       }
-      setIndex(null)
-      setDescEdit(initValDescription)
-
+      setIndex(null);
+      setDescEdit(initValDescription);
     } catch (error) {
       console.error("An unexpected error occurred:", error);
     }
@@ -117,7 +119,10 @@ const DescriptionsTenderView = () => {
           <TenderNav />
           <div className="w-full">
             <TenderName name={tender.name} />
-            <TotalSummary/>
+            <div className="flex gap-10">
+              <TotalSummary />
+              <TenderSummary />
+            </div>
             <form
               className="bg-white w-full max-w-[600px] mx-auto px-4 md:px-16 py-12 space-y-5 flex flex-col items-center"
               onSubmit={handleSubmit(onSubmit)}
