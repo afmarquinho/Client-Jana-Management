@@ -6,7 +6,7 @@ const TenderNav: React.FC = () => {
       <nav className="bg-green-900 text-white w-36">
         <div className="p-4">
           <NavLink
-            to="#"
+            to="/tender-summary-view"
             className="text-black text-center bg-green-400 py-2 hover:bg-green-700 block w-full hover:text-white"
           >
             Resúmen

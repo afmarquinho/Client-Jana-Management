@@ -1,72 +1,75 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
-const TotalSummary = () => {
+const TenderSummary = () => {
   const tender = useSelector((state: RootState) => state.tender.tender);
-
-  const totalWf = tender.workforce.reduce((total, item) => {
-    return total + item.totalValue;
-  }, 0);
-
-  const totalMt = tender.materials.reduce((total, item) => {
-    return total + item.totalValue;
-  }, 0);
-
-  const totalOtherExp = tender.otherExpenses.reduce((total, item) => {
-    return total + item.totalValue;
-  }, 0);
 
   return (
     <table className="my-5 divide-y divide-gray-400">
       <tbody className="bg-white divide-y divide-gray-400">
         <tr className="bg-gray-200">
           <th className="px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border border-gray-400">
-            Costo Total de Mano de Obra
+            Total Materiales
           </th>
           <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold border border-gray-400">
-            {totalWf.toLocaleString("en-US", {
+            {tender.summary.materials.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
             })}
           </td>
           <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold border border-gray-400">
-            {(((totalWf)/(totalMt + totalWf + totalOtherExp)) * 100).toFixed(2)}%
+            {((tender.summary.materials / tender.summary.total) * 100).toFixed(2)}%
           </td>
+
         </tr>
-        <tr className="bg-gray-50">
+        <tr className="bg-white">
           <th className="px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border border-gray-400">
-            Costo Total Materiales
+            Prealistamiento
           </th>
           <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold border border-gray-400">
-            {totalMt.toLocaleString("en-US", {
+            {tender.summary.preparation.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
             })}
           </td>
           <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold border border-gray-400">
-            {(((totalMt)/(totalMt + totalWf + totalOtherExp)) * 100).toFixed(2)}%
+            {((tender.summary.preparation / tender.summary.total) * 100).toFixed(2)}%
           </td>
         </tr>
         <tr className="bg-gray-200">
           <th className="px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border border-gray-400">
-            Otros Gastos y Consumibles
+           Turno día
           </th>
           <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold border border-gray-400">
-            {totalOtherExp.toLocaleString("en-US", {
+            {tender.summary.day.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
             })}
           </td>
           <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold border border-gray-400">
-            {(((totalOtherExp)/(totalMt + totalWf + totalOtherExp)) * 100).toFixed(2)}%
+            {((tender.summary.day / tender.summary.total) * 100).toFixed(2)}%
+          </td>
+        </tr>
+        <tr className="bg-white">
+          <th className="px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border border-gray-400">
+            Turno Noche
+          </th>
+          <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold border border-gray-400">
+            {tender.summary.night.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+            })}
+          </td>
+          <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold border border-gray-400">
+            {((tender.summary.night / tender.summary.total) * 100).toFixed(2)}%
           </td>
         </tr>
         <tr className="bg-orange-100">
           <th className="px-4 py-2 text-left text-xs font-bold text-gray-800 uppercase tracking-wider whitespace-nowrap border border-gray-400">
            Total Cotización
           </th>
-          <td className="px-2 whitespace-normal text-sm text-gray-800 text-right font-bold border border-gray-400">
-            {(totalMt + totalWf + totalOtherExp).toLocaleString("en-US", {
+          <td className="px-2 whitespace-normal text-sm font-bold text-gray-800 text-right border border-gray-400">
+            {tender.summary.total.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
             })}
@@ -76,4 +79,4 @@ const TotalSummary = () => {
     </table>
   );
 };
-export default TotalSummary;
+export default TenderSummary;

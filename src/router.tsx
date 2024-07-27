@@ -19,6 +19,8 @@ import NotesTenderView from "./views/tender/NotesTenderView";
 import WorkforceView from "./views/tender/WorkforceView";
 import MaterialsView from "./views/tender/MaterialsView";
 import OtherExpView from "./views/tender/OtherExpView";
+import TenderSummaryView from "./views/tender/TenderSummaryView";
+import AnalysisView from "./views/tender/AnalysisView";
 
 const AppRouter = () => {
   return (
@@ -57,9 +59,26 @@ const AppRouter = () => {
               element={<DescriptionsTenderView />}
             />
             <Route path="/tender-editing-notes" element={<NotesTenderView />} />
-            <Route path="/tender-editing-workforce" element={<WorkforceView />} />
-            <Route path="/tender-editing-materials" element={<MaterialsView />} />
-            <Route path="/tender-editing-other-expenses" element={<OtherExpView />} />
+            <Route
+              path="/tender-editing-workforce"
+              element={<WorkforceView />}
+            />
+            <Route
+              path="/tender-editing-materials"
+              element={<MaterialsView />}
+            />
+            <Route
+              path="/tender-editing-other-expenses"
+              element={<OtherExpView />}
+            />
+            <Route
+              path="/tender-summary-view"
+              element={<TenderSummaryView />}
+            />
+            <Route
+              path="/tender-analysis"
+              element={<AnalysisView />}
+            />
           </Route>
         </Route>
       </Routes>
