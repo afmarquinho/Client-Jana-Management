@@ -3,6 +3,7 @@ import { RootState } from "../../redux/store";
 
 const TenderSummary = () => {
   const tender = useSelector((state: RootState) => state.tender.tender);
+   
 
   return (
     <table className="my-5 divide-y divide-gray-400">
@@ -12,13 +13,13 @@ const TenderSummary = () => {
             Total Materiales
           </th>
           <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold border border-gray-400">
-            {tender.summary.materials.toLocaleString("en-US", {
+           {tender.summary.materials.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
             })}
           </td>
           <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold border border-gray-400">
-            {((tender.summary.materials / tender.summary.total) * 100).toFixed(2)}%
+          {((tender.summary.materials / tender.summary.total) * 100).toFixed(2)}%
           </td>
 
         </tr>
@@ -30,7 +31,7 @@ const TenderSummary = () => {
             {tender.summary.preparation.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
-            })}
+            })} 
           </td>
           <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold border border-gray-400">
             {((tender.summary.preparation / tender.summary.total) * 100).toFixed(2)}%
@@ -44,7 +45,7 @@ const TenderSummary = () => {
             {tender.summary.day.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
-            })}
+            })} 
           </td>
           <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold border border-gray-400">
             {((tender.summary.day / tender.summary.total) * 100).toFixed(2)}%
@@ -58,7 +59,7 @@ const TenderSummary = () => {
             {tender.summary.night.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
-            })}
+            })} 
           </td>
           <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold border border-gray-400">
             {((tender.summary.night / tender.summary.total) * 100).toFixed(2)}%
@@ -72,7 +73,7 @@ const TenderSummary = () => {
             {tender.summary.total.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
-            })}
+            })} 
           </td>
         </tr>
       </tbody>

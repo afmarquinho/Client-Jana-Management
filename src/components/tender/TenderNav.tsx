@@ -72,6 +72,16 @@ const TenderNav: React.FC = () => {
         >
           Observaciones
         </NavLink>
+        <NavLink
+          to="/tender-comments"
+          className={({ isActive }) =>
+            isActive
+              ? "text-black border-l-4 ps-3 py-3 border-l-orange-300 bg-orange-500 block w-full"
+              : "text-green-100 border-l-4 ps-3 py-3 border-l-green-900 hover:bg-green-700 hover:border-l-green-300 block w-full"
+          }
+        >
+          Comentarios
+        </NavLink>
       </nav>
     </div>
   );
