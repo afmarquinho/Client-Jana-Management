@@ -82,7 +82,7 @@ export type SupplyType = {
   totalValue: number;
 };
 
-export type OtherExpenses = {
+export type OtherExpensesType = {
   description: string;
   shiftType: string;
   unit: string;
@@ -94,7 +94,7 @@ export type OtherExpenses = {
   totalValue: number;
 };
 
-export type OfferSummary = {
+export type OfferSummaryType = {
   materials: number;
   preparation: number;
   day: number;
@@ -111,6 +111,6 @@ export type Tender = HeadingTender & {
   ref: string;
   workforce: LaborType[];
   materials: SupplyType[];
-  otherExpenses: OtherExpenses[];
-  summary: OfferSummary[];
+  otherExpenses: OtherExpensesType[];
+  summary: OfferSummaryType;
 };

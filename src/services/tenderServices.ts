@@ -27,8 +27,8 @@ export const createTenderService = async (data: DataCreateType) => {
   try {
     const response = await axiosClient.post("/tenders", data);
     const resApi = response.data.data;
-    const tenderData: Tender = assignTenderData(resApi);
-    return tenderData;
+    assignTenderData(resApi);
+    return
   } catch (error) {
     console.log(error);
   }

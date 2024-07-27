@@ -11,7 +11,7 @@ import HourglassSpinner from "../../components/HourglassSpinner";
 import { useEffect, useState } from "react";
 import { initValDescription } from "../../helpers/initialValues";
 import TenderName from "../../components/tender/TenderName";
-import WorkforceMaterialSummary from "../../components/tender/WorkforceMaterialSummary";
+import TotalSummary from "../../components/tender/TotalSummary";
 
 const DescriptionsTenderView = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -117,7 +117,7 @@ const DescriptionsTenderView = () => {
           <TenderNav />
           <div className="w-full">
             <TenderName name={tender.name} />
-            <WorkforceMaterialSummary/>
+            <TotalSummary/>
             <form
               className="bg-white w-full max-w-[600px] mx-auto px-4 md:px-16 py-12 space-y-5 flex flex-col items-center"
               onSubmit={handleSubmit(onSubmit)}

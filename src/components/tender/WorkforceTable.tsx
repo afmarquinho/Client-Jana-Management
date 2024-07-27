@@ -6,40 +6,51 @@ type ChildInputProps = {
   setIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setWfEdit: React.Dispatch<React.SetStateAction<LaborType>>;
   handleDelete: (index: number) => void;
-  shift: string;
+  shiftType: string;
 };
 
 const WorkforceTable: React.FC<ChildInputProps> = ({
   setIndex,
   setWfEdit,
   handleDelete,
-  shift,
+  shiftType,
 }) => {
   const tender = useSelector((state: RootState) => state.tender.tender);
-  const filteredShiftArray = tender.workforce.filter((item: LaborType) => {
-    return item.shiftType === shift;
-  });
 
-  const onEdit = (index: number, item: LaborType) => {
-    setIndex(index);
-    setWfEdit(item);
+  const filteredShiftArray = tender.workforce.filter(
+    (item) => item.shiftType === shiftType
+  );
+
+  const onEdit = (selectedItem: LaborType) => {
+    const originalIndex = tender.workforce.findIndex(
+      (item) => item === selectedItem
+    );
+    setIndex(originalIndex);
+    setWfEdit(selectedItem);
+  };
+
+  const onDelete = (selectedItem: LaborType) => {
+    const originalIndex = tender.workforce.findIndex(
+      (item) => item === selectedItem
+    );
+    handleDelete(originalIndex);
   };
 
   return (
     <div className="my-5">
       <table className="w-full divide-y divide-gray-400 table-auto">
         <caption className="caption-top font-semibold italic">
-          {shift === "preparation"
+          {shiftType === "preparation"
             ? "Prealistamiento"
-            : shift === "day"
+            : shiftType === "day"
             ? "Turno día"
             : "Turno Noche"}
         </caption>
         <thead
           className={`${
-            shift === "preparation"
+            shiftType === "preparation"
               ? "bg-yellow-100"
-              : shift === "day"
+              : shiftType === "day"
               ? "bg-indigo-100"
               : "bg-red-100"
           }`}
@@ -51,11 +62,11 @@ const WorkforceTable: React.FC<ChildInputProps> = ({
             <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
               Mano de Obra
             </th>
-            <th className=" px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
-              Cantidad
-            </th>
             <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
               Turnos
+            </th>
+            <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
+              Cantidad
             </th>
             <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
               Turno
@@ -88,12 +99,6 @@ const WorkforceTable: React.FC<ChildInputProps> = ({
               <td className="px-2 py-4 whitespace-normal text-sm text-gray-900 text-center ">
                 {item.role}
               </td>
-              <td className="px-2 py-4 whitespace-normal text-sm text-gray-900 text-center">
-                {item.workers}
-              </td>
-              <td className=" px-2 py-4 whitespace-normal text-sm text-gray-900 text-center">
-                {item.shiftCount}
-              </td>
               <td className=" px-2 py-4 whitespace-normal text-sm text-gray-900 text-center">
                 {item.shiftType === "day"
                   ? "Día"
@@ -101,6 +106,14 @@ const WorkforceTable: React.FC<ChildInputProps> = ({
                   ? "Noche"
                   : "Prealistamiento"}
               </td>
+
+              <td className="px-2 py-4 whitespace-normal text-sm text-gray-900 text-center">
+                {item.workers}
+              </td>
+              <td className=" px-2 py-4 whitespace-normal text-sm text-gray-900 text-center">
+                {item.shiftCount}
+              </td>
+
               <td className="px-2 py-4 whitespace-normal text-sm text-gray-900 text-center ">
                 {item.rate.toLocaleString("en-US", {
                   style: "currency",
@@ -132,17 +145,14 @@ const WorkforceTable: React.FC<ChildInputProps> = ({
                 })}
               </td>
               <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
-                <button
-                  className="font-semibold"
-                  onClick={() => onEdit(index, item)}
-                >
+                <button className="font-semibold" onClick={() => onEdit(item)}>
                   Editar
                 </button>
               </td>
               <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                 <button
                   className="text-red-500 font-semibold"
-                  onClick={() => handleDelete(index)}
+                  onClick={() => onDelete(item)}
                 >
                   Eliminar
                 </button>
@@ -172,4 +182,5 @@ const WorkforceTable: React.FC<ChildInputProps> = ({
     </div>
   );
 };
+
 export default WorkforceTable;
