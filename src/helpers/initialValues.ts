@@ -5,6 +5,7 @@ import {
   OtherExpensesType,
   SupplyType,
   Tender,
+  UserType,
 } from "../types/types";
 
 export const initValTender: Tender = {
@@ -37,7 +38,7 @@ export const initValTender: Tender = {
     night: 0,
     total: 0,
   },
-  comments:[]
+  comments: [],
 };
 
 export const initValDescription: Description = {
@@ -88,4 +89,24 @@ export const initOfferSummary: OfferSummaryType = {
   day: 0,
   night: 0,
   total: 0,
+};
+
+
+export const initValuser: UserType = {
+  id: 0,
+  name: "",
+  lastName: "",
+  idType: "",
+  userId: "",
+  dateOfBirth: "",
+  address: "",
+  phoneNumber: "",
+  email: "",
+  role: "",
+  jobTitle: "",
+  user: "",
+  password: "",
+  updatedAt: "",
+  createdAt: "",
+  profilePicture: null,
 };

@@ -1,18 +1,18 @@
 import { TrashIcon } from "@heroicons/react/16/solid";
 import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { VisitReport } from "../../types/types";
-import { workforce } from "../../types/types";
-import { material } from "../../types/types";
+import { WorkforceType } from "../../types/types";
+import {  MaterialType } from "../../types/types";
 import { useState } from "react";
 
 type ChildInputProps = {
   register: UseFormRegister<VisitReport>;
   setValue: UseFormSetValue<VisitReport>;
-  setWorkForceArray: (data: workforce[]) => void;
-  setMaterialArray: (data: material[]) => void;
+  setWorkForceArray: (data: WorkforceType[]) => void;
+  setMaterialArray: (data: MaterialType[]) => void;
 
-  workForceArray: workforce[];
-  materialArray: material[];
+  workForceArray: WorkforceType[];
+  materialArray: MaterialType[];
 };
 
 const ReportFieldForm: React.FC<ChildInputProps> = ({

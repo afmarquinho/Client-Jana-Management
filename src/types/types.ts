@@ -118,5 +118,35 @@ export type Tender = HeadingTender & {
   materials: SupplyType[];
   otherExpenses: OtherExpensesType[];
   summary: OfferSummaryType;
-  comments:CommentsTypes[]
+  comments: CommentsTypes[];
 };
+
+export type UserFormType = {
+  name: string;
+  lastName: string;
+  idType: string;
+  userId: number;
+  dateOfBirth: string;
+  address: string;
+  phoneNumber: string;
+  email: string;
+  role: string;
+  jobTitle: string;
+  user: string;
+  password: string;
+};
+
+export type UserType = UserFormType & {
+  id: number;
+  profilePicture: string | null;
+  status: string;
+};
+
+export type UserUpdatedType ={
+  address: string;
+  phoneNumber: string;
+  email: string;
+  jobTitle: string;
+  role: string;
+  user: string;
+}
