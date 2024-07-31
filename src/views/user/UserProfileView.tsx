@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import perfil from "../../assets/background/perfil.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,7 @@ import {
   setUserEdit,
 } from "../../redux/slices/userSlice";
 import { CameraIcon } from "@heroicons/react/16/solid";
+import DeactiveUserModal from "./DeactiveUserModal";
 
 const UserProfileView = () => {
   const navigate = useNavigate();
@@ -23,10 +24,15 @@ const UserProfileView = () => {
   const [isActive, setIsActive] = useState<boolean>(true);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const imageUrl =
-    previewImage ||
-    (user ? `http://localhost:4000/api/${user.profilePicture}` : perfil);
+  const imgProfile = (path: string | null) => {
+    if (path === null) {
+      return perfil; 
+    } else {
+      return `${import.meta.env.VITE_API_URL}/${path}`;
+    }
+  };
 
   const onBack = () => {
     navigate(-1);
@@ -68,8 +74,17 @@ const UserProfileView = () => {
       }
     } catch (error) {
       console.error("Error al subir la imagen:", error);
+      alert("No se pudo actualizar el usuario")
     }
   };
+  
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [isModalOpen]);
 
   return (
     <>
@@ -115,7 +130,7 @@ const UserProfileView = () => {
                 <div className="w-40 h-40 sm:w-44 sm:h-44 lg:w-60 lg:h-60 rounded-ful relative">
                   <div className="w-40 h-40 sm:w-44 sm:h-44 lg:w-60 lg:h-60 rounded-full overflow-hidden">
                     <img
-                      src={imageUrl}
+                      src={imgProfile(user?.profilePicture)}
                       alt="Imagen Perfíl"
                       className="object-cover w-full h-full flex justify-center items-center"
                     />
@@ -148,10 +163,10 @@ const UserProfileView = () => {
                 <p className="flex justify-start items-center gap-1">
                   <span
                     className={`h-2 w-2 rounded-full ${
-                      user?.status === "active" ? "bg-green-400" : "bg-red-500"
+                      user?.active === true ? "bg-green-400" : "bg-red-500"
                     }`}
                   ></span>
-                  {user?.status === "active" ? "Activo" : "No Activo"}
+                  {user?.active === true ? "Activo" : "No Activo"}
                 </p>
               </div>
               <div></div>
@@ -204,8 +219,17 @@ const UserProfileView = () => {
                     <button className="text-sm font-medium bg-gradient-to-b from-orange-400 to-orange-600 text-white px-2 py-1 rounded-md  shadow hover:from-yellow-500 hover:to-yellow-600">
                       Cambiar Contraseña
                     </button>
-                    <button className={`text-sm font-medium bg-gradient-to-b  text-white px-2 py-1 rounded-md  shadow  ${user?.status === "active" ? "from-gray-600 to-gray-700 hover:from-black hover:to-black" : " from-green-600 to-green-700 hover:from-teal-600 hover:to-teal-700"}`}>
-                      {user?.status === "active" ? "Desactivar Usuario" : "Activar Usuario"}
+                    <button
+                      className={`text-sm font-medium bg-gradient-to-b  text-white px-2 py-1 rounded-md  shadow  ${
+                        user?.active === true
+                          ? "from-gray-600 to-gray-700 hover:from-black hover:to-black"
+                          : " from-green-600 to-green-700 hover:from-teal-600 hover:to-teal-700"
+                      }`}
+                      onClick={() => setIsModalOpen(true)}
+                    >
+                      {user?.active === true
+                        ? "Desactivar Usuario"
+                        : "Activar Usuario"}
                     </button>
                   </div>
                 </div>
@@ -214,6 +238,7 @@ const UserProfileView = () => {
           </div>
         </div>
       )}
+      {isModalOpen && <DeactiveUserModal setIsModalOpen={setIsModalOpen} />}
     </>
   );
 };

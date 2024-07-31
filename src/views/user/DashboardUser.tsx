@@ -43,7 +43,7 @@ const DashboardUser = () => {
               <div className="w-full p-4">
                 <Link
                   to="/new-user"
-                  className="bg-green-400 block w-full p-1 text-center"
+                  className="bg-green-400 block w-full p-1 text-center hover:bg-green-700 hover:text-white"
                 >
                   + Nuevo Usuario
                 </Link>
@@ -106,8 +106,8 @@ const DashboardUser = () => {
                         {item.email}
                       </td>
                       <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify">
-                        <span className={`px-2 rounded-xl  font-semibold text-xs ${item.status === "active" ? "bg-green-300 text-green-700": "bg-gray-300 text-gray-800"}`}>
-                         {item.status === "active" ? "Activo": "No Activo" }
+                        <span className={`px-2 rounded-xl  font-semibold text-xs ${item.active === true? "bg-green-300 text-green-700": "bg-gray-300 text-gray-800"}`}>
+                         {item.active === true ? "Activo": "No Activo" }
                         </span>
                       </td>
                       <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify font-bold">

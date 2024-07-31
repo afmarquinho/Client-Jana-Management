@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import {
+  activeDeactiveUserService,
   createUserService,
   getUsersService,
   updateUserService,
@@ -68,6 +69,22 @@ export const fecthUpdateProfile = createAsyncThunk(
         throw new Error(
           "Ha ocurrido un error inesperado al actualizar el usuario"
         );
+      }
+    }
+  }
+);
+
+export const fetchActiveDeactiveUser = createAsyncThunk(
+  "api/user/update-status",
+  async ({ id, status }: { id: number; status: boolean }) => {
+    try {
+     await activeDeactiveUserService(id, status)
+      return status
+    } catch (error) {
+      if (isAxiosError(error)) {
+        throw error;
+      } else {
+        throw new Error("Ha ocurrido un error inesperado al crear el usuario");
       }
     }
   }
@@ -169,6 +186,26 @@ const userSlice = createSlice({
         );
       })
       .addCase(fecthUpdateProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          action.error.message || "Falló la actualización del usuario";
+      })
+      .addCase(fetchActiveDeactiveUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchActiveDeactiveUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        if (state.userProfile?.id === action.meta.arg.id) {
+          state.userProfile.active = action.payload;
+        }
+        // Actualiza el estado del usuario en la lista de users
+        state.users = state.users.map((item) =>
+          item.id === action.meta.arg.id ? { ...item, active: action.payload } : item
+        );
+      })
+      .addCase(fetchActiveDeactiveUser.rejected, (state, action) => {
         state.loading = false;
         state.error =
           action.error.message || "Falló la actualización del usuario";

@@ -47,9 +47,7 @@ export const createUserService = async (user: UserFormType) => {
   } catch (error) {
     if (isAxiosError(error)) {
       const errorMessage = error.response?.data?.errors?.[0]?.msg;
-      throw new Error(
-        errorMessage || "Error al crear el usuario"
-      );
+      throw new Error(errorMessage || "Error al crear el usuario");
     } else {
       throw new Error("Ha ocurrido un error inesperado");
     }
@@ -98,4 +96,18 @@ export const uploadProfilePictureService = async (id: number, file: File) => {
   }
 };
 
-
+export const activeDeactiveUserService = async (id: number, status: boolean) => {
+  try {
+    await axiosClient.patch(`/users/update-status/${id}`, {active: status });
+    return status
+  } catch (error) {
+    if (isAxiosError(error)) {
+      throw new Error(
+        error.response?.data.errors[0].msg ||
+          "Error al actualizar el estado del usuario"
+      );
+    } else {
+      throw new Error("Ha ocurrido un error inesperado");
+    }
+  }
+};

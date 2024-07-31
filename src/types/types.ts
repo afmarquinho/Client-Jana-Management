@@ -139,7 +139,7 @@ export type UserFormType = {
 export type UserType = UserFormType & {
   id: number;
   profilePicture: string | null;
-  status: string;
+  active:boolean
 };
 
 export type UserUpdatedType ={
