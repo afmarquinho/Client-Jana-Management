@@ -18,7 +18,7 @@ export const getTendersService = async () => {
         error.response?.data?.message || "Error fetching tenders"
       );
     } else {
-      throw new Error("An unexpected error occurred");
+      throw new Error("Ha ocurrido un error inesperado");
     }
   }
 };

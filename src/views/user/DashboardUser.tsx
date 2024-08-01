@@ -1,168 +1,70 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
 import { Link } from "react-router-dom";
-import perfil from "../../assets/background/perfil.jpg";
+
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import { cleanUserEdit, fetchGetUsers } from "../../redux/slices/userSlice";
+import { useEffect } from "react";
+import UsersTable from "../../components/user/UsersTable";
 
 const DashboardUser = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const users = useSelector((state: RootState) => state.user.users);
+
+  const activeUsers = users.filter((user) => user.active === true);
+  const deactiveUsers = users.filter((user) => user.active === false);
+
+  const loading = useSelector((state: RootState) => state.user.loading);
+
+  useEffect(() => {
+    dispatch(cleanUserEdit());
+    if (users.length <= 0) {
+      dispatch(fetchGetUsers());
+    }
+  }, [dispatch, users]);
+
   return (
-    <div className="flex my-4">
-      <div>
-        <nav className="bg-green-900">
-          <div className="w-full p-4">
-            <Link
-              to="/new-user"
-              className="bg-green-400 block w-full p-1 text-center"
-            >
-              + Nuevo Usuario
-            </Link>
+    <>
+      {loading ? (
+        <div>Cargando...</div>
+      ) : (
+        <div className="flex flex-col md:flex-row my-4">
+          <div className="w-[200px]">
+            <nav className="bg-green-900">
+              <div className="w-full p-4">
+                <Link
+                  to="/new-user"
+                  className="bg-green-400 block w-full p-1 text-center hover:bg-green-700 hover:text-white"
+                >
+                  + Nuevo Usuario
+                </Link>
+              </div>
+            </nav>
           </div>
-          <button className="w-full text-left px-4 py-2 text-green-100 hover:bg-green-950 hover:border-l-green-300  hover:border-l-4 hover:ps-3">
-            Usuarios
-          </button>
-          <button className="w-full text-left px-4 py-2 text-green-100 hover:bg-green-950 hover:border-l-green-300  hover:border-l-4 hover:ps-3">
-            Usuarios
-          </button>
-        </nav>
-      </div>
-      <div className="p-4 pe-0">
-        {" "}
-        <form action="" className="w-11/12 max-w-72">
-          <div className="bg-white h-12 flex items-center border">
-            <input
-              type="text"
-              className="w-72 outline-none p-2"
-              placeholder="cc, pe.: 125457825"
-            />
-            <button
-              type="submit"
-              className="h-full w-12 flex justify-center items-center bg-green-200"
-            >
-              <MagnifyingGlassIcon className="h-7 text-gray-600" />
-            </button>
+          <div className="px-0 py-4 md:px-4 md:py-0 w-full">
+            {" "}
+            <form action="" className="w-11/12 max-w-72">
+              <div className="bg-white h-12 flex items-center border">
+                <input
+                  type="text"
+                  className="w-72 outline-none p-2"
+                  placeholder="cc, pe.: 125457825"
+                />
+                <button
+                  type="submit"
+                  className="h-full w-12 flex justify-center items-center bg-green-200"
+                >
+                  <MagnifyingGlassIcon className="h-7 text-gray-600" />
+                </button>
+              </div>
+            </form>
+            <UsersTable users={activeUsers}/>
+            <h2 className="font-medium text-xl text-gray-600 mt-7">Usuarios <span className="text-red-500">No Activos</span></h2>
+            <UsersTable users={deactiveUsers}/>
           </div>
-        </form>
-        <div>
-          <table className="divide-y divide-gray-400">
-            <thead className="">
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap"></th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap">
-                  Nombre
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap">
-                  Correo
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap">
-                  Status
-                </th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-400">
-              <tr>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify">
-                  <div className="h-12 w-12 rounded-full overflow-hidden">
-                    <img
-                      src={perfil}
-                      alt="foto"
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                </td>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify">
-                  John Doe
-                </td>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify">
-                  correo@correo.com
-                </td>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify">
-                  <span className="bg-green-300 px-2 rounded-xl text-green-700 font-semibold text-xs">
-                    Activo
-                  </span>
-                </td>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify font-bold">
-                  <Link to="/profile/2">ver</Link>
-                </td>
-              </tr>
-              <tr>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify">
-                  <div className="h-12 w-12 rounded-full overflow-hidden">
-                    <img
-                      src={perfil}
-                      alt="foto"
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                </td>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify">
-                  John Doe
-                </td>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify">
-                  correo@correo.com
-                </td>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify">
-                  <span className="bg-green-300 px-2 rounded-xl text-green-700 font-semibold text-xs">
-                    Activo
-                  </span>
-                </td>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify font-bold">
-                  <Link to="/profile/2">ver</Link>
-                </td>
-              </tr>
-              <tr>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify">
-                  <div className="h-12 w-12 rounded-full overflow-hidden">
-                    <img
-                      src={perfil}
-                      alt="foto"
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                </td>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify">
-                  John Doe
-                </td>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify">
-                  correo@correo.com
-                </td>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify">
-                  <span className="bg-green-300 px-2 rounded-xl text-green-700 font-semibold text-xs">
-                    Activo
-                  </span>
-                </td>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify font-bold">
-                  <Link to="/profile/2">ver</Link>
-                </td>
-              </tr>
-              <tr>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify">
-                  <div className="h-12 w-12 rounded-full overflow-hidden">
-                    <img
-                      src={perfil}
-                      alt="foto"
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                </td>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify">
-                  John Doe
-                </td>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify">
-                  correo@correo.com
-                </td>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify">
-                  <span className="bg-green-300 px-2 rounded-xl text-green-700 font-semibold text-xs">
-                    Activo
-                  </span>
-                </td>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify font-bold">
-                  <Link to="/profile/2">ver</Link>
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 export default DashboardUser;

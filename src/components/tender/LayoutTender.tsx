@@ -26,18 +26,7 @@ const LayoutTender = () => {
         </Link>
 
         <div className="flex gap-3">
-          <Link
-            to="/tender-draft"
-            className="bg-gradient-to-b from-orange-400 to-orange-600 rounded-md text-white px-2 py-1 sm:px-4 sm:py-1 shadow-lg text-xs sm:text-base"
-          >
-            En edición
-          </Link>
-          <Link
-            to="#"
-            className="bg-gradient-to-b from-violet-700 to-violet-800 rounded-md text-white px-2 py-1 sm:px-4 sm:py-1 shadow-lg text-xs sm:text-base"
-          >
-            Pendientes
-          </Link>
+         
           <Link
             to="#"
             className="bg-gradient-to-b from-green-400 to-green-600 rounded-md text-white px-2 py-1 sm:px-4 sm:py-1 shadow-lg text-xs sm:text-base"

@@ -9,6 +9,7 @@ const NewReportView = () => {
   const navigate = useNavigate()
   
   const dispatch = useDispatch();
+  
   const onBack = () => {
     dispatch(cleanReport())
     dispatch(errorMessage(""))

@@ -5,13 +5,15 @@ import {
 } from "../../services/tenderServices";
 import { isAxiosError } from "axios";
 import { initValTender } from "../../helpers/initialValues";
-import { Tender } from "../../types/types";
+import { Tender, VisitReportApi } from "../../types/types";
+import { getReportByIdService } from "../../services/reportServices";
 
 type TenderState = {
   tenders: Tender[];
   tender: Tender;
-  totalWf:number
-  totalMt:number
+  viewReport: VisitReportApi | null;
+  totalWf: number;
+  totalMt: number;
   loading: boolean;
   error: string | null;
 };
@@ -19,8 +21,9 @@ type TenderState = {
 const initialState: TenderState = {
   tenders: [],
   tender: initValTender,
-  totalMt:0,
-  totalWf:0,
+  viewReport: null,
+  totalMt: 0,
+  totalWf: 0,
   loading: false,
   error: null,
 };
@@ -30,6 +33,22 @@ export const fetchTenders = createAsyncThunk("api/tenders/getAll", async () => {
   const tenders = await getTendersService();
   return tenders;
 });
+
+export const fetchGetReportById = createAsyncThunk(
+  "api/report/get-by-id/",
+  async (reportId: number, { rejectWithValue }) => {
+    try {
+      const report = await getReportByIdService(reportId);
+      return report;
+    } catch (error) {
+      if (isAxiosError(error)) {
+        return rejectWithValue(error.message);
+      } else {
+        return rejectWithValue("Error desconocido");
+      }
+    }
+  }
+);
 
 export const updateTender = createAsyncThunk(
   "tenders/updateTender",
@@ -47,13 +66,16 @@ export const updateTender = createAsyncThunk(
   }
 );
 
-// Creación del slice
+//* SLICE SETUP
 const tenderSlice = createSlice({
   name: "tender",
   initialState,
   reducers: {
     tenderToEdit: (state, action: PayloadAction<Tender>) => {
       state.tender = action.payload;
+    },
+    cleanError: (state) => {
+      state.error = null;
     },
   },
   extraReducers: (builder) => {
@@ -89,9 +111,22 @@ const tenderSlice = createSlice({
       .addCase(updateTender.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string; // Mensaje de error específico
+      })
+      .addCase(fetchGetReportById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchGetReportById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.viewReport = action.payload;
+       
+      })
+      .addCase(fetchGetReportById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Falló la solicitud";
       });
   },
 });
-export const { tenderToEdit } = tenderSlice.actions;
+export const { tenderToEdit, cleanError } = tenderSlice.actions;
 
 export default tenderSlice.reducer;
