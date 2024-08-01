@@ -3,6 +3,7 @@ import {
   activeDeactiveUserService,
   createUserService,
   getUsersService,
+  updatePasswordService,
   updateUserService,
   uploadProfilePictureService,
 } from "../../services/userServices";
@@ -78,13 +79,30 @@ export const fetchActiveDeactiveUser = createAsyncThunk(
   "api/user/update-status",
   async ({ id, status }: { id: number; status: boolean }) => {
     try {
-     await activeDeactiveUserService(id, status)
-      return status
+      await activeDeactiveUserService(id, status);
+      return status;
     } catch (error) {
       if (isAxiosError(error)) {
         throw error;
       } else {
         throw new Error("Ha ocurrido un error inesperado al crear el usuario");
+      }
+    }
+  }
+);
+
+export const fetchUpdatePassword = createAsyncThunk(
+  "user/update-password",
+  async ({ id, password }: { id: number; password: string }) => {
+    try {
+      return await updatePasswordService(id, password);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        throw error;
+      } else {
+        throw new Error(
+          "Ha ocurrido un error inesperado al actualizar la contraseña"
+        );
       }
     }
   }
@@ -202,13 +220,33 @@ const userSlice = createSlice({
         }
         // Actualiza el estado del usuario en la lista de users
         state.users = state.users.map((item) =>
-          item.id === action.meta.arg.id ? { ...item, active: action.payload } : item
+          item.id === action.meta.arg.id
+            ? { ...item, active: action.payload }
+            : item
         );
       })
       .addCase(fetchActiveDeactiveUser.rejected, (state, action) => {
         state.loading = false;
         state.error =
           action.error.message || "Falló la actualización del usuario";
+      })
+      .addCase(fetchUpdatePassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUpdatePassword.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.userProfile as UserType;
+        state.userProfile = action.payload;
+        state.users = state.users.map((item) =>
+          item.id === action.payload.id ? action.payload : item
+        );
+      })
+      .addCase(fetchUpdatePassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          action.error.message || "Falló la actualización de la contraserña";
       });
   },
 });

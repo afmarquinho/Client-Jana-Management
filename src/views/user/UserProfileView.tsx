@@ -11,7 +11,7 @@ import {
   setUserEdit,
 } from "../../redux/slices/userSlice";
 import { CameraIcon } from "@heroicons/react/16/solid";
-import DeactiveUserModal from "./DeactiveUserModal";
+import DeactiveUserModal from "../../components/user/DeactiveUserModal";
 
 const UserProfileView = () => {
   const navigate = useNavigate();
@@ -26,13 +26,18 @@ const UserProfileView = () => {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const imgProfile = (path: string | null) => {
-    if (path === null) {
-      return perfil; 
-    } else {
-      return `${import.meta.env.VITE_API_URL}/${path}`;
-    }
-  };
+
+  // const imageUrl =
+  //   previewImage ||
+  //   (user ? `http://localhost:4000/api/${user.profilePicture}` : perfil);
+
+    const imgProfile = (path: string | null) => {
+      if (path === null) {
+        return perfil;
+      } else {
+        return `${import.meta.env.VITE_API_URL}/${path}`;
+      }
+    };
 
   const onBack = () => {
     navigate(-1);
@@ -52,6 +57,7 @@ const UserProfileView = () => {
     if (file) {
       setSelectedFile(file);
       setPreviewImage(URL.createObjectURL(file));
+      console.log(previewImage)
     }
   };
 
@@ -130,7 +136,7 @@ const UserProfileView = () => {
                 <div className="w-40 h-40 sm:w-44 sm:h-44 lg:w-60 lg:h-60 rounded-ful relative">
                   <div className="w-40 h-40 sm:w-44 sm:h-44 lg:w-60 lg:h-60 rounded-full overflow-hidden">
                     <img
-                      src={imgProfile(user?.profilePicture)}
+                     src={previewImage || imgProfile(user?.profilePicture)}
                       alt="Imagen Perfíl"
                       className="object-cover w-full h-full flex justify-center items-center"
                     />
@@ -216,9 +222,11 @@ const UserProfileView = () => {
                   <p className="text-gray-400">Usuario</p>
                   <p className="mb-3">{user?.user}</p>
                   <div className="flex justify-between items-center">
-                    <button className="text-sm font-medium bg-gradient-to-b from-orange-400 to-orange-600 text-white px-2 py-1 rounded-md  shadow hover:from-yellow-500 hover:to-yellow-600">
+                    <Link 
+                    to={`/update-passowrd/${user?.id}`}
+                    className="text-sm font-medium bg-gradient-to-b from-orange-400 to-orange-600 text-white px-2 py-1 rounded-md  shadow hover:from-yellow-500 hover:to-yellow-600">
                       Cambiar Contraseña
-                    </button>
+                    </Link>
                     <button
                       className={`text-sm font-medium bg-gradient-to-b  text-white px-2 py-1 rounded-md  shadow  ${
                         user?.active === true
@@ -239,6 +247,7 @@ const UserProfileView = () => {
         </div>
       )}
       {isModalOpen && <DeactiveUserModal setIsModalOpen={setIsModalOpen} />}
+     
     </>
   );
 };

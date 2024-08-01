@@ -76,8 +76,7 @@ const NewUserView = () => {
           alert(`Error: ${resultAction.error.message}`);
         }
       } catch (error) {
-        console.error(error);
-        console.error("Error al actualizar el usuario:", error);
+              console.error("Error al actualizar el usuario:", error);
         alert("Ocurrió un error inesperado al actualizar el usuario.");
       }
       

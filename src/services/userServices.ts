@@ -111,3 +111,20 @@ export const activeDeactiveUserService = async (id: number, status: boolean) => 
     }
   }
 };
+
+export const updatePasswordService = async (id: number, password: string) => {
+  try {
+    const response = await axiosClient.patch(`/users/${id}`, {password});
+
+    return response.data.data
+  } catch (error) {
+    if (isAxiosError(error)) {
+      throw new Error(
+        error.response?.data.errors[0].msg ||
+          "Error al actualizar la contraseña del usuario"
+      );
+    } else {
+      throw new Error("Ha ocurrido un error inesperado");
+    }
+  }
+};
