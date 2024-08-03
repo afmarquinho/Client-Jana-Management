@@ -2,38 +2,33 @@ import { isAxiosError } from "axios";
 import axiosClient from "../axiosClient";
 import { assignTenderData } from "../helpers/helpers";
 import { Tender } from "../types/types";
-type DataCreateType = {
-  reportId: number;
-  createdBy: string;
-};
 
 export const getTendersService = async () => {
   try {
-    const response = await axiosClient("/tenders");
+    const response = await axiosClient.get("/tenders");
     return response.data.data;
   } catch (error) {
     //* ESTE CONDICIONAL EVITA EL ERROR EN EL TYPE DEL "ERROR"
     if (isAxiosError(error)) {
-      throw new Error(
-        error.response?.data?.message || "Error fetching tenders"
-      );
+      const errorMessage =
+        error.response?.data?.message || "No se pudo obtener las cotizaciones";
+      throw new Error(errorMessage);
     } else {
       throw new Error("Ha ocurrido un error inesperado");
     }
   }
 };
 
-export const createTenderService = async (data: DataCreateType) => {
+export const createTenderService = async (reportId: number) => {
   try {
-    const response = await axiosClient.post("/tenders", data);
+    const response = await axiosClient.post(`/tenders/${reportId}`);
     const resApi = response.data.data;
     assignTenderData(resApi);
-    return
+    return;
   } catch (error) {
     console.log(error);
   }
 };
-
 
 export const updateTenderService = async (data: Tender) => {
   try {

@@ -1,17 +1,12 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import {
-  getTendersService,
-  updateTenderService,
-} from "../../services/tenderServices";
-import { isAxiosError } from "axios";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { initValTender } from "../../helpers/initialValues";
-import { Tender, VisitReportApi } from "../../types/types";
-import { getReportByIdService } from "../../services/reportServices";
+import { Tender, VisitReportType } from "../../types/types";
+import { fetchGetReportById, fetchTenders, fetchUpdateTender } from "../thunks/tenderThunks";
 
 type TenderState = {
   tenders: Tender[];
   tender: Tender;
-  viewReport: VisitReportApi | null;
+  viewReport: VisitReportType | null;
   totalWf: number;
   totalMt: number;
   loading: boolean;
@@ -29,42 +24,6 @@ const initialState: TenderState = {
 };
 
 //* THUNKS
-export const fetchTenders = createAsyncThunk("api/tenders/getAll", async () => {
-  const tenders = await getTendersService();
-  return tenders;
-});
-
-export const fetchGetReportById = createAsyncThunk(
-  "api/report/get-by-id/",
-  async (reportId: number, { rejectWithValue }) => {
-    try {
-      const report = await getReportByIdService(reportId);
-      return report;
-    } catch (error) {
-      if (isAxiosError(error)) {
-        return rejectWithValue(error.message);
-      } else {
-        return rejectWithValue("Error desconocido");
-      }
-    }
-  }
-);
-
-export const updateTender = createAsyncThunk(
-  "tenders/updateTender",
-  async (data: Tender, { rejectWithValue }) => {
-    try {
-      await updateTenderService(data);
-      return { data }; // Puedes devolver los datos actualizados si es necesario
-    } catch (error) {
-      if (isAxiosError(error)) {
-        return rejectWithValue(error.message);
-      } else {
-        return rejectWithValue("Error desconocido");
-      }
-    }
-  }
-);
 
 //* SLICE SETUP
 const tenderSlice = createSlice({
@@ -86,6 +45,7 @@ const tenderSlice = createSlice({
       })
       .addCase(fetchTenders.fulfilled, (state, action) => {
         state.loading = false;
+        state.error = null;
         state.tenders = action.payload;
         state.totalMt = state.tender.materials.reduce((total, item) => {
           return total + item.profitAmount;
@@ -98,8 +58,9 @@ const tenderSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to fetch tenders";
       })
-      .addCase(updateTender.fulfilled, (state, action) => {
+      .addCase(fetchUpdateTender.fulfilled, (state, action) => {
         state.loading = false;
+        state.error = null;
         const updatedTender = action.payload?.data;
         if (updatedTender) {
           state.tender = updatedTender;
@@ -108,7 +69,7 @@ const tenderSlice = createSlice({
           );
         }
       })
-      .addCase(updateTender.rejected, (state, action) => {
+      .addCase(fetchUpdateTender.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string; // Mensaje de error específico
       })
@@ -118,8 +79,8 @@ const tenderSlice = createSlice({
       })
       .addCase(fetchGetReportById.fulfilled, (state, action) => {
         state.loading = false;
+        state.error = null;
         state.viewReport = action.payload;
-       
       })
       .addCase(fetchGetReportById.rejected, (state, action) => {
         state.loading = false;

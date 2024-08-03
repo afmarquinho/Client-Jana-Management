@@ -5,14 +5,13 @@ import { Description, Tender } from "../../types/types";
 import DescriptionTable from "../../components/tender/DescriptionTable";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
-import { updateTender } from "../../redux/slices/tenderSlice";
-
 import HourglassSpinner from "../../components/HourglassSpinner";
 import { useEffect, useState } from "react";
 import { initValDescription } from "../../helpers/initialValues";
 import TenderName from "../../components/tender/TenderName";
 import TotalSummary from "../../components/tender/TotalSummary";
 import TenderSummary from "../../components/tender/TenderSummary";
+import { fetchUpdateTender } from "../../redux/thunks/tenderThunks";
 
 const DescriptionsTenderView = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -55,8 +54,8 @@ const DescriptionsTenderView = () => {
     };
 
     try {
-      const resultAction = await dispatch(updateTender(updatedTender));
-      if (updateTender.fulfilled.match(resultAction)) {
+      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
+      if (fetchUpdateTender.fulfilled.match(resultAction)) {
         alert("¡Descripción eliminada correctamente!");
       } else {
         if (resultAction.payload) {
@@ -88,9 +87,9 @@ const DescriptionsTenderView = () => {
     };
 
     try {
-      const resultAction = await dispatch(updateTender(updatedTender));
+      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
 
-      if (updateTender.fulfilled.match(resultAction)) {
+      if (fetchUpdateTender.fulfilled.match(resultAction)) {
         // La actualización fue exitosa
         alert("¡Cotización Actualizada correctamente!");
         reset();

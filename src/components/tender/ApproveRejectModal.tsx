@@ -7,7 +7,7 @@ import { CommentsTypes } from "../../types/types";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { Tender } from "../../types/types";
-import { updateTender } from "../../redux/slices/tenderSlice";
+import { fetchUpdateTender } from "../../redux/thunks/tenderThunks";
 
 type ChildInputProps = {
   status: string;
@@ -54,9 +54,9 @@ const ApproveRejectModal: React.FC<ChildInputProps> = ({
           };
 
     try {
-      const resultAction = await dispatch(updateTender(updatedTender));
+      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
 
-      if (updateTender.fulfilled.match(resultAction)) {
+      if (fetchUpdateTender.fulfilled.match(resultAction)) {
         // La actualización fue exitosa
         alert("¡Cotización Actualizada correctamente!");
 

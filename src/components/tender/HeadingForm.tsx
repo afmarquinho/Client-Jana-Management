@@ -3,9 +3,9 @@ import { HeadingTender } from "../../types/types";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import HeadingFiledForm from "./HeadingFieldForm";
-import { updateTender } from "../../redux/slices/tenderSlice";
 import { getTodayDateString } from "../../helpers/helpers";
 import HourglassSpinner from "../HourglassSpinner";
+import { fetchUpdateTender } from "../../redux/thunks/tenderThunks";
 
 const HeadingForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -33,7 +33,7 @@ const HeadingForm = () => {
     const tend = { ...tender, ...data };
 
     try {
-      await dispatch(updateTender(tend));
+      await dispatch(fetchUpdateTender(tend));
      
       alert("Tender actualizado exitosamente");
     } catch (error) {

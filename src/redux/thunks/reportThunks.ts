@@ -1,75 +1,87 @@
-import { VisitReport, VisitReportApi } from "../../types/types";
-import { AppDispatch } from "../store";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
-  addItem,
-  cleanViewSummaryReport,
-  errorMessage,
-  getRports,
-  removeItem,
-  updateItem,
-  viewSummaryReport,
-} from "../slices/visitReportSlice";
-import axiosClient from "../../axiosClient";
+  createReportService,
+  deleteReportService,
+  editReportService,
+  getAllReportsService,
+  processReportService,
+} from "../../services/reportServices";
+import { isAxiosError } from "axios";
+import { VisitReportType } from "../../types/types";
 
-export const sendReportToApi = (report: VisitReport) => {
-  return async (dispatch: AppDispatch) => {
+export const fetchGetAllReports = createAsyncThunk(
+  "reports/getAll",
+  async () => {
     try {
-      const response = await axiosClient.post("/reports", report);
-      dispatch(addItem(response.data.data));
-      dispatch(cleanViewSummaryReport());
-      dispatch(errorMessage(""));
-    } catch (error: any) {
-      dispatch(errorMessage(error.response.data.errors[0].msg));
+      return getAllReportsService();
+    } catch (error) {
+      if (isAxiosError(error)) {
+        throw error;
+      } else {
+        throw new Error("Error al obtener los informes");
+      }
     }
-  };
-};
+  }
+);
 
-export const getReportsApi = () => {
-  return async (dispatch: AppDispatch) => {
+export const fetchCreateReport = createAsyncThunk(
+  "report/create",
+  async (report: VisitReportType) => {
     try {
-      const { data } = await axiosClient.get("/reports");
-      dispatch(getRports(data.data));
-    } catch (error: any) {
-      console.log(error.response.data.errors[0].msg);
+      return await createReportService(report);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        throw error;
+      } else {
+        throw new Error("Error al crear el usuario");
+      }
     }
-  };
-};
+  }
+);
 
-export const updateReportApi = (report: VisitReportApi) => {
-  return async (dispatch: AppDispatch) => {
+export const fetchEditReport = createAsyncThunk(
+  "process/edit-report",
+  async ({ id, data }: { id: number; data: VisitReportType }) => {
     try {
-      await axiosClient.put(`/reports/${report.id}`, report);
-      dispatch(updateItem(report));
-      dispatch(viewSummaryReport(report));
-      dispatch(errorMessage(""));
-    } catch (error: any) {
-      dispatch(errorMessage(error.response.data.errors[0].msg));
+      
+      return await editReportService(id, data);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        throw error;
+      } else {
+        throw new Error("Error al editar el informe");
+      }
     }
-  };
-};
-export const removeReportApi = (id: number) => {
-  return async (dispatch: AppDispatch) => {
+  }
+);
+
+export const fetchDeleteReport = createAsyncThunk(
+  "report/delete-by-id",
+  async ({ id }: { id: number }) => {
     try {
-      await axiosClient.delete(`/reports/${id}`);
-      dispatch(removeItem(id));
-    } catch (error: any) {
-      console.log(error.response.data.errors[0].msg);
+      await deleteReportService(id);
+      return id;
+    } catch (error) {
+      if (isAxiosError(error)) {
+        throw error;
+      } else {
+        throw new Error("Error al eliminar el usuario, error en el backend");
+      }
     }
-  };
-};
+  }
+);
 
-export const processReport = (id: number, dueDate: any) => {
-  return async (dispatch: AppDispatch) => {
+export const fetchProcessReport = createAsyncThunk(
+  "process/report",
+  async ({ id, dueDate }: { id: number; dueDate: string }) => {
     try {
-      await axiosClient.patch(`/reports/${id}`, { dueDate });
-      dispatch(removeItem(id));
-      dispatch(errorMessage(""));
-    } catch (error: any) {
-      dispatch(errorMessage(error.response.data.errors[0].msg));
+      await processReportService(id, dueDate);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        throw error;
+      } else {
+        throw new Error("Error al procesar el informe");
+      }
     }
-  };
-};
-
-
-
-
+  }
+);

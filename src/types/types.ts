@@ -8,7 +8,7 @@ export type MaterialType = {
   unit: string;
 };
 
-export type VisitReport = {
+export type VisitReportType = {
   visitDate: string;
   dueDate: string;
   name: string;
@@ -20,17 +20,12 @@ export type VisitReport = {
   email: string;
   priority: string;
   description: string;
-  // priority: string; this is another option
-  workforce: WorkforceType[];
-  material: MaterialType[];
+  workforces: WorkforceType[];
+  materials: MaterialType[];
   createdBy: string;
-};
-
-//* el report Id es para al crear la cotizacion usar el mismo nombre del atributo directamente
-export type VisitReportApi = VisitReport & {
-  id: number;
-  processed: boolean;
-  tenderID: number;
+  id?: number;
+  processed?: boolean;
+  tenderID?: number;
 };
 
 export type Description = {

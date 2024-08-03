@@ -8,8 +8,9 @@ const ReportRoutes = () => {
   return (
     <Route element={<LayoutReport />}>
       <Route index path="/dashboard-report" element={<DashboardReportView />} />
-      <Route path="/report-summary" element={<ReportSummaryView />} />
+      <Route path="/report-summary/:ref" element={<ReportSummaryView />} />
       <Route path="/report-form" element={<NewReportView />} />
+      <Route path="/report-form/:ref" element={<NewReportView />} />
     </Route>
   );
 };

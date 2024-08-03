@@ -7,10 +7,10 @@ import WorkforceFiledsForm from "../../components/tender/WorkforceFieldsForm";
 import { LaborType, OfferSummaryType, Tender } from "../../types/types";
 import WorkforceTable from "../../components/tender/WorkforceTable";
 import { useEffect, useState } from "react";
-import { updateTender } from "../../redux/slices/tenderSlice";
 import { initValWorkforce } from "../../helpers/initialValues";
 import WorkforceSummary from "../../components/tender/WorkforceSummary";
 import { summaryTender } from "../../helpers/helpers";
+import { fetchUpdateTender } from "../../redux/thunks/tenderThunks";
 //TODO: VALIDAR PARA QUE NO SE ENVÍEN NULOS, SI SE ENVIA EL TURNO VACIO LUEGO NO LO PUEDO VER PERO SI ESTA SUMANDO
 
 const WorkforceView = () => {
@@ -59,8 +59,8 @@ const WorkforceView = () => {
     };
 
     try {
-      const resultAction = await dispatch(updateTender(updatedTender));
-      if (updateTender.fulfilled.match(resultAction)) {
+      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
+      if (fetchUpdateTender.fulfilled.match(resultAction)) {
         alert("¡Mano de obra eliminada correctamente!");
       } else {
         if (resultAction.payload) {
@@ -102,9 +102,9 @@ const WorkforceView = () => {
     };
 
     try {
-      const resultAction = await dispatch(updateTender(updatedTender));
+      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
 
-      if (updateTender.fulfilled.match(resultAction)) {
+      if (fetchUpdateTender.fulfilled.match(resultAction)) {
         // La actualización fue exitosa
         alert("¡Cotización Actualizada correctamente!");
 

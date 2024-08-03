@@ -3,7 +3,9 @@ import { AppDispatch, RootState } from "../../redux/store";
 import { Tender } from "../../types/types";
 import { Link } from "react-router-dom";
 import { formatServerDate } from "../../helpers/helpers";
-import { fetchGetReportById, tenderToEdit } from "../../redux/slices/tenderSlice";
+import { tenderToEdit } from "../../redux/slices/tenderSlice";
+import { fetchGetReportById } from "../../redux/thunks/tenderThunks";
+fetchGetReportById
 
 const AllTenders = () => {
   const dispatch = useDispatch<AppDispatch>();

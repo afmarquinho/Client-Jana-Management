@@ -1,22 +1,27 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../redux/store";
-import { fetchTenders } from "../../redux/slices/tenderSlice";
 import AllTenders from "../../components/tender/AllTenders";
 import HourglassSpinner from "../../components/HourglassSpinner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { fetchTenders } from "../../redux/thunks/tenderThunks";
 
 const DashboardTenderView = () => {
   const dispatch = useDispatch<AppDispatch>();
+
   const tenders = useSelector((state: RootState) => state.tender.tenders);
   const loading = useSelector((state: RootState) => state.tender.loading);
   const error = useSelector((state: RootState) => state.tender.error);
 
+  const [fetchExecuted, setFetchExecuted] = useState<boolean>(false)
+
+
   useEffect(() => {
-    if (tenders.length <= 0) {
+    if (!fetchExecuted && tenders.length === 0) {
       dispatch(fetchTenders());
+      setFetchExecuted(true)
     }
   
-  }, []);
+  }, [dispatch, tenders, fetchExecuted]);
 
   return (
     <>
@@ -26,10 +31,12 @@ const DashboardTenderView = () => {
       </h2>
       {loading ? (
         <HourglassSpinner />
-      ) : error ? (
-        <div>Error: {error}</div>
+      ) : error? (
+        <div> {error}</div>
       ) : tenders.length === 0 ? (
-        <div>No Hay Reporte para Mostrar</div>
+        <p className="font-semibold">
+              No hay <span className="text-blue-500 font-bold">Cotizaciones</span> para mostrar. <br />{" "}
+            </p>
       ) : (
         //<div>Hay Reportes</div>
         <AllTenders />

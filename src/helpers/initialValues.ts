@@ -6,7 +6,25 @@ import {
   SupplyType,
   Tender,
   UserType,
+  VisitReportType,
 } from "../types/types";
+
+export const initialVisitReport: VisitReportType = {
+  name: "",
+  visitDate: "",
+  dueDate: "",
+  customerName: "",
+  customerCity: "",
+  contactName: "",
+  phoneNumber: "",
+  email: "",
+  description: "",
+  workforces: [],
+  materials: [],
+  priority: "",
+  createdBy: "",
+  ref: "",
+};
 
 export const initValTender: Tender = {
   id: 0,
@@ -90,7 +108,6 @@ export const initOfferSummary: OfferSummaryType = {
   night: 0,
   total: 0,
 };
-
 
 export const initValuser: UserType = {
   id: 0,

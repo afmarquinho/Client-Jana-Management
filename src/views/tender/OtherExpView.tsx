@@ -6,11 +6,11 @@ import { OfferSummaryType, OtherExpensesType, Tender } from "../../types/types";
 import { initValOtherExpenses } from "../../helpers/initialValues";
 import OtherExpFieldsForm from "../../components/tender/OtherExpFieldsForm";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { updateTender } from "../../redux/slices/tenderSlice";
 import TenderName from "../../components/tender/TenderName";
 import OtherExpTable from "../../components/tender/OtherExpTable";
 import OtherExpSummary from "../../components/tender/OtherExpSummary";
 import { summaryTender } from "../../helpers/helpers";
+import { fetchUpdateTender } from "../../redux/thunks/tenderThunks";
 
 const OtherExpView = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -61,8 +61,8 @@ const OtherExpView = () => {
     };
 
     try {
-      const resultAction = await dispatch(updateTender(updatedTender));
-      if (updateTender.fulfilled.match(resultAction)) {
+      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
+      if (fetchUpdateTender.fulfilled.match(resultAction)) {
         alert("¡Mano de obra eliminada correctamente!");
       } else {
         if (resultAction.payload) {
@@ -107,9 +107,9 @@ const OtherExpView = () => {
 
 
     try {
-      const resultAction = await dispatch(updateTender(updatedTender));
+      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
 
-      if (updateTender.fulfilled.match(resultAction)) {
+      if (fetchUpdateTender.fulfilled.match(resultAction)) {
         // La actualización fue exitosa
         alert("¡Cotización Actualizada correctamente!");
 
