@@ -4,7 +4,10 @@ import { RootState } from "../../redux/store";
 const TotalSummary = () => {
   const tender = useSelector((state: RootState) => state.tender.tender);
 
-  const totalWf = tender.workforce.reduce((total, item) => {
+  if (!tender) {
+      return;
+    }
+  const totalWf = tender.workforces.reduce((total, item) => {
     return total + item.totalValue;
   }, 0);
 

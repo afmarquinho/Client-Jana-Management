@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import TenderNav from "../../components/tender/TenderNav";
 import { AppDispatch, RootState } from "../../redux/store";
 import TenderName from "../../components/tender/TenderName";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -11,11 +10,13 @@ import { initValWorkforce } from "../../helpers/initialValues";
 import WorkforceSummary from "../../components/tender/WorkforceSummary";
 import { summaryTender } from "../../helpers/helpers";
 import { fetchUpdateTender } from "../../redux/thunks/tenderThunks";
+import TenderNav from "../../components/tender/TenderNav";
 //TODO: VALIDAR PARA QUE NO SE ENVÍEN NULOS, SI SE ENVIA EL TURNO VACIO LUEGO NO LO PUEDO VER PERO SI ESTA SUMANDO
 
 const WorkforceView = () => {
   const dispatch = useDispatch<AppDispatch>();
   const tender = useSelector((state: RootState) => state.tender.tender);
+
   const [index, setIndex] = useState<number | null>(null);
   const [wfEdit, setWfEdit] = useState<LaborType>(initValWorkforce);
 
@@ -46,16 +47,19 @@ const WorkforceView = () => {
   }, [wfEdit, index, setValue]);
 
   const handleDelete = async (index: number) => {
-    //* CREA UN NUEVO ARRAY CON LA DESCRIPCIÓN EN EL ÍNDICE DADO
+    //* CREA UN NUEVO ARRAY SIN EL ÍNDICE DADO
 
-    const updatedWorkforceArray: LaborType[] = tender.workforce.filter(
+    if (!tender) {
+      return;
+    }
+    const updatedWorkforceArray: LaborType[] = tender.workforces.filter(
       (_, i: number) => i !== index
     );
 
     //* Crea un nuevo objeto `Tender` con la lista actualizada de descripciones
     const updatedTender: Tender = {
       ...tender,
-      workforce: updatedWorkforceArray,
+      workforces: updatedWorkforceArray,
     };
 
     try {
@@ -81,24 +85,27 @@ const WorkforceView = () => {
     data.profitAmount = (data.profit / 100) * data.partialCost;
     data.totalValue = data.profitAmount + data.partialCost;
 
+    if (!tender) {
+      return;
+    }
     const updatedWorkforceArray: LaborType[] =
       index !== null
-        ? tender.workforce.map((wf: LaborType, i: number) =>
+        ? tender.workforces.map((wf: LaborType, i: number) =>
             i === index ? data : wf
           )
-        : [...tender.workforce, data];
+        : [...tender.workforces, data];
 
     let updatedTender: Tender = {
-      ... tender,
-      workforce: updatedWorkforceArray,
+      ...tender,
+      workforces: updatedWorkforceArray,
     };
 
     //*ACTUALIZO EL CAMNPO DE RESUMEN
     const summary: OfferSummaryType = summaryTender(updatedTender);
-    
+
     updatedTender = {
       ...updatedTender,
-      summary:summary
+      summary: summary,
     };
 
     try {
@@ -129,7 +136,7 @@ const WorkforceView = () => {
     <div className="my-5 flex gap-5">
       <TenderNav />
       <div className="w-full">
-        <TenderName name={tender.name} />
+        <TenderName name={tender ? tender.name : ""} />
         <form
           className="bg-white w-full max-w-xl mx-auto px-4 md:px-16 py-12 space-y-5 flex flex-col items-center"
           onSubmit={handleSubmit(onSubmit)}

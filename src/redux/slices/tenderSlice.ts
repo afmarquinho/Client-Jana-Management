@@ -1,11 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { initValTender } from "../../helpers/initialValues";
 import { Tender, VisitReportType } from "../../types/types";
-import { fetchGetReportById, fetchTenders, fetchUpdateTender } from "../thunks/tenderThunks";
+import {
+  fetchGetReportById,
+  fetchGetTenders,
+  fetchUpdateTender,
+} from "../thunks/tenderThunks";
 
 type TenderState = {
   tenders: Tender[];
-  tender: Tender;
+  tender: Tender | null;
   viewReport: VisitReportType | null;
   totalWf: number;
   totalMt: number;
@@ -15,15 +18,13 @@ type TenderState = {
 
 const initialState: TenderState = {
   tenders: [],
-  tender: initValTender,
+  tender: null,
   viewReport: null,
   totalMt: 0,
   totalWf: 0,
   loading: false,
   error: null,
 };
-
-//* THUNKS
 
 //* SLICE SETUP
 const tenderSlice = createSlice({
@@ -39,24 +40,26 @@ const tenderSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTenders.pending, (state) => {
+      .addCase(fetchGetTenders.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchTenders.fulfilled, (state, action) => {
+      .addCase(fetchGetTenders.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
         state.tenders = action.payload;
-        state.totalMt = state.tender.materials.reduce((total, item) => {
-          return total + item.profitAmount;
-        }, 0);
-        state.totalWf = state.tender.workforce.reduce((total, item) => {
-          return total + item.profitAmount;
-        }, 0);
+        if (state.tender) {
+          state.totalMt = state.tender.materials.reduce((total, item) => {
+            return total + item.profitAmount;
+          }, 0);
+          state.totalWf = state.tender.workforces.reduce((total, item) => {
+            return total + item.profitAmount;
+          }, 0);
+        }
       })
-      .addCase(fetchTenders.rejected, (state, action) => {
+      .addCase(fetchGetTenders.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || "Failed to fetch tenders";
+        state.error = action.error.message || "No se pudo cargar las cotizaciones";
       })
       .addCase(fetchUpdateTender.fulfilled, (state, action) => {
         state.loading = false;

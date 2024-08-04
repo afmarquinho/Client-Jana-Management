@@ -4,16 +4,16 @@ import { RootState } from "../../redux/store";
 const WorkforceSummary = () => {
   const tender = useSelector((state: RootState) => state.tender.tender);
 
-  const totalSum = tender.workforce.reduce(
+  const totalSum = tender.workforces.reduce(
     (acc: number, desc) => acc + desc.totalValue,
     0
   );
 
-  const totalCostWorkforce = tender.workforce.reduce((total, item) => {
+  const totalCostWorkforce = tender.workforces.reduce((total, item) => {
     return total + item.workers * item.shiftCount * item.rate;
   }, 0);
 
-  const totalMargin = tender.workforce.reduce((total, item) => {
+  const totalMargin = tender.workforces.reduce((total, item) => {
     return (
       total + item.workers * item.shiftCount * item.rate * (item.profit / 100)
     );
@@ -29,7 +29,7 @@ const WorkforceSummary = () => {
                 Total
               </th>
               <td className="px-4 whitespace-normal text-sm text-gray-900 text-right font-semibold">
-                {tender.workforce.length}
+                {tender.workforces.length}
               </td>
             </tr>
             <tr>
@@ -37,7 +37,7 @@ const WorkforceSummary = () => {
                 Personal
               </th>
               <td className="px-4 whitespace-normal text-sm text-gray-900 text-right font-semibold">
-                {tender.workforce.reduce((acc, desc) => acc + desc.workers, 0)}
+                {tender.workforces.reduce((acc, desc) => acc + desc.workers, 0)}
               </td>
             </tr>
             <tr>

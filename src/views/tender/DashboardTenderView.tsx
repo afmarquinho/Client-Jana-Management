@@ -3,7 +3,7 @@ import { RootState, AppDispatch } from "../../redux/store";
 import AllTenders from "../../components/tender/AllTenders";
 import HourglassSpinner from "../../components/HourglassSpinner";
 import { useEffect, useState } from "react";
-import { fetchTenders } from "../../redux/thunks/tenderThunks";
+import { fetchGetTenders } from "../../redux/thunks/tenderThunks";
 
 const DashboardTenderView = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -17,7 +17,7 @@ const DashboardTenderView = () => {
 
   useEffect(() => {
     if (!fetchExecuted && tenders.length === 0) {
-      dispatch(fetchTenders());
+      dispatch(fetchGetTenders());
       setFetchExecuted(true)
     }
   

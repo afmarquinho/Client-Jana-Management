@@ -109,7 +109,7 @@ export type Tender = HeadingTender & {
   status: string;
   reportId: number;
   ref: string;
-  workforce: LaborType[];
+  workforces: LaborType[];
   materials: SupplyType[];
   otherExpenses: OtherExpensesType[];
   summary: OfferSummaryType;

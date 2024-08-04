@@ -6,9 +6,10 @@ import { Tender } from "../../types/types";
 
 
 
-export const fetchTenders = createAsyncThunk("api/tenders/getAll", async () => {
+export const fetchGetTenders = createAsyncThunk("api/tenders/getAll", async () => {
     try {
-        return await getTendersService();
+        const res = await getTendersService();
+        return res
     } catch (error) {
         if(isAxiosError(error)){
             throw error

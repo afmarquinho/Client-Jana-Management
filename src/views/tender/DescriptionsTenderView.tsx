@@ -43,6 +43,9 @@ const DescriptionsTenderView = () => {
 
   const handleDelete = async (index: number) => {
     //* CREA UN NUEVO ARRAY CON LA DESCRIPCIÓN EN EL ÍNDICE DADO
+    if (!tender) {
+      return;
+    }
     const updatedDescriptions = tender.description.filter(
       (_, i: number) => i !== index
     );
@@ -73,7 +76,9 @@ const DescriptionsTenderView = () => {
 
   const onSubmit: SubmitHandler<Description> = async (data) => {
     data.totalValue = data.quantity * data.unitValue;
-
+    if(!tender){
+      return
+    }
     const updatedDescriptions: Description[] =
       index !== null
         ? tender.description.map((desc: Description, i: number) =>
@@ -117,7 +122,8 @@ const DescriptionsTenderView = () => {
         <>
           <TenderNav />
           <div className="w-full">
-            <TenderName name={tender.name} />
+          <TenderName name={tender ? tender.name : ""} />
+          <h2 className="text-red-500">Resúmen de la oferta</h2>
             <div className="flex gap-10">
               <TotalSummary />
               <TenderSummary />
