@@ -103,7 +103,7 @@ export type CommentsTypes = {
 };
 
 export type Tender = HeadingTender & {
-  tender: string;
+  consecutive: string | null,
   description: Description[];
   notes: string[];
   status: string;
@@ -114,6 +114,7 @@ export type Tender = HeadingTender & {
   otherExpenses: OtherExpensesType[];
   summary: OfferSummaryType;
   comments: CommentsTypes[];
+  rev: number;
 };
 
 export type UserFormType = {
@@ -134,14 +135,14 @@ export type UserFormType = {
 export type UserType = UserFormType & {
   id: number;
   profilePicture: string | null;
-  active:boolean
+  active: boolean;
 };
 
-export type UserUpdatedType ={
+export type UserUpdatedType = {
   address: string;
   phoneNumber: string;
   email: string;
   jobTitle: string;
   role: string;
   user: string;
-}
+};

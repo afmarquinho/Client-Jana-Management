@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { Tender } from "../../types/types";
 import { fetchUpdateTender } from "../../redux/thunks/tenderThunks";
+import { createConsecutiveService } from "../../services/consecutiveService";
+
 
 type ChildInputProps = {
   status: string;
@@ -54,6 +56,11 @@ const ApproveRejectModal: React.FC<ChildInputProps> = ({
           };
 
     try {
+      if (!tender) {
+        return;
+      }
+      await createConsecutiveService(tender?.id);
+
       const resultAction = await dispatch(fetchUpdateTender(updatedTender));
 
       if (fetchUpdateTender.fulfilled.match(resultAction)) {

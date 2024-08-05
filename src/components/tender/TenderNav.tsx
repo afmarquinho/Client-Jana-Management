@@ -7,15 +7,20 @@ import {
   HandRaisedIcon,
   HomeIcon,
   PencilSquareIcon,
+  PrinterIcon,
   WrenchIcon,
 } from "@heroicons/react/16/solid";
-import { useDispatch } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { cleanTender } from "../../redux/slices/tenderSlice";
+import { RootState } from "../../redux/store";
+
 
 const TenderNav: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const tender = useSelector((state:RootState)=> state.tender.tender)
 
   const onBack = () => {
     navigate(-1);
@@ -132,6 +137,14 @@ const TenderNav: React.FC = () => {
             Comentarios
           </NavLink>
         </nav>
+
+        <Link
+          to={`/tender-PDF/${tender?.id}`}
+          className="text-green-100 bg-orange-600 hover:bg-teal-900 w-full flex jjustify-start items-center gap-1 ps-1 py-3 mt-5"
+        >
+          <PrinterIcon className="h-4" />
+          Imprimir
+        </Link>
       </div>
     </>
   );
