@@ -6,11 +6,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { OfferSummaryType, SupplyType, Tender } from "../../types/types";
 import { useEffect, useState } from "react";
 import { initValMaterial } from "../../helpers/initialValues";
-import { updateTender } from "../../redux/slices/tenderSlice";
 import MaterialFieldForm from "../../components/tender/MaterialFieldForm";
 import MaterialTable from "../../components/tender/MaterialTable";
 import MaterialSummary from "../../components/tender/MaterialSummary";
 import { summaryTender } from "../../helpers/helpers";
+import { fetchUpdateTender } from "../../redux/thunks/tenderThunks";
 
 //TODO: COLOCAR TABLA DE MANO DE OBRA Y MATERIALES PARA FACILITAR LA DESCRIPCION
 
@@ -61,9 +61,9 @@ const MaterialsView = () => {
     };
 
     try {
-      const resultAction = await dispatch(updateTender(updatedTender));
+      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
 
-      if (updateTender.fulfilled.match(resultAction)) {
+      if (fetchUpdateTender.fulfilled.match(resultAction)) {
         // La actualización fue exitosa
         alert("¡Material eliminado correctamente!");
 
@@ -110,9 +110,9 @@ const MaterialsView = () => {
     };
 
     try {
-      const resultAction = await dispatch(updateTender(updatedTender));
+      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
 
-      if (updateTender.fulfilled.match(resultAction)) {
+      if (fetchUpdateTender.fulfilled.match(resultAction)) {
         // La actualización fue exitosa
         alert("¡Cotización Actualizada correctamente!");
 

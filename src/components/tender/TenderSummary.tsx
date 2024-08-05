@@ -13,7 +13,7 @@ const TenderSummary = () => {
             Total Materiales
           </th>
           <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold border border-gray-400">
-           {tender.summary.materials.toLocaleString("en-US", {
+           {tender?.summary.materials.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
             })}
@@ -28,7 +28,7 @@ const TenderSummary = () => {
             Prealistamiento
           </th>
           <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold border border-gray-400">
-            {tender.summary.preparation.toLocaleString("en-US", {
+            {tender?.summary.preparation.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
             })} 
@@ -42,7 +42,7 @@ const TenderSummary = () => {
            Turno día
           </th>
           <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold border border-gray-400">
-            {tender.summary.day.toLocaleString("en-US", {
+            {tender?.summary.day.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
             })} 
@@ -56,7 +56,7 @@ const TenderSummary = () => {
             Turno Noche
           </th>
           <td className="px-2 whitespace-normal text-sm text-gray-900 text-right font-semibold border border-gray-400">
-            {tender.summary.night.toLocaleString("en-US", {
+            {tender?.summary.night.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
             })} 
@@ -70,7 +70,7 @@ const TenderSummary = () => {
            Total Cotización
           </th>
           <td className="px-2 whitespace-normal text-sm font-bold text-gray-800 text-right border border-gray-400">
-            {tender.summary.total.toLocaleString("en-US", {
+            {tender?.summary.total.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
             })} 

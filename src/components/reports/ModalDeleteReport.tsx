@@ -1,29 +1,41 @@
 import { ExclamationTriangleIcon } from "@heroicons/react/16/solid";
-import { useDispatch } from "react-redux";
-import { openCloseModal } from "../../redux/slices/visitReportSlice";
-import { AppDispatch } from "../../redux/store";
-import { removeReportApi } from "../../redux/thunks/reportThunks";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
-
+import { fetchDeleteReport } from "../../redux/thunks/reportThunks";
 
 //TODO: animate the modal entrance with framer motion
 //TODO: add a toastify
 
-interface componetProps {
-  id: number
-}
-const ModalDeleteReport: React.FC<componetProps> = ({ id }) => {
+type ChildInputProps = {
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+const ModalDeleteReport: React.FC<ChildInputProps> = ({ setIsModalOpen }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate()
-  
-  const handleDelete = () => {
-    dispatch(removeReportApi(id))
-    dispatch(openCloseModal())
-    navigate(-1)
-    
-  };
-  
+  const navigate = useNavigate();
 
+  const report = useSelector((state: RootState) => state.report.report);
+
+  const handleDelete = async () => {
+    setIsModalOpen(false);
+    try {
+      if (report !== null && report.id !== undefined) {
+        const resultAction = await dispatch(
+          fetchDeleteReport({ id: report.id })
+        );
+        if (fetchDeleteReport.fulfilled.match(resultAction)) {
+          alert("Informe de Visita de Obra eliminado exitosamente");
+          navigate("/dashboard-report");
+        } else {
+          console.error("Error del backend:", resultAction.error.message);
+          alert(`Error: ${resultAction.error.message}`);
+        }
+      }
+    } catch (error) {
+      console.error("Error eliminar el informe", error);
+      alert("No se puedo procesar el informe");
+    }
+  };
 
   return (
     <div className="fixed bg-black bg-opacity-50 flex justify-center items-center inset-0">
@@ -42,7 +54,7 @@ const ModalDeleteReport: React.FC<componetProps> = ({ id }) => {
           <div className="w-full flex justify-evenly text-sm text-white">
             <button
               className="bg-gradient-to-b from-emerald-500 to-emerald-600 hover:from-emerald-700 hover:to-emerald-800 py-1 px-3 rounded hover:text-white"
-              onClick={() => dispatch(openCloseModal())}
+              onClick={() => setIsModalOpen(false)}
             >
               Cancelar
             </button>

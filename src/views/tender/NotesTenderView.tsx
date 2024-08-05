@@ -3,11 +3,11 @@ import { AppDispatch, RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { Tender } from "../../types/types";
-import { updateTender } from "../../redux/slices/tenderSlice";
 import HourglassSpinner from "../../components/HourglassSpinner";
 import TenderName from "../../components/tender/TenderName";
 import { SubmitHandler, useForm } from "react-hook-form";
 import NotesTable from "../../components/tender/NotesTable";
+import { fetchUpdateTender } from "../../redux/thunks/tenderThunks";
 
 type FormFields = {
   note: string;
@@ -43,8 +43,8 @@ const NotesTenderView = () => {
     };
 
     try {
-      const resultAction = await dispatch(updateTender(updatedTender));
-      if (updateTender.fulfilled.match(resultAction)) {
+      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
+      if (fetchUpdateTender.fulfilled.match(resultAction)) {
         alert("¡Nota eliminada correctamente!");
       } else {
         if (resultAction.payload) {
@@ -73,9 +73,9 @@ const NotesTenderView = () => {
     };
 
     try {
-      const resultAction = await dispatch(updateTender(updatedTender));
+      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
 
-      if (updateTender.fulfilled.match(resultAction)) {
+      if (fetchUpdateTender.fulfilled.match(resultAction)) {
         // La actualización fue exitosa
         alert("¡Cotización Actualizada correctamente!");
 

@@ -1,43 +1,36 @@
 import { TrashIcon } from "@heroicons/react/16/solid";
 import { UseFormRegister, UseFormSetValue } from "react-hook-form";
-import { VisitReport } from "../../types/types";
+import { VisitReportType } from "../../types/types";
 import { WorkforceType } from "../../types/types";
-import {  MaterialType } from "../../types/types";
-import { useState } from "react";
+import { MaterialType } from "../../types/types";
+import React, { useState } from "react";
 
 type ChildInputProps = {
-  register: UseFormRegister<VisitReport>;
-  setValue: UseFormSetValue<VisitReport>;
-  setWorkForceArray: (data: WorkforceType[]) => void;
-  setMaterialArray: (data: MaterialType[]) => void;
-
-  workForceArray: WorkforceType[];
+  register: UseFormRegister<VisitReportType>;
+  setValue: UseFormSetValue<VisitReportType>;
+  setWorkforceArray: React.Dispatch<React.SetStateAction<WorkforceType[]>>;
+  setMaterialArray: React.Dispatch<React.SetStateAction<MaterialType[]>>;
+  workforceArray: WorkforceType[];
   materialArray: MaterialType[];
 };
 
 const ReportFieldForm: React.FC<ChildInputProps> = ({
   register,
-  setWorkForceArray,
+  setWorkforceArray,
   setMaterialArray,
-  workForceArray,
+  workforceArray,
   materialArray,
 }) => {
-  const [workforce, setWorkForce] = useState<string>("");
+  const [role, setRole] = useState<string>("");
   const [workshift, setWorkShift] = useState<number>(0);
   const [material, setMaterial] = useState<string>("");
   const [quantity, setQuantity] = useState<number>(0);
   const [unit, setUnit] = useState<string>("");
 
   const addWorkforce = () => {
-    if (workforce && workshift > 0) {
-      setWorkForceArray([
-        ...workForceArray,
-        { workforce: workforce, workshift: workshift },
-      ]);
-      //* Otra manera de resolver el llenado del array
-      // * setWorkForceArray( prevWorkForceArray =>[...prevWorkForceArray, {workForce, workShift}])
-
-      setWorkForce("");
+    if (role && workshift > 0) {
+      setWorkforceArray([...workforceArray, { role, workshift }]);
+      setRole("");
       setWorkShift(0);
     } else {
       alert("Debe completar los campos de mano de obra y turnos correctamente");
@@ -45,10 +38,7 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
   };
   const addMaterial = () => {
     if (material && unit && quantity > 0) {
-      setMaterialArray([
-        ...materialArray,
-        { material, quantity: quantity, unit },
-      ]);
+      setMaterialArray([...materialArray, { material, quantity, unit }]);
       setMaterial("");
       setQuantity(0);
       setUnit("");
@@ -58,8 +48,8 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
   };
 
   const deleteWorkForce = (index: number) => {
-    const newList = workForceArray.filter((_, i) => i !== index);
-    setWorkForceArray(newList);
+    const newList = workforceArray.filter((_, i) => i !== index);
+    setWorkforceArray(newList);
   };
   const deleteMaterial = (index: number) => {
     const newList = materialArray.filter((_, i) => i !== index);
@@ -156,9 +146,9 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
           type="text"
           placeholder="Mano de Obra"
           className="border-gray-400 border-2 rounded-md px-2 py-1 w-full sm:w-2/3 outline-customRed"
-          value={workforce}
+          value={role}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setWorkForce(e.target.value)
+            setRole(e.target.value)
           }
         />
         <input
@@ -181,12 +171,12 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
       </button>
 
       <ul className="">
-        {workForceArray.map((item, index) => (
+        {workforceArray.map((item, index) => (
           <li key={index} className="flex justify-between items-center">
             <span>
-              {index + 1}. {item.workforce} -- {item.workshift} Turnos{" "}
+              {index + 1}. {item.role} -- {item.workshift} Turnos{" "}
             </span>
-            <button onClick={() => deleteWorkForce(index)}>
+            <button type="button" onClick={() => deleteWorkForce(index)}>
               <TrashIcon className="text-red-500 h-4" />
             </button>
           </li>
@@ -258,7 +248,7 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
             <span>
               {index + 1}. {item.material} -- {item.quantity} {item.unit}
             </span>
-            <button onClick={() => deleteMaterial(index)}>
+            <button type="button" onClick={() => deleteMaterial(index)}>
               <TrashIcon className="text-red-500 h-4" />
             </button>
           </li>

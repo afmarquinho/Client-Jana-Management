@@ -1,105 +1,44 @@
-import { useNavigate } from "react-router-dom";
-import { RootState } from "../../redux/store";
-import { formatServerDate } from "../../helpers/helpers";
-import ApproveRejectModal from "../../components/tender/ApproveRejectModal";
-import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { formatServerDate } from "../../helpers";
+import { RootState } from "../../redux/store";
+import termocalderas from "../../assets/logo/VMTERMOCALDERAS.png";
+import termocalderas2 from "../../assets/logo/VMTERMOCALDERAS2.png";
 
-
-const TenderSummaryView = () => {
-  const navigate = useNavigate();
-
+const PDFView = () => {
   const tender = useSelector((state: RootState) => state.tender.tender);
-  const user = useSelector((state: RootState) => state.user.authUser);
 
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [status, setStatus] = useState<string>("approve");
   const totalSum = tender?.description?.reduce(
     (acc, desc) => acc + desc.totalValue,
     0
   );
-
-  const onAnalysis = () => {
-    navigate("/tender-analysis");
-  };
-
-  const onBack = () => {
-    navigate(-1);
-  };
-  const onReject = () => {
-    setIsModalOpen(true);
-    setStatus("rejected");
-  };
-  const onApprove = async () => {
-    setIsModalOpen(true);
-    setStatus("approved");
-
-  };
-  const onReview = () => {
-    setIsModalOpen(true);
-    setStatus("review");
-  };
-
-  useEffect(() => {
-    if (isModalOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-  }, [isModalOpen]);
-
   return (
-    <>
-      {isModalOpen && (
-        <ApproveRejectModal status={status} setIsModalOpen={setIsModalOpen} />
-      )}
-      <div className="w-full flex justify-between items-center">
-        <button
-          onClick={onBack}
-          className="w-40 bg-gradient-to-b from-red-500 to-red-600 uppercase p-2 text-white font-bold rounded 
-        hover:from-cyan-700 hover:to-cyan-800 text-xs shadow-gray-400 shadow-md text-center mb-4"
-        >
-          Volver
-        </button>
-
-        <div className="space-x-5">
-          {user?.role === "gerente" && (
-            <>
-              <button
-                onClick={onAnalysis}
-                className="me-12 w-40 bg-gradient-to-b from-orange-500 to-orange-700 uppercase p-2 text-white font-bold rounded 
-        hover:from-gray-800 hover:to-gray-900 my-4 text-xs shadow-gray-400 shadow-md text-center"
-              >
-                Análisis
-              </button>
-              <button
-                onClick={onApprove}
-                className="w-40 bg-gradient-to-b from-green-600 to-green-700 uppercase p-2 text-white font-bold rounded 
-       hover:from-gray-800 hover:to-gray-900   my-4 text-xs shadow-gray-400 shadow-md text-center"
-              >
-                Aprobar
-              </button>
-              <button
-                onClick={onReject}
-                className="w-40 bg-gradient-to-b from-red-500 to-red-600 uppercase p-2 text-white font-bold rounded 
-        hover:from-gray-800 hover:to-gray-900  my-4 text-xs shadow-gray-400 shadow-md text-center"
-              >
-                Rechazar
-              </button>
-            </>
-          )}
-          {user?.role === "ingCotizacion" && (
-            <button
-              onClick={onReview}
-              className="w-40 bg-gradient-to-b from-sky-500 to-sky-700 uppercase p-2 text-white font-bold rounded 
-            hover:from-gray-800 hover:to-gray-900  my-4 text-xs shadow-gray-400 shadow-md text-center"
-            >
-              Procesar
-            </button>
-          )}
+    <div>
+      {" "}
+      <div className="px-10">
+        <div className="text-sm my-5 font-bold w-full flex justify-between">
+          <div>
+            <div className="w-72">
+              <img
+                src={termocalderas2}
+                alt="VM TERMOCALDERAS"
+                className="w-full"
+              />
+              
+              <p>NIT: 901360107-1 </p>
+              <p>E-MAIL: vmtermocalderas.principal@gmail.com</p>
+              <p>vmtermocalderas.compras@gmail.com</p>
+              <p>TELEFONOS: 322 443 2959 - 315 5151743</p>
+            </div>
+          </div>
+            <div><p>{tender?.consecutive}</p></div>
+          <div className="h-40">
+            <img
+              src={termocalderas}
+              alt="VM TERMOCALDERAS"
+              className="h-full"
+              />
+          </div>
         </div>
-      </div>
-      <>
         <div className="italic font-bold">
           <p className="font-normal">
             <span className="">Cartagena, </span>
@@ -254,8 +193,8 @@ const TenderSummaryView = () => {
           <p className="italic uppercase font-bold mt-5">Pedro Pérez</p>
           <p className="italic uppercase font-bold">Gerente General</p>
         </div>
-      </>
-    </>
+      </div>
+    </div>
   );
 };
-export default TenderSummaryView;
+export default PDFView;

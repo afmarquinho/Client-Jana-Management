@@ -2,38 +2,39 @@ import { isAxiosError } from "axios";
 import axiosClient from "../axiosClient";
 import { assignTenderData } from "../helpers/helpers";
 import { Tender } from "../types/types";
-type DataCreateType = {
-  reportId: number;
-  createdBy: string;
-};
 
 export const getTendersService = async () => {
   try {
-    const response = await axiosClient("/tenders");
+    const response = await axiosClient.get("/tenders");
     return response.data.data;
   } catch (error) {
     //* ESTE CONDICIONAL EVITA EL ERROR EN EL TYPE DEL "ERROR"
     if (isAxiosError(error)) {
-      throw new Error(
-        error.response?.data?.message || "Error fetching tenders"
-      );
+      const errorMessage =
+        error.response?.data?.message || "No se pudo obtener las cotizaciones";
+      throw new Error(errorMessage);
     } else {
       throw new Error("Ha ocurrido un error inesperado");
     }
   }
 };
 
-export const createTenderService = async (data: DataCreateType) => {
+export const createTenderService = async (reportId: number) => {
   try {
-    const response = await axiosClient.post("/tenders", data);
+    const response = await axiosClient.post(`/tenders/${reportId}`);
     const resApi = response.data.data;
     assignTenderData(resApi);
-    return
+    return response.data.data;
   } catch (error) {
-    console.log(error);
+    if (isAxiosError(error)) {
+      const errorMessage =
+        error.response?.data?.message || "No se pudo crear la cotización";
+      throw new Error(errorMessage);
+    } else {
+      throw new Error("Ha ocurrido un error inesperado");
+    }
   }
 };
-
 
 export const updateTenderService = async (data: Tender) => {
   try {
@@ -42,10 +43,25 @@ export const updateTenderService = async (data: Tender) => {
     if (isAxiosError(error)) {
       // Extrae el mensaje de error si está disponible
       const errorMsg =
-        error.response?.data?.errors?.[0]?.msg || "Error updating tender";
+        error.response?.data?.errors?.[0]?.msg || "Error al actualizar la cotización";
       throw new Error(errorMsg);
     } else {
-      throw new Error("An unexpected error occurred");
+      throw new Error("Ha ocurrido un error inesperado");
+    }
+  }
+};
+export const getTenderByIdService = async (id: number) => {
+  try {
+    const response = await axiosClient.get(`/tenders/${id}`);
+    return response.data.data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      // Extrae el mensaje de error si está disponible
+      const errorMsg =
+        error.response?.data?.errors?.[0]?.msg || "Error al obtener la cotización";
+      throw new Error(errorMsg);
+    } else {
+      throw new Error("Error inesperado");
     }
   }
 };

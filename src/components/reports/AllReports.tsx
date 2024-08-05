@@ -1,28 +1,28 @@
 import { useSelector } from "react-redux";
-import { VisitReportApi } from "../../types/types";
 import ReportButton from "./ReportButton";
 import { RootState } from "../../redux/store";
+import { VisitReportType } from "../../types/types";
 
-const AllReports = () => {
-  const reportArray = useSelector((state: RootState) => state.visitReport.report);
+const AllReports:React.FC = () => {
+  const unprocessedReports = useSelector((state: RootState) => state.report.unprocessedReports);
 
   //? ARRAY WITH NOT OVERDUED REPORTS TO RENDER
-  const notOverDueArray = reportArray.filter((report: VisitReportApi) => {
+  const notOverDueArray = unprocessedReports.filter((report: VisitReportType) => {
     return new Date(report.dueDate) > new Date();
   });
 
   const hightPriorityArray = notOverDueArray.filter(
-    (report: VisitReportApi) => report.priority === "high"
+    (report: VisitReportType) => report.priority === "high"
   );
   const mediumPriorityArray = notOverDueArray.filter(
-    (report: VisitReportApi) => report.priority === "medium"
+    (report: VisitReportType) => report.priority === "medium"
   );
   const lowPriorityArray = notOverDueArray.filter(
-    (report: VisitReportApi) => report.priority === "low"
+    (report: VisitReportType) => report.priority === "low"
   );
 
   //? ARRAY WITH OVERDUED REPORTS TO RENDER
-  const overDueArray = reportArray.filter((report: VisitReportApi) => {
+  const overDueArray = unprocessedReports.filter((report: VisitReportType) => {
     return new Date(report.dueDate) < new Date();
   });
   
@@ -35,7 +35,7 @@ const AllReports = () => {
            Alta
          </h2>
          <div className="w-full flex flex-col gap-2">
-           {hightPriorityArray.map((item: VisitReportApi) => (
+           {hightPriorityArray.map((item: VisitReportType) => (
              <ReportButton key={item.ref} item={item} dias={"Días Restantes"} />
            ))}
          </div>
@@ -45,7 +45,7 @@ const AllReports = () => {
            Media
          </h2>
          <div className="w-full flex flex-col gap-2">
-           {mediumPriorityArray.map((item: VisitReportApi) => (
+           {mediumPriorityArray.map((item: VisitReportType) => (
              <ReportButton key={item.ref} item={item} dias={"Días Restantes"} />
            ))}
          </div>
@@ -55,7 +55,7 @@ const AllReports = () => {
            Baja
          </h2>
          <div className="w-full flex flex-col gap-2">
-           {lowPriorityArray.map((item: VisitReportApi) => (
+           {lowPriorityArray.map((item: VisitReportType) => (
              <ReportButton key={item.ref} item={item} dias={"Días Restantes"} />
            ))}
          </div>
@@ -65,7 +65,7 @@ const AllReports = () => {
            Vencidas
          </h2>
          <div className="w-full flex flex-col gap-2">
-           {overDueArray.map((item: VisitReportApi) => (
+           {overDueArray.map((item: VisitReportType) => (
              <ReportButton key={item.ref} item={item} dias={"Días vencidos"} />
            ))}
          </div>

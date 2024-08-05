@@ -1,12 +1,12 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import visitReportReducer from "./slices/visitReportSlice";
+import reportReducer from "./slices/reportSlice";
 import tenderReducer from "./slices/tenderSlice";
 import  userReducer  from "./slices/userSlice";
 
 import { thunk } from "redux-thunk";
 
 const rootReducer = combineReducers({
-  visitReport: visitReportReducer,
+  report: reportReducer,
   tender: tenderReducer,
   user: userReducer,
 });

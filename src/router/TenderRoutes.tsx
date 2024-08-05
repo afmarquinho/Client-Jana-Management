@@ -11,9 +11,26 @@ import TenderSummaryView from "../views/tender/TenderSummaryView"
 import AnalysisView from "../views/tender/AnalysisView"
 import CommentsView from "../views/tender/CommentsView"
 import ReportView from "../views/tender/ReportView"
+import { RootState } from "../redux/store"
+import { useSelector } from "react-redux"
+import ProtectedRoute from "../components/ProtectedRoute"
 
 const TenderRoutes = () => {
+  const user = useSelector((state: RootState) => state.user.authUser);
+
   return (
+    <Route
+    element={
+      <ProtectedRoute
+      isAllowed={
+        !!user &&
+        user.active &&
+        (user.role === "gerente" || user.role === "ingCotizacion")
+      }
+      redirectTo="/"
+      />
+    }
+  >
     <Route element={<LayoutTender />}>
             <Route
               index
@@ -44,7 +61,8 @@ const TenderRoutes = () => {
             />
             <Route path="/tender-analysis" element={<AnalysisView />} />
             <Route path="/tender-comments" element={<CommentsView />} />
-            <Route path="/tender-report-summary" element={<ReportView/>} />
+            <Route path="/tender-report-summary/:ref" element={<ReportView/>} />
+          </Route>
           </Route>
   )
 }

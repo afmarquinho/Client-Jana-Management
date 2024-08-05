@@ -1,11 +1,11 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { HeadingTender } from "../../types/types";
+import { HeadingTender, Tender } from "../../types/types";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import HeadingFiledForm from "./HeadingFieldForm";
-import { updateTender } from "../../redux/slices/tenderSlice";
 import { getTodayDateString } from "../../helpers/helpers";
 import HourglassSpinner from "../HourglassSpinner";
+import { fetchUpdateTender } from "../../redux/thunks/tenderThunks";
 
 const HeadingForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,33 +14,42 @@ const HeadingForm = () => {
 
   const { register, handleSubmit } = useForm<HeadingTender>({
     defaultValues: {
-      id: tender.id,
-      name: tender.name,
-      customerName: tender.customerName,
-      contactName: tender.contactName,
-      email: tender.email,
-      phoneNumber: tender.phoneNumber,
-      customerCity: tender.customerCity,
-      createdBy: tender.createdBy,
-      reviewedBy: tender.reviewedBy,
+      id: tender?.id,
+      name: tender?.name,
+      customerName: tender?.customerName,
+      contactName: tender?.contactName,
+      email: tender?.email,
+      phoneNumber: tender?.phoneNumber,
+      customerCity: tender?.customerCity,
+      createdBy: "User",
+      reviewedBy: tender?.reviewedBy,
       date: getTodayDateString(),
-      leadTime: tender.leadTime,
-      paymentMethod: tender.paymentMethod,
-      proposalValidity: tender.proposalValidity,
+      leadTime: tender?.leadTime,
+      paymentMethod: tender?.paymentMethod,
+      proposalValidity: tender?.proposalValidity,
     },
   });
   const onSubmit: SubmitHandler<HeadingTender> = async (data) => {
-    const tend = { ...tender, ...data };
+    if (!tender) {
+      return;
+    }
+    const tend: Tender = { ...tender, ...data };
 
     try {
-      await dispatch(updateTender(tend));
-     
-      alert("Tender actualizado exitosamente");
+      const resultAction = await dispatch(fetchUpdateTender(tend));
+      if (fetchUpdateTender.fulfilled.match(resultAction)) {
+        alert("Tender actualizado exitosamente");
+      } else {
+        console.error(resultAction.error.message);
+        alert(
+          "Ocurrió un error al actualizar la cotización. Por favor, intenta nuevamente."
+        );
+      }
     } catch (error) {
       // Manejo de errores
-      console.error("Error al actualizar el tender:", error);
+      console.error("Error al actualizar la cotización:", error);
       alert(
-        "Ocurrió un error al actualizar el tender. Por favor, intenta nuevamente."
+        "Ocurrió un error al actualizar la cotización. Por favor, intenta nuevamente."
       );
     }
   };

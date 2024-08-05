@@ -11,7 +11,7 @@ const NewTenderView = () => {
     <div className="my-5 flex gap-5">
       <TenderNav />
       <div className="w-full">
-        <TenderName name={tender.name} />
+        <TenderName name={tender ? tender.name : ""} />
         <HeadingForm />
       </div>
     </div>

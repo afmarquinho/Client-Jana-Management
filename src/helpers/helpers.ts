@@ -90,7 +90,7 @@ export const summaryTender = (tender: Tender) => {
   );
 
   const preparation =
-    tender.workforce
+    tender.workforces
       .filter((item) => item.shiftType === "preparation")
       .reduce((total, item) => total + item.totalValue, 0) +
     tender.otherExpenses
@@ -98,7 +98,7 @@ export const summaryTender = (tender: Tender) => {
       .reduce((total, item) => total + item.totalValue, 0);
 
   const day =
-    tender.workforce
+    tender.workforces
       .filter((item) => item.shiftType === "day")
       .reduce((total, item) => total + item.totalValue, 0) +
     tender.otherExpenses
@@ -106,7 +106,7 @@ export const summaryTender = (tender: Tender) => {
       .reduce((total, item) => total + item.totalValue, 0);
 
   const night =
-    tender.workforce
+    tender.workforces
       .filter((item) => item.shiftType === "night")
       .reduce((total, item) => total + item.totalValue, 0) +
     tender.otherExpenses

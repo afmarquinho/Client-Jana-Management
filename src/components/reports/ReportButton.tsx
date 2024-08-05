@@ -1,11 +1,11 @@
 import { useDispatch } from "react-redux";
-import { viewSummaryReport } from "../../redux/slices/visitReportSlice";
-import { VisitReportApi } from "../../types/types";
 import { useNavigate } from "react-router-dom";
 import { formatServerDate } from "../../helpers/helpers";
+import { VisitReportType } from "../../types/types";
+import { addReport } from "../../redux/slices/reportSlice";
 
 type Props = {
-  item: VisitReportApi;
+  item: VisitReportType;
   dias: string;
 };
 
@@ -13,7 +13,7 @@ const ReportButton: React.FC<Props> = ({ item, dias = "Días Restantes" }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const remainingDays = (date: any) => {
+  const remainingDays = (date: string) => {
     const futureDate = new Date(date);
     // Get the current date
     const currentDate = new Date();
@@ -31,10 +31,9 @@ const ReportButton: React.FC<Props> = ({ item, dias = "Días Restantes" }) => {
     return remainingDays;
   };
 
-  const handleClick = () => {
-    navigate("/report-summary");
-    dispatch(viewSummaryReport(item));
-    
+  const handleClick = (report: VisitReportType) => {
+    navigate(`/report-summary/${report.ref}`);
+    dispatch(addReport(report));
   };
 
   return (
@@ -47,7 +46,7 @@ const ReportButton: React.FC<Props> = ({ item, dias = "Días Restantes" }) => {
           ? "border-l-violet-700"
           : "border-l-blue-500"
       } w-full px-3 py-2 text-xs md:text-sm border border-l-[6px] flex flex-col bg-white space-y-2 hover:bg-gray-300`}
-      onClick={handleClick}
+      onClick={() => handleClick(item)}
     >
       <h3 className="font-bold text-left"> {item.name}</h3>
       <h4 className="text-orange-600 font-semibold">{item.customerName}</h4>

@@ -1,22 +1,32 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../redux/store";
-import { fetchTenders } from "../../redux/slices/tenderSlice";
 import AllTenders from "../../components/tender/AllTenders";
 import HourglassSpinner from "../../components/HourglassSpinner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { fetchGetTenders } from "../../redux/thunks/tenderThunks";
+import { Link } from "react-router-dom";
+import { PlusIcon } from "@heroicons/react/16/solid";
 
 const DashboardTenderView = () => {
   const dispatch = useDispatch<AppDispatch>();
+
   const tenders = useSelector((state: RootState) => state.tender.tenders);
   const loading = useSelector((state: RootState) => state.tender.loading);
   const error = useSelector((state: RootState) => state.tender.error);
 
+  const [fetchExecuted, setFetchExecuted] = useState<boolean>(false);
+  const [filterStatus, setFilterStatus] = useState<string>("");
+
   useEffect(() => {
-    if (tenders.length <= 0) {
-      dispatch(fetchTenders());
+    if (!fetchExecuted && tenders.length === 0) {
+      dispatch(fetchGetTenders());
+      setFetchExecuted(true);
     }
-  
-  }, []);
+  }, [dispatch, tenders, fetchExecuted]);
+
+  const filteredTenders = tenders.filter((tender) =>
+    filterStatus ? tender.status === filterStatus : true
+  );
 
   return (
     <>
@@ -27,12 +37,38 @@ const DashboardTenderView = () => {
       {loading ? (
         <HourglassSpinner />
       ) : error ? (
-        <div>Error: {error}</div>
+        <div> {error}</div>
       ) : tenders.length === 0 ? (
-        <div>No Hay Reporte para Mostrar</div>
+        <p className="font-semibold">
+          No hay <span className="text-blue-500 font-bold">Cotizaciones</span>{" "}
+          para mostrar. <br />{" "}
+        </p>
       ) : (
         //<div>Hay Reportes</div>
-        <AllTenders />
+        <>
+          <div className="flex items-center mb-5">
+            <Link
+              to="/report-form"
+              className="bg-blue-900 text-white flex items-center px-2 py-1 rounded hover:bg-green-700"
+            >
+              <PlusIcon className="h-5" /> Crear Cotización
+            </Link>
+
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="ml-4 p-2 border border-gray-300 rounded"
+            >
+              <option value="">Todos</option>
+              <option value="draft">En Edición</option>
+              <option value="review">Revisión</option>
+              <option value="approved">Aprobado</option>
+              <option value="rejected">Rechazado</option>
+              <option value="submitted">Enviado</option>
+            </select>
+          </div>
+          <AllTenders tenders={filteredTenders} />
+        </>
       )}
     </>
   );
