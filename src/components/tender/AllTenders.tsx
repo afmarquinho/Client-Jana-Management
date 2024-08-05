@@ -1,5 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
 import { Tender } from "../../types/types";
 import { Link } from "react-router-dom";
 import { formatServerDate } from "../../helpers/helpers";
@@ -7,9 +7,8 @@ import { tenderToEdit } from "../../redux/slices/tenderSlice";
 import { fetchGetReportById } from "../../redux/thunks/tenderThunks";
 fetchGetReportById
 
-const AllTenders = () => {
+const AllTenders = ({ tenders }: { tenders: Tender[] }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const tenders = useSelector((state: RootState) => state.tender.tenders);
 
   const handleViewReport = async (reportId: number) => {
     dispatch(fetchGetReportById(reportId));
@@ -72,7 +71,7 @@ const AllTenders = () => {
                 </div>
                 <div className="flex gap-5">
                   <Link
-                    to={`/tender-report-summary`}
+                    to={`/tender-report-summary/${tender.ref}`}
                     className="bg-teal-500 py-1 px-4 text-white hover:bg-teal-700 hover:border-teal-700 text-sm text-center border-4 border-teal-500"
                     onClick={() => handleViewReport(tender.reportId)}
                   >

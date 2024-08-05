@@ -44,7 +44,7 @@ const TenderRoutes = () => {
             />
             <Route path="/tender-analysis" element={<AnalysisView />} />
             <Route path="/tender-comments" element={<CommentsView />} />
-            <Route path="/tender-report-summary" element={<ReportView/>} />
+            <Route path="/tender-report-summary/:ref" element={<ReportView/>} />
           </Route>
   )
 }

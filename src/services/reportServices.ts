@@ -51,8 +51,7 @@ export const editReportService = async (id: number, data: VisitReportType) => {
 export const getReportByIdService = async (id: number) => {
   try {
     const response = await axiosClient.get(`/reports/${id}`);
-    const res = response.data.data;
-    return res;
+    return response.data.data;
   } catch (error) {
     if (isAxiosError(error)) {
       const errorMessage =

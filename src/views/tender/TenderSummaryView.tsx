@@ -7,14 +7,17 @@ import { useSelector } from "react-redux";
 
 const TenderSummaryView = () => {
   const navigate = useNavigate();
+
   const tender = useSelector((state: RootState) => state.tender.tender);
+  const user = useSelector((state: RootState) => state.user.userProfile);
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [status, setStatus] = useState<string>("approve");
-
-  const totalSum = tender.description?.reduce(
+  const totalSum = tender?.description?.reduce(
     (acc, desc) => acc + desc.totalValue,
     0
   );
+
   const onAnalysis = () => {
     navigate("/tender-analysis");
   };
@@ -52,51 +55,58 @@ const TenderSummaryView = () => {
         <button
           onClick={onBack}
           className="w-40 bg-gradient-to-b from-red-500 to-red-600 uppercase p-2 text-white font-bold rounded 
-        hover:from-cyan-700 hover:to-cyan-800 my-4 text-xs shadow-gray-400 shadow-md text-center"
+        hover:from-cyan-700 hover:to-cyan-800 text-xs shadow-gray-400 shadow-md text-center mb-4"
         >
           Volver
         </button>
+
         <div className="space-x-5">
-          <button
-            onClick={onAnalysis}
-            className="me-24 w-40 bg-gradient-to-b from-orange-500 to-orange-700 uppercase p-2 text-white font-bold rounded 
+          {user?.role === "gerente" && (
+            <>
+              <button
+                onClick={onAnalysis}
+                className="me-12 w-40 bg-gradient-to-b from-orange-500 to-orange-700 uppercase p-2 text-white font-bold rounded 
         hover:from-gray-800 hover:to-gray-900 my-4 text-xs shadow-gray-400 shadow-md text-center"
-          >
-            Análisis
-          </button>
-          <button
-            onClick={onApprove}
-            className="w-40 bg-gradient-to-b from-green-600 to-green-700 uppercase p-2 text-white font-bold rounded 
+              >
+                Análisis
+              </button>
+              <button
+                onClick={onApprove}
+                className="w-40 bg-gradient-to-b from-green-600 to-green-700 uppercase p-2 text-white font-bold rounded 
        hover:from-gray-800 hover:to-gray-900   my-4 text-xs shadow-gray-400 shadow-md text-center"
-          >
-            Aprobar
-          </button>
-          <button
-            onClick={onReject}
-            className="w-40 bg-gradient-to-b from-red-500 to-red-600 uppercase p-2 text-white font-bold rounded 
+              >
+                Aprobar
+              </button>
+              <button
+                onClick={onReject}
+                className="w-40 bg-gradient-to-b from-red-500 to-red-600 uppercase p-2 text-white font-bold rounded 
         hover:from-gray-800 hover:to-gray-900  my-4 text-xs shadow-gray-400 shadow-md text-center"
-          >
-            Rechazar
-          </button>
-          <button
-            onClick={onReview}
-            className="w-40 bg-gradient-to-b from-sky-500 to-sky-700 uppercase p-2 text-white font-bold rounded 
-        hover:from-gray-800 hover:to-gray-900  my-4 text-xs shadow-gray-400 shadow-md text-center"
-          >
-            Procesar
-          </button>
+              >
+                Rechazar
+              </button>
+            </>
+          )}
+          {user?.role === "ingCotizacion" && (
+            <button
+              onClick={onReview}
+              className="w-40 bg-gradient-to-b from-sky-500 to-sky-700 uppercase p-2 text-white font-bold rounded 
+            hover:from-gray-800 hover:to-gray-900  my-4 text-xs shadow-gray-400 shadow-md text-center"
+            >
+              Procesar
+            </button>
+          )}
         </div>
       </div>
       <>
         <div className="italic font-bold">
           <p className="font-normal">
             <span className="">Cartagena, </span>
-            {tender.date && formatServerDate(tender.date) }
+            {tender?.date && formatServerDate(tender.date)}
           </p>
           <p className="font-normal mt-5">Ingeniero:</p>
-          <p className="uppercase">{tender.contactName}</p>
-          <p className="uppercase">{tender.customerName}</p>
-          <p className="font-normal">{tender.customerCity}</p>
+          <p className="uppercase">{tender?.contactName}</p>
+          <p className="uppercase">{tender?.customerName}</p>
+          <p className="font-normal">{tender?.customerCity}</p>
         </div>
         <table className="w-full bg-gray-200 shadow-md overflow-hidden text-sm md:text-base my-5 table-auto">
           <tbody className="italic">
@@ -105,7 +115,7 @@ const TenderSummaryView = () => {
                 Cotización
               </th>
               <td className="text-left p-4 font-semibold border border-gray-400">
-                {tender.name}
+                {tender?.name}
               </td>
             </tr>
           </tbody>
@@ -140,7 +150,7 @@ const TenderSummaryView = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-400">
-            {tender.description.map((desc, index) => (
+            {tender?.description.map((desc, index) => (
               <tr key={index}>
                 <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 bg-gray-200 text-center border border-gray-400">
                   {desc.item}
@@ -176,7 +186,7 @@ const TenderSummaryView = () => {
                 Total Cotización
               </td>
               <td className="text-center border border-gray-400 text-sm font-bold text-gray-700">
-                {totalSum.toLocaleString("en-US", {
+                {totalSum?.toLocaleString("en-US", {
                   style: "currency",
                   currency: "USD",
                 })}
@@ -201,13 +211,13 @@ const TenderSummaryView = () => {
           <tbody className="bg-white divide-y divide-gray-400">
             <tr className="text-center">
               <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border border-gray-400">
-                {tender.leadTime}
+                {tender?.leadTime}
               </td>
               <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 border border-gray-400">
-                {tender.paymentMethod}
+                {tender?.paymentMethod}
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 border border-gray-400">
-                {tender.proposalValidity}
+                {tender?.proposalValidity}
               </td>
             </tr>
           </tbody>
@@ -225,7 +235,7 @@ const TenderSummaryView = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-400">
-            {tender.notes.map((note, i) => (
+            {tender?.notes.map((note, i) => (
               <tr key={i}>
                 <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 bg-white text-center border border-gray-400">
                   {i + 1}

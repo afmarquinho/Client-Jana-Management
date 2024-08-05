@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Tender, VisitReportType } from "../../types/types";
 import {
+  fetchCreateTender,
   fetchGetReportById,
   fetchGetTenders,
   fetchUpdateTender,
@@ -34,8 +35,14 @@ const tenderSlice = createSlice({
     tenderToEdit: (state, action: PayloadAction<Tender>) => {
       state.tender = action.payload;
     },
+    cleanTender: (state) => {
+      state.tender= null;
+    },
     cleanError: (state) => {
       state.error = null;
+    },
+    cleanViewReport: (state) => {
+      state.viewReport= null;
     },
   },
   extraReducers: (builder) => {
@@ -59,7 +66,8 @@ const tenderSlice = createSlice({
       })
       .addCase(fetchGetTenders.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || "No se pudo cargar las cotizaciones";
+        state.error =
+          action.error.message || "No se pudo cargar las cotizaciones";
       })
       .addCase(fetchUpdateTender.fulfilled, (state, action) => {
         state.loading = false;
@@ -88,9 +96,22 @@ const tenderSlice = createSlice({
       .addCase(fetchGetReportById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Falló la solicitud";
+      })
+      .addCase(fetchCreateTender.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchCreateTender.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.tenders = [...state.tenders, action.payload];
+      })
+      .addCase(fetchCreateTender.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Falló la creación de la cotización";
       });
   },
 });
-export const { tenderToEdit, cleanError } = tenderSlice.actions;
+export const { tenderToEdit, cleanError, cleanViewReport, cleanTender } = tenderSlice.actions;
 
 export default tenderSlice.reducer;

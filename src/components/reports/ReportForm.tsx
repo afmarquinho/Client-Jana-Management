@@ -14,8 +14,27 @@ import {
   fetchCreateReport,
   fetchEditReport,
 } from "../../redux/thunks/reportThunks";
+import { fetchCreateTender } from "../../redux/thunks/tenderThunks";
 
 // TODO: SI EL USUARIO QUIE CREA EL REPORTE TIENE ROL DE ING DE COTIZACIONES ENTONCES QUE SE CREE Y PROCESE DE UNA VEZ, DE ESA MANERA EL ING DE OBRA NO VE ESA COTIZACIÓN EN SU PANEL
+
+export type UserType = {
+  name: string;
+  lastName: string;
+  idType: string;
+  userId: number;
+  dateOfBirth: string;
+  address: string;
+  phoneNumber: string;
+  email: string;
+  role: string;
+  jobTitle: string;
+  user: string;
+  password: string;
+  id: number;
+  profilePicture: string | null;
+  active: boolean;
+};
 
 const ReportForm: React.FC = () => {
   const navigate = useNavigate();
@@ -24,6 +43,7 @@ const ReportForm: React.FC = () => {
 
   const report = useSelector((state: RootState) => state.report.report);
   const error = useSelector((state: RootState) => state.report.error);
+  const user = useSelector((state: RootState) => state.user.userProfile);
 
   const [workforceArray, setWorkforceArray] = useState<WorkforceType[]>([]);
   const [materialArray, setMaterialArray] = useState<MaterialType[]>([]);
@@ -69,7 +89,10 @@ const ReportForm: React.FC = () => {
 
     if (!report) {
       data.ref = uuidv4();
-      data.createdBy = "John Doe";
+      data.createdBy = `${user?.name} ${user?.lastName}`;
+      if (user?.role !== "ingObra") {
+        data.processed = true;
+      }
     }
 
     if (report && report.id) {
@@ -96,6 +119,15 @@ const ReportForm: React.FC = () => {
           alert("Informe creado exitosamente");
           reset();
           navigate(-1);
+
+          if (resultAction.payload.processed === true && user?.role !== "ingObra") {
+            try {
+              await dispatch(fetchCreateTender(resultAction.payload.id));
+            } catch (error) {
+              console.error("Ocurrió un error inesperado: ", error);
+              alert("Ocurrió un error inesperadp");
+            }
+          }
         } else {
           console.error("Error del backend:", resultAction.error.message);
         }

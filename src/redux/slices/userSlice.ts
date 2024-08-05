@@ -108,6 +108,24 @@ export const fetchUpdatePassword = createAsyncThunk(
   }
 );
 
+const initialFakeValues: UserType = {
+  id:0,
+  profilePicture:"not",
+  active:true,
+  name: "Luís",
+  lastName: "Gómez",
+  idType: "cc",
+  userId: 12457887,
+  dateOfBirth: "1990-04-25",
+  address: "Kra 25# 89-100",
+  phoneNumber: "124 2541247",
+  email: "correo@correo.com",
+  role: "gerente",
+  jobTitle: "Inspector de Calidad",
+  user: "Doe.John.25",
+  password: "hdhdfgh321"
+}
+
 type InitialStateType = {
   users: UserType[];
   userProfile: UserType | null;
@@ -119,7 +137,7 @@ type InitialStateType = {
 //TODO: NO PONER ANY
 const initialState: InitialStateType = {
   users: [],
-  userProfile: null,
+  userProfile: initialFakeValues,
   error: null,
   loading: false,
   userEdit: null,

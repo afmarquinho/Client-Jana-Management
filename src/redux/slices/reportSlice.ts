@@ -24,6 +24,7 @@ const initialState: ReportState = {
   unprocessedReports: [],
   processedReports: [],
   report: null,
+  
   updatedReport: null,
   error: null,
   loading: false,
@@ -73,6 +74,7 @@ const reportSlice = createSlice({
       .addCase(fetchCreateReport.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
+        if(action.payload.processed === false)
         state.unprocessedReports = [
           ...state.unprocessedReports,
           action.payload,

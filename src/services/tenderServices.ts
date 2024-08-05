@@ -24,9 +24,15 @@ export const createTenderService = async (reportId: number) => {
     const response = await axiosClient.post(`/tenders/${reportId}`);
     const resApi = response.data.data;
     assignTenderData(resApi);
-    return;
+    return response.data.data
   } catch (error) {
-    console.log(error);
+    if (isAxiosError(error)) {
+      const errorMessage =
+        error.response?.data?.message || "No se pudo crear la cotización";
+      throw new Error(errorMessage);
+    } else {
+      throw new Error("Ha ocurrido un error inesperado");
+    }
   }
 };
 
