@@ -54,6 +54,8 @@ const NewUserView = () => {
   const onSubmit: SubmitHandler<UserFormType> = async (data) => {
     let upData: UserUpdatedType | null = null;
 
+
+
     if (userEdit) {
       upData = {} as UserUpdatedType;
       upData.address = data.address;
@@ -81,6 +83,7 @@ const NewUserView = () => {
       }
       
     } else {
+  
       try {
         const resultAction = await dispatch(fetchCreateUser(data));
         if (fetchCreateUser.fulfilled.match(resultAction)) {

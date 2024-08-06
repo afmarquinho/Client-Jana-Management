@@ -1,22 +1,27 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import HourglassSpinner from "../../components/HourglassSpinner";
 import { formatServerDate } from "../../helpers";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { cleanError, cleanViewReport } from "../../redux/slices/tenderSlice";
+import { HomeIcon } from "@heroicons/react/16/solid";
 
 const ReportView = () => {
   const dispatch = useDispatch<AppDispatch>();
-  
+  const navigate = useNavigate()
+
   const viewReport = useSelector((state: RootState) => state.tender.viewReport);
   const loading = useSelector((state: RootState) => state.tender.loading);
   const error = useSelector((state: RootState) => state.tender.error);
+
+
   
-  const onBack = () => {
+  const onHome = () => {
+    navigate("/dashboard-tender");
     dispatch(cleanError());
     dispatch(cleanViewReport());
+ 
   };
-
   return (
     <>
       {loading ? (
@@ -25,14 +30,15 @@ const ReportView = () => {
         <div> {error}</div>
       ) : (
         <div className="mt-5">
-           <Link
-            className="w-40 mb-5 px-12 bg-gradient-to-b from-red-500 to-red-600 uppercase p-2 text-white font-bold rounded 
-   hover:from-cyan-700 hover:to-cyan-800 my-4 text-xs shadow-gray-400 shadow-md text-center"
-            to="/dashboard-tender"
-            onClick={onBack}
+           <div className="flex gap-5">
+          <button
+            onClick={onHome}
+            className="w-8 h-8 bg-gradient-to-b from-red-500 to-red-600 uppercase p-2 text-white font-bold rounded 
+          hover:from-cyan-700 hover:to-cyan-800 text-xs shadow-gray-400 shadow-md flex justify-center items-center"
           >
-            Volver
-          </Link>
+            <HomeIcon className="h-4" />
+          </button>
+        </div>
           <h2 className="text-gray-500 font-black uppercase text-md sm:text-xl text-center mb-5">
             Resúmen de <span className="text-customRed">Informe de Vista</span>
           </h2>
@@ -51,7 +57,7 @@ const ReportView = () => {
                   Fecha de Visita
                 </th>
                 <td className="text-left p-4 w-/3 not-italic">
-                  {formatServerDate(viewReport.visitDate)}
+                  {!!viewReport && viewReport.visitDate ? formatServerDate(viewReport.visitDate): ""}
                 </td>
               </tr>
               <tr className="border-b last:border-b-0">
@@ -59,7 +65,7 @@ const ReportView = () => {
                   Fecha de Entrega
                 </th>
                 <td className="text-left p-4 w-/3 not-italic font-semibold">
-                  {formatServerDate(viewReport.dueDate)}
+                {!!viewReport && viewReport.dueDate ? formatServerDate(viewReport.dueDate): ""}
                 </td>
               </tr>
               <tr className="border-b last:border-b-0">
