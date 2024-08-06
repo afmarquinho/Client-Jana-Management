@@ -3,11 +3,13 @@ import { RootState } from "../../redux/store";
 import { formatServerDate } from "../../helpers/helpers";
 import ApproveRejectModal from "../../components/tender/ApproveRejectModal";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { cleanTender } from "../../redux/slices/tenderSlice";
+import { ChevronLeftIcon, HomeIcon } from "@heroicons/react/16/solid";
 
 const TenderSummaryView = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const tender = useSelector((state: RootState) => state.tender.tender);
   const user = useSelector((state: RootState) => state.user.authUser);
@@ -23,6 +25,10 @@ const TenderSummaryView = () => {
     navigate("/tender-analysis");
   };
 
+  const onHome = () => {
+    navigate("/dashboard-tender");
+    dispatch(cleanTender());
+  };
   const onBack = () => {
     navigate(-1);
   };
@@ -33,7 +39,6 @@ const TenderSummaryView = () => {
   const onApprove = async () => {
     setIsModalOpen(true);
     setStatus("approved");
-
   };
   const onReview = () => {
     setIsModalOpen(true);
@@ -54,13 +59,23 @@ const TenderSummaryView = () => {
         <ApproveRejectModal status={status} setIsModalOpen={setIsModalOpen} />
       )}
       <div className="w-full flex justify-between items-center">
-        <button
-          onClick={onBack}
-          className="w-40 bg-gradient-to-b from-red-500 to-red-600 uppercase p-2 text-white font-bold rounded 
-        hover:from-cyan-700 hover:to-cyan-800 text-xs shadow-gray-400 shadow-md text-center mb-4"
-        >
-          Volver
-        </button>
+        <div className="flex gap-5">
+          <button
+            onClick={onHome}
+            className="w-8 h-8 bg-gradient-to-b from-red-500 to-red-600 uppercase p-2 text-white font-bold rounded 
+          hover:from-cyan-700 hover:to-cyan-800 text-xs shadow-gray-400 shadow-md flex justify-center items-center"
+          >
+            <HomeIcon className="h-4" />
+          </button>
+
+          <button
+            onClick={onBack}
+            className="w-8 h-8 bg-gradient-to-b from-red-500 to-red-600 uppercase p-2 text-white font-bold rounded 
+          hover:from-cyan-700 hover:to-cyan-800 text-xs shadow-gray-400 shadow-md flex justify-center items-center"
+          >
+            <ChevronLeftIcon className="h-4" />
+          </button>
+        </div>
 
         <div className="space-x-5">
           {user?.role === "gerente" && (

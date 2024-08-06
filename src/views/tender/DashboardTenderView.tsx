@@ -38,11 +38,6 @@ const DashboardTenderView = () => {
         <HourglassSpinner />
       ) : error ? (
         <div> {error}</div>
-      ) : tenders.length === 0 ? (
-        <p className="font-semibold">
-          No hay <span className="text-blue-500 font-bold">Cotizaciones</span>{" "}
-          para mostrar. <br />{" "}
-        </p>
       ) : (
         //<div>Hay Reportes</div>
         <>
@@ -67,7 +62,16 @@ const DashboardTenderView = () => {
               <option value="submitted">Enviado</option>
             </select>
           </div>
-          <AllTenders tenders={filteredTenders} />
+
+          {filteredTenders.length === 0 ? (
+            <p className="font-semibold">
+              No hay{" "}
+              <span className="text-blue-500 font-bold">Cotizaciones</span> para
+              mostrar. <br />{" "}
+            </p>
+          ) : (
+            <AllTenders tenders={filteredTenders} />
+          )}
         </>
       )}
     </>

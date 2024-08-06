@@ -110,7 +110,7 @@ export const fetchUpdatePassword = createAsyncThunk(
 
 const initialFakeValues: UserType = {
   id: 0,
-  profilePicture: "not",
+  profilePicture: null,
   active: true,
   name: "Luís",
   lastName: "Gómez",

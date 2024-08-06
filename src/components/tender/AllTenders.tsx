@@ -18,7 +18,7 @@ const AllTenders = ({ tenders }: { tenders: Tender[] }) => {
   };
 
   return (
-    <table className="w-full max-w-full mx-auto">
+    <table className="w-full max-w-[60rem] mx-auto">
       <thead>
         <tr>
           <th></th>
