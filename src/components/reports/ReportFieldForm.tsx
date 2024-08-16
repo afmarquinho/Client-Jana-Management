@@ -58,12 +58,16 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
 
   return (
     <div className="space-y-4 w-full">
-      <input
-        type="text"
-        placeholder="Nombre de la cotización"
-        className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-customRed"
-        {...register("name")}
-      />
+      <div>
+        <label className="text-sm">Nombre del Proyecto</label>
+        <input
+          type="text"
+          placeholder="p.e.: Mantenimiento Preventivo de maquinaria"
+          className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-red-500"
+          {...register("name")}
+        />
+      </div>
+
       <div className="flex flex-col sm:flex-row gap-2">
         <div className="w-full sm:w-1/2">
           <label htmlFor="visitDate" className="text-sm">
@@ -71,7 +75,7 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
           </label>
           <input
             type="date"
-            className="border-gray-400 border-2 rounded-md px-2 w-full py-1 outline-customRed"
+            className="border-gray-400 border-2 rounded-md px-2 w-full py-1 outline-red-500"
             {...register("visitDate")}
           />
         </div>
@@ -81,59 +85,78 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
           </label>
           <input
             type="date"
-            className="border-gray-400 border-2 rounded-md px-2 w-full py-1 outline-customRed"
+            className="border-gray-400 border-2 rounded-md px-2 w-full py-1 outline-red-500"
             {...register("dueDate")}
           />
         </div>
       </div>
+
       <hr className="m-0 border-gray-400" />
       <small>Datos del Cliente</small>
-      <div className="flex flex-col sm:flex-row gap-2">
-        <input
-          type="text"
-          placeholder="Cliente"
-          className="border-gray-400 border-2 rounded-md px-2 py-1 w-full sm:w-1/2 outline-customRed"
-          {...register("customerName")}
-        />
+      <div className="gap-2 w-full flex flex-col sm:flex-row">
+        <div className="flex flex-col w-full sm:w-1/2">
+          <label className="text-sm w-full">Nombre del Cliente</label>
+          <input
+            type="text"
+            placeholder="Ingenio Cali"
+            className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-red-500"
+            {...register("customerName")}
+          />
+        </div>
 
-        <input
-          type="text"
-          placeholder="Cuidad"
-          className="border-gray-400 border-2 rounded-md px-2 py-1 w-full sm:w-1/2 outline-customRed"
-          {...register("customerCity")}
-        />
+        <div className="flex flex-col w-full sm:w-1/2">
+          <label className="text-sm w-full">Ciudad</label>
+          <input
+            type="text"
+            placeholder="p.e.: Cali"
+            className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-red-500"
+            {...register("customerCity")}
+          />
+        </div>
       </div>
 
       <hr className="m-0 border-gray-400" />
       <small>Datos de contacto</small>
-      <input
-        type="text"
-        placeholder="Contacto p.e. John Doe"
-        className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-customRed"
-        {...register("contactName")}
-      />
-
-      <div className="flex flex-col sm:flex-row gap-2">
+      <div className="w-full">
+        <label className="text-sm w-full">Nombre</label>
         <input
           type="text"
-          placeholder="Teléfono p.e. +573121234567"
-          className="border-gray-400 border-2 rounded-md px-2 py-1 w-full sm:w-1/2 outline-customRed"
-          {...register("phoneNumber")}
-        />
-
-        <input
-          type="email"
-          placeholder="Correo p.e. correo@correo.com"
-          className="border-gray-400 border-2 rounded-md px-2 py-1 w-full sm:w-1/2 outline-customRed"
-          {...register("email")}
+          placeholder="p.e.: John Doe"
+          className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-red-500"
+          {...register("contactName")}
         />
       </div>
+
+      <div className="gap-2 w-full flex flex-col sm:flex-row">
+        <div className="flex flex-col w-full sm:w-1/2">
+          <label className="text-sm w-full">Teléfono</label>
+          <input
+            type="text"
+            placeholder="p.e.: +573121234567"
+            className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-red-500"
+            {...register("phoneNumber")}
+          />
+        </div>
+        <div className="flex flex-col w-full sm:w-1/2">
+          <label className="text-sm w-full">Correo</label>
+          <input
+            type="email"
+            placeholder="p.e.: correo@correo.com"
+            className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-red-500"
+            {...register("email")}
+          />
+        </div>
+      </div>
+
       <hr className="m-0 border-gray-400" />
-      <textarea
-        placeholder="Descripción"
-        className="border-gray-400 border-2 rounded-md px-2 py-1 w-full h-20 resize-none outline-customRed"
-        {...register("description")}
-      />
+      <div>
+        <label className="text-sm">Descripción</label>
+        <textarea
+          placeholder="Descripción"
+          className="border-gray-400 border-2 rounded-md px-2 py-1 w-full h-20 resize-none outline-red-500"
+          {...register("description")}
+        />
+      </div>
 
       {/* ---------------------------------------------------------------------------------------- */}
       {/* ----------------------------------WORKFORCE SECTION ------------------------------------ */}
@@ -141,25 +164,31 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
 
       <hr className="m-0 border-gray-400" />
       <small>Agregar Mano de Obra</small>
-      <div className="flex flex-col sm:flex-row gap-2">
-        <input
-          type="text"
-          placeholder="Mano de Obra"
-          className="border-gray-400 border-2 rounded-md px-2 py-1 w-full sm:w-2/3 outline-customRed"
-          value={role}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setRole(e.target.value)
-          }
-        />
-        <input
-          type="number"
-          placeholder="Cantidad"
-          className="border-gray-400 border-2 rounded-md px-2 py-1 w-full sm:w-1/3 outline-customRed"
-          value={workshift}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setWorkShift(parseInt(e.target.value))
-          }
-        />
+      <div className="gap-2 w-full flex flex-col sm:flex-row">
+        <div className="flex flex-col w-full sm:w-1/2 md:w-2/3">
+          <label className="text-sm w-full">Nombre</label>
+          <input
+            type="text"
+            placeholder="Mano de Obra"
+            className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-red-500"
+            value={role}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setRole(e.target.value)
+            }
+          />
+        </div>
+        <div className="flex flex-col w-full sm:w-1/2 md:w-1/3">
+          <label className="text-sm w-full">Cant Turnos</label>
+          <input
+            type="number"
+            placeholder="Cantidad"
+            className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-red-500"
+            value={workshift}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setWorkShift(parseInt(e.target.value))
+            }
+          />
+        </div>
       </div>
       <button
         className="text-xs text-white font-bold bg-blue-500 py-1 px-2 rounded-md
@@ -170,7 +199,7 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
         Agregar
       </button>
 
-      <ul className="">
+      <ul className="w-full max-w-96">
         {workforceArray.map((item, index) => (
           <li key={index} className="flex justify-between items-center">
             <span>
@@ -189,32 +218,40 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
       <hr className="m-0 border-gray-400" />
       <small>Agregar Materiales</small>
       <div className="flex flex-col gap-2">
-        <input
-          type="text"
-          placeholder="Material"
-          className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-customRed"
-          value={material}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setMaterial(e.target.value)
-          }
-        />
-        <div className="flex flex-col sm:flex-row gap-1">
+        <div className="w-full">
+          <label className="text-sm w-full">Nombre</label>
           <input
-            type="number"
-            placeholder="Cantidad"
-            className="border-gray-400 border-2 rounded-md px-2 py-1 w-full sm:w-1/2 outline-customRed"
-            value={quantity}
+            type="text"
+            placeholder="Material"
+            className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-red-500"
+            value={material}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setQuantity(parseInt(e.target.value))
+              setMaterial(e.target.value)
             }
           />
+        </div>
+
+        <div className="gap-2 w-full flex flex-col sm:flex-row items-center">
+          <div className="flex flex-col w-full sm:w-1/2">
+            <label className="text-sm w-full">Cantidad</label>
+            <input
+              type="number"
+              placeholder="Cantidad"
+              className="border-gray-400 border-2 rounded-md px-2 py-1 w-full outline-red-500"
+              value={quantity}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setQuantity(parseInt(e.target.value))
+              }
+            />
+          </div>
+
           <div className="w-full sm:w-1/2">
             <label htmlFor="unit" className="me-2">
               Unidades
             </label>
             <select
               name="unit"
-              className="outline-customRed"
+              className="outline-red-500"
               value={unit}
               onChange={(e) => setUnit(e.target.value)}
             >
@@ -233,6 +270,7 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
             </select>
           </div>
         </div>
+
       </div>
       <button
         className="text-xs text-white font-bold bg-blue-500 py-1 px-2 rounded-md
@@ -242,7 +280,7 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
       >
         Agregar
       </button>
-      <ul className="">
+      <ul className="w-full max-w-96">
         {materialArray.map((item, index) => (
           <li key={index} className="flex justify-between">
             <span>
@@ -259,7 +297,7 @@ const ReportFieldForm: React.FC<ChildInputProps> = ({
       <label htmlFor="prioridad" className="me-2">
         Prioridad:
       </label>
-      <select className="outline-customRed" {...register("priority")}>
+      <select className="outline-red-500" {...register("priority")}>
         <option value="">--Seleccione-- </option>
         <option value="high">Alta</option>
         <option value="medium">Medio</option>

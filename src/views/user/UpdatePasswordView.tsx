@@ -2,9 +2,9 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchUpdatePassword } from "../../redux/slices/userSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
+import { fetchUpdatePassword } from "../../redux/thunks/userThunks";
 
 type PasswordType = {
   password: string;
@@ -33,19 +33,15 @@ const UpdatePasswordView = () => {
       return;
     }
     const id_ = parseInt(id);
-    try {
-      const resultAction = await dispatch(fetchUpdatePassword({ id: id_, password }));
-      if (fetchUpdatePassword.fulfilled.match(resultAction)) {
-        alert("Contraseña actualizada satisfactoriamente");
-        reset();
-        navigate(-1);
-      } else {
-        console.error("Error del backend:", resultAction.error.message);
-        alert(`Error: ${resultAction.error.message}`);
-      }
-    } catch (error) {
-      console.error("Error al actualizar la contraseña: ", error);
-      alert("No se puedo actualizar la contraseña");
+    const resultAction = await dispatch(
+      fetchUpdatePassword({ id: id_, password })
+    );
+    if (fetchUpdatePassword.fulfilled.match(resultAction)) {
+      alert("Contraseña actualizada satisfactoriamente");
+      reset();
+      navigate(-1);
+    } else {
+      alert(`Error: ${resultAction.error.message}`);
     }
   };
 

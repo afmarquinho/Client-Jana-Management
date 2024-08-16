@@ -14,7 +14,10 @@ import { fetchUpdateTender } from "../../redux/thunks/tenderThunks";
 
 const OtherExpView = () => {
   const dispatch = useDispatch<AppDispatch>();
+
   const tender = useSelector((state: RootState) => state.tender.tender);
+  const error = useSelector((state: RootState) => state.tender.error);
+
   const [index, setIndex] = useState<number | null>(null);
   const [expEdit, setExpEdit] =
     useState<OtherExpensesType>(initValOtherExpenses);
@@ -50,32 +53,35 @@ const OtherExpView = () => {
 
   const handleDelete = async (index: number) => {
     //* CREA UN NUEVO ARRAY CON LA DESCRIPCIÓN EN EL ÍNDICE DADO
+    if (!tender) {
+      return;
+    }
 
     const updatedExpensesArray: OtherExpensesType[] =
       tender.otherExpenses.filter((_, i: number) => i !== index);
 
     //* Crea un nuevo objeto `Tender` con la lista actualizada de descripciones
-    const updatedTender: Tender = {
+    let updatedTender: Tender = {
       ...tender,
       otherExpenses: updatedExpensesArray,
     };
 
-    try {
-      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
-      if (fetchUpdateTender.fulfilled.match(resultAction)) {
-        alert("¡Mano de obra eliminada correctamente!");
-      } else {
-        if (resultAction.payload) {
-          console.error(resultAction.payload);
-        } else {
-          console.error("Falló la eliminación");
-        }
-      }
-      setIndex(null);
-    } catch (error) {
-      console.error("Error inesperado:", error);
+     //*ACTUALIZO EL CAMNPO DE RESUMEN
+     const summary: OfferSummaryType = summaryTender(updatedTender);
+
+     updatedTender = {
+       ...updatedTender,
+       summary: summary,
+     };
+ 
+
+    const resultAction = await dispatch(fetchUpdateTender(updatedTender));
+    if (fetchUpdateTender.fulfilled.match(resultAction)) {
+      alert("¡Mano de obra eliminada correctamente!");
+    } else {
+      alert(error);
     }
-    //* DESPARA EL THUNK
+    setIndex(null);
   };
 
   const onSubmit: SubmitHandler<OtherExpensesType> = async (data) => {
@@ -83,6 +89,9 @@ const OtherExpView = () => {
     data.profitAmount = (data.profit / 100) * data.partialCost;
     data.totalValue = data.partialCost + data.profitAmount;
 
+    if (!tender) {
+      return;
+    }
     const updatedOtherExpenses: OtherExpensesType[] =
       index !== null
         ? tender.otherExpenses.map((exp: OtherExpensesType, i: number) =>
@@ -95,38 +104,25 @@ const OtherExpView = () => {
       otherExpenses: updatedOtherExpenses,
     };
 
-     //*ACTUALIZO EL CAMNPO DE RESUMEN
-     const summary: OfferSummaryType = summaryTender(updatedTender);
-    
-     updatedTender = {
-       ...updatedTender,
-       summary:summary
-     };
+    //*ACTUALIZO EL CAMNPO DE RESUMEN
+    const summary: OfferSummaryType = summaryTender(updatedTender);
 
+    updatedTender = {
+      ...updatedTender,
+      summary: summary,
+    };
 
+    const resultAction = await dispatch(fetchUpdateTender(updatedTender));
 
+    if (fetchUpdateTender.fulfilled.match(resultAction)) {
+      // La actualización fue exitosa
+      alert("¡Cotización Actualizada correctamente!");
 
-    try {
-      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
-
-      if (fetchUpdateTender.fulfilled.match(resultAction)) {
-        // La actualización fue exitosa
-        alert("¡Cotización Actualizada correctamente!");
-
-        setIndex(null);
-        setExpEdit(initValOtherExpenses);
-        reset();
-      } else {
-        if (resultAction.payload) {
-          // La actualización falló con un mensaje de error del backend
-          console.error(resultAction.payload);
-        } else {
-          // La actualización falló con un error desconocido
-          console.error("Falló la actualización de la cotización");
-        }
-      }
-    } catch (error) {
-      console.error("Error inesperado:", error);
+      setIndex(null);
+      setExpEdit(initValOtherExpenses);
+      reset();
+    } else {
+      alert(error);
     }
   };
 
@@ -134,7 +130,7 @@ const OtherExpView = () => {
     <div className="my-5 flex gap-5">
       <TenderNav />
       <div className="w-full">
-        <TenderName name={tender.name} />
+        <TenderName name={tender ? tender.name : ""} />
         <form
           className="bg-white w-full max-w-xl mx-auto px-4 md:px-16 py-12 space-y-5 flex flex-col items-center"
           onSubmit={handleSubmit(onSubmit)}

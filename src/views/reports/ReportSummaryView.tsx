@@ -11,9 +11,7 @@ import { useState } from "react";
 import { formatServerDate } from "../../helpers/helpers";
 import HourglassSpinner from "../../components/HourglassSpinner";
 import { cleanError, cleanReport } from "../../redux/slices/reportSlice";
-import { VisitReportType } from "../../types/types";
-import { fetchProcessReport } from "../../redux/thunks/reportThunks";
-import { createTenderService } from "../../services/tenderServices";
+import ModalProcess from "../../components/reports/ModalProcess";
 
 const ReportSummaryView = () => {
   const navigate = useNavigate();
@@ -21,9 +19,10 @@ const ReportSummaryView = () => {
 
   const report = useSelector((state: RootState) => state.report.report);
   const loading = useSelector((state: RootState) => state.report.loading);
-  const error = useSelector((state: RootState) => state.report.error);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalProcess, setIsModalProcess] = useState<boolean>(false);
+
 
   if (!report) {
     return <div>No report available</div>;
@@ -36,34 +35,12 @@ const ReportSummaryView = () => {
   const onBack = () => {
     dispatch(cleanReport());
     dispatch(cleanError());
-  }
+  };
 
-  const handleProcess = async (report: VisitReportType) => {
-    try {
-      if (!report.id) {
-        return;
-      }
-      
-      const resultAction = await dispatch(
-        fetchProcessReport({
-          id: report.id,
-          dueDate: formatServerDate(report.dueDate),
-        })
-      );
-      if (fetchProcessReport.fulfilled.match(resultAction)) {
-        navigate("/dashboard-report");
-        alert("Informe de Visita de Obra procesado exitosamente");
+  const handleProcess = async () => {
+      setIsModalProcess(true)
 
-        await createTenderService(report.id)
-      } else {
-        console.error("Error de Backend: ", resultAction.error.message);
-        alert(`${resultAction.error.message}`);
-      }
-    } catch (error) {
-      3;
-      console.error("Error al procesar el informe: ", error);
-      alert("No se puedo procesar el informe");
-    }
+   
   };
 
   // useEffect(() => {
@@ -78,11 +55,12 @@ const ReportSummaryView = () => {
     <div>
       {loading ? (
         <HourglassSpinner />
-      ) : error ? (
-        <p>{error}</p>
       ) : (
         <>
           {isModalOpen && <ModalDeleteReport setIsModalOpen={setIsModalOpen} />}
+          {isModalProcess && (
+            <ModalProcess setIsModalProcess={setIsModalProcess}/>
+          )}
           <Link
             className="w-36 mb-5 bg-gradient-to-b from-red-500 to-red-600 uppercase p-2 text-white font-bold rounded 
           hover:from-cyan-700 hover:to-cyan-800 text-xs shadow-gray-400 shadow-md text-center flex justify-center items-center"
@@ -236,7 +214,7 @@ const ReportSummaryView = () => {
                   ? "bg-gray-700 opacity-65 cursor-not-allowed"
                   : "bg-green-500 hover:bg-green-800"
               }`}
-              onClick={() => handleProcess(report)}
+              onClick={handleProcess}
               disabled={report.processed}
             >
               Procesar

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { fetchGetTenders } from "../../redux/thunks/tenderThunks";
 import { Link } from "react-router-dom";
 import { PlusIcon } from "@heroicons/react/16/solid";
+import { cleanError } from "../../redux/slices/tenderSlice";
 
 const DashboardTenderView = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,6 +23,7 @@ const DashboardTenderView = () => {
       dispatch(fetchGetTenders());
       setFetchExecuted(true);
     }
+    dispatch(cleanError());
   }, [dispatch, tenders, fetchExecuted]);
 
   const filteredTenders = tenders.filter((tender) =>

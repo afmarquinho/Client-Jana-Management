@@ -1,56 +1,24 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  createTenderService,
-  getTendersService,
-  updateTenderService,
-} from "../../services/tenderServices";
-import { getReportByIdService } from "../../services/reportServices";
 import { isAxiosError } from "axios";
 import { Tender } from "../../types/types";
+import axiosClient from "../../axiosClient";
 
 export const fetchGetTenders = createAsyncThunk(
   "api/tenders/getAll",
   async () => {
     try {
-      const res = await getTendersService();
-      return res;
+      const response = await axiosClient.get("/tenders");
+      return response.data.data;
     } catch (error) {
+      //* ESTE CONDICIONAL EVITA EL ERROR EN EL TYPE DEL "ERROR"
       if (isAxiosError(error)) {
-        throw error;
+        const errorMessage =
+          error.response?.data?.message ||
+          "No se pudo obtener las cotizaciones";
+        console.error("Error del backend: ", errorMessage);
+        throw new Error(errorMessage);
       } else {
-        throw new Error("Error al obtener las cotizaciones");
-      }
-    }
-  }
-);
-
-export const fetchGetReportById = createAsyncThunk(
-  "api/report/get-by-id/",
-  async (reportId: number, { rejectWithValue }) => {
-    try {
-      const report = await getReportByIdService(reportId);
-      return report;
-    } catch (error) {
-      if (isAxiosError(error)) {
-        return rejectWithValue(error.message);
-      } else {
-        return rejectWithValue("Error desconocido");
-      }
-    }
-  }
-);
-
-export const fetchUpdateTender = createAsyncThunk(
-  "tenders/updateTender",
-  async (data: Tender, { rejectWithValue }) => {
-    try {
-      await updateTenderService(data);
-      return { data }; // Puedes devolver los datos actualizados si es necesario
-    } catch (error) {
-      if (isAxiosError(error)) {
-        return rejectWithValue(error.message);
-      } else {
-        return rejectWithValue("Error desconocido");
+        throw new Error("Ha ocurrido un error inesperado");
       }
     }
   }
@@ -60,12 +28,36 @@ export const fetchCreateTender = createAsyncThunk(
   "tenders/createTender",
   async (reportId: number) => {
     try {
-      return await createTenderService(reportId);
+      const response = await axiosClient.post(`/tenders/${reportId}`);
+      return response.data.data;
     } catch (error) {
       if (isAxiosError(error)) {
-        throw error;
+        const errorMessage =
+          error.response?.data?.message || "No se pudo crear la cotización";
+        console.error("Error del backend: ", errorMessage);
+        throw new Error(errorMessage);
       } else {
-        throw new Error("Error al crear la cotización");
+        throw new Error("Ha ocurrido un error inesperado");
+      }
+    }
+  }
+);
+
+
+export const fetchUpdateTender = createAsyncThunk(
+  "tenders/updateTender",
+  async (data: Tender) => {
+    try {
+      await axiosClient.put(`/tenders/${data.id}`, data);
+      return { data }; // Puedes devolver los datos actualizados si es necesario
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const errorMessage =
+        error.response?.data?.errors?.[0]?.msg || "Error al actualizar la cotización";
+        console.error("Error del backend: ", errorMessage);
+        throw new Error(errorMessage);
+      } else {
+        throw new Error("Ha ocurrido un error inesperado");
       }
     }
   }

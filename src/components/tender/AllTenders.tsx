@@ -4,8 +4,7 @@ import { Tender } from "../../types/types";
 import { Link } from "react-router-dom";
 import { formatServerDate } from "../../helpers/helpers";
 import { tenderToEdit } from "../../redux/slices/tenderSlice";
-import { fetchGetReportById } from "../../redux/thunks/tenderThunks";
-fetchGetReportById
+import { fetchGetReportById } from "../../redux/thunks/reportThunks";
 
 const AllTenders = ({ tenders }: { tenders: Tender[] }) => {
   const dispatch = useDispatch<AppDispatch>();

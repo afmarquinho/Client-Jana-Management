@@ -17,6 +17,7 @@ import { fetchUpdateTender } from "../../redux/thunks/tenderThunks";
 const MaterialsView = () => {
   const dispatch = useDispatch<AppDispatch>();
   const tender = useSelector((state: RootState) => state.tender.tender);
+  const error = useSelector((state: RootState) => state.tender.error);
   const [index, setIndex] = useState<number | null>(null);
   const [mtEdit, setMtEdit] = useState<SupplyType>(initValMaterial);
 
@@ -49,6 +50,9 @@ const MaterialsView = () => {
 
   const handleDelete = async (index: number) => {
     //* CREA UN NUEVO ARRAY CON LA DESCRIPCIÓN EN EL ÍNDICE DADO
+    if (tender === null) {
+      return;
+    }
 
     const updatedMaterialArray: SupplyType[] = tender.materials.filter(
       (_, i: number) => i !== index
@@ -59,35 +63,26 @@ const MaterialsView = () => {
       ...tender,
       materials: updatedMaterialArray,
     };
+    const resultAction = await dispatch(fetchUpdateTender(updatedTender));
 
-    try {
-      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
+    if (fetchUpdateTender.fulfilled.match(resultAction)) {
+      // La actualización fue exitosa
+      alert("¡Material eliminado correctamente!");
 
-      if (fetchUpdateTender.fulfilled.match(resultAction)) {
-        // La actualización fue exitosa
-        alert("¡Material eliminado correctamente!");
-
-        setIndex(null);
-        reset();
-      } else {
-        if (resultAction.payload) {
-          // La actualización falló con un mensaje de error del backend
-          console.error(resultAction.payload);
-        } else {
-          // La actualización falló con un error desconocido
-          console.error("Falló la eliminación");
-        }
-      }
-    } catch (error) {
-      console.error("Error inesperado:", error);
+      setIndex(null);
+      reset();
+    } else {
+      alert(error);
     }
-    //* DESPARA EL THUNK
   };
 
   const onSubmit: SubmitHandler<SupplyType> = async (data) => {
     data.partialCost = data.unitCost * data.quantity;
     data.profitAmount = (data.profit / 100) * data.partialCost;
     data.totalValue = data.partialCost + data.profitAmount;
+    if (!tender) {
+      return;
+    }
 
     const updatedMaterialArray: SupplyType[] =
       index !== null
@@ -109,27 +104,17 @@ const MaterialsView = () => {
       summary: summary,
     };
 
-    try {
-      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
+    const resultAction = await dispatch(fetchUpdateTender(updatedTender));
 
-      if (fetchUpdateTender.fulfilled.match(resultAction)) {
-        // La actualización fue exitosa
-        alert("¡Cotización Actualizada correctamente!");
+    if (fetchUpdateTender.fulfilled.match(resultAction)) {
+      // La actualización fue exitosa
+      alert("¡Cotización Actualizada correctamente!");
 
-        setIndex(null);
-        setMtEdit(initValMaterial);
-        reset();
-      } else {
-        if (resultAction.payload) {
-          // La actualización falló con un mensaje de error del backend
-          console.error(resultAction.payload);
-        } else {
-          // La actualización falló con un error desconocido
-          console.error("Falló la actualización de la cotización");
-        }
-      }
-    } catch (error) {
-      console.error("Error inesperado:", error);
+      setIndex(null);
+      setMtEdit(initValMaterial);
+      reset();
+    } else {
+      alert(error);
     }
   };
 
@@ -137,7 +122,7 @@ const MaterialsView = () => {
     <div className="my-5 flex gap-5">
       <TenderNav />
       <div className="w-full">
-        <TenderName name={tender.name} />
+        <TenderName name={tender ? tender.name : ""} />
         <form
           className="bg-white w-full max-w-xl mx-auto px-4 md:px-16 py-12 space-y-5 flex flex-col items-center"
           onSubmit={handleSubmit(onSubmit)}

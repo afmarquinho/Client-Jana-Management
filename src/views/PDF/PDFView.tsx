@@ -167,7 +167,7 @@ const PDFView = () => {
         <table className="w-full divide-y divide-gray-400 my-5 table-auto">
           <thead className="bg-gray-200">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border  border-gray-400">
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border  border-gray-400 w-20">
                 Item
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border  border-gray-400">

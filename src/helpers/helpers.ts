@@ -25,30 +25,30 @@ export const isDateValid = (dateString: string): boolean => {
 
 //* Los datos que vienen del backen al crear un nuevo tender, vienen de esta forma, vamos a cambiarlos  datos nulos
 
-const dataFromBackendExample = {
-  contactName: "Juan Torres",
-  createdBy: "John Doe",
-  customerCity: "Pereira",
-  customerName: "Risaralda",
-  date: null,
-  description: null,
-  email: "juan.torres@risaralda.com",
-  id: 60,
-  leadTime: null,
-  name: "Revisión de Sistemas Hidráulicos",
-  notes: null,
-  paymentMethod: null,
-  phoneNumber: "555-2468",
-  proposalValidity: null,
-  reportId: 6,
-  reviewedBy: null,
-  status: "draft",
-  tender: null,
-  ref: "asc-634",
-};
+// const dataFromBackendExample = {
+//   contactName: "Juan Torres",
+//   createdBy: "John Doe",
+//   customerCity: "Pereira",
+//   customerName: "Risaralda",
+//   date: null,
+//   description: null,
+//   email: "juan.torres@risaralda.com",
+//   id: 60,
+//   leadTime: null,
+//   name: "Revisión de Sistemas Hidráulicos",
+//   notes: null,
+//   paymentMethod: null,
+//   phoneNumber: "555-2468",
+//   proposalValidity: null,
+//   reportId: 6,
+//   reviewedBy: null,
+//   status: "draft",
+//   tender: null,
+//   ref: "asc-634",
+// };
 
 // Definición de tipos
-type TenderDataFromBackend = typeof dataFromBackendExample;
+//type TenderDataFromBackend = typeof dataFromBackendExample;
 
 export function getTodayDateString(): string {
   const today = new Date();
@@ -58,30 +58,30 @@ export function getTodayDateString(): string {
   return `${year}-${month}-${day}`;
 }
 
-export const assignTenderData = (data: TenderDataFromBackend) => {
-  // Función para obtener el día de hoy en formato "YYYY-MM-DD"
-  return {
-    id: data.id,
-    tender: data.tender ?? "", // Inicia con cadena vacía si es nulo
-    name: data.name,
-    customerName: data.customerName,
-    contactName: data.contactName,
-    email: data.email,
-    phoneNumber: data.phoneNumber,
-    customerCity: data.customerCity,
-    createdBy: data.createdBy,
-    reviewedBy: data.reviewedBy ?? "", // Inicia con cadena vacía si es nulo
-    date: data.date ?? getTodayDateString(), // Usa getTodayDateString si data.date es null
-    leadTime: data.leadTime ?? "", // Inicia con cadena vacía si es nulo
-    paymentMethod: data.paymentMethod ?? "", // Inicia con cadena vacía si es nulo
-    proposalValidity: data.proposalValidity ?? "", // Inicia con cadena vacía si es nulo
-    description: data.description ?? [], // Inicia con arreglo vacío si es nulo
-    notes: data.notes ?? [], // Inicia con arreglo vacío si es nulo
-    status: data.status,
-    reportId: data.reportId,
-    ref: data.ref,
-  };
-};
+// export const assignTenderData = (data: TenderDataFromBackend) => {
+//   // Función para obtener el día de hoy en formato "YYYY-MM-DD"
+//   return {
+//     id: data.id,
+//     tender: data.tender ?? "", // Inicia con cadena vacía si es nulo
+//     name: data.name,
+//     customerName: data.customerName,
+//     contactName: data.contactName,
+//     email: data.email,
+//     phoneNumber: data.phoneNumber,
+//     customerCity: data.customerCity,
+//     createdBy: data.createdBy,
+//     reviewedBy: data.reviewedBy ?? "", // Inicia con cadena vacía si es nulo
+//     date: data.date ?? getTodayDateString(), // Usa getTodayDateString si data.date es null
+//     leadTime: data.leadTime ?? "", // Inicia con cadena vacía si es nulo
+//     paymentMethod: data.paymentMethod ?? "", // Inicia con cadena vacía si es nulo
+//     proposalValidity: data.proposalValidity ?? "", // Inicia con cadena vacía si es nulo
+//     description: data.description ?? [], // Inicia con arreglo vacío si es nulo
+//     notes: data.notes ?? [], // Inicia con arreglo vacío si es nulo
+//     status: data.status,
+//     reportId: data.reportId,
+//     ref: data.ref,
+//   };
+// };
 
 export const summaryTender = (tender: Tender) => {
   const materials = tender.materials.reduce(

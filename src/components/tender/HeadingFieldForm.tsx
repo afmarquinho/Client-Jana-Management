@@ -17,6 +17,7 @@ const HeadingFiledForm: React.FC<ChildInputProps> = ({ register }) => {
           {...register("name")}
         />
       </div>
+
       <div className="flex gap-5">
         <label htmlFor="" className="w-3/12 font-semibold">
           Cliente

@@ -7,37 +7,36 @@ import { formatServerDate } from "../../helpers/helpers";
 import {
   cleanError,
   cleanUserProfile,
-  fetchUploadProfilePicture,
   setUserEdit,
 } from "../../redux/slices/userSlice";
 import { CameraIcon } from "@heroicons/react/16/solid";
 import DeactiveUserModal from "../../components/user/DeactiveUserModal";
+import { fetchUploadProfilePicture } from "../../redux/thunks/userThunks";
 
 const UserProfileView = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
-  const user = useSelector((state: RootState) => state.user.userProfile);
+  const userProfile = useSelector((state: RootState) => state.user.userProfile);
   const loading = useSelector((state: RootState) => state.user.loading);
 
-  const userDateOfBirth = user?.dateOfBirth ?? "";
+  const userDateOfBirth = userProfile?.dateOfBirth ?? "";
   const [isActive, setIsActive] = useState<boolean>(true);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-
   // const imageUrl =
   //   previewImage ||
   //   (user ? `http://localhost:4000/api/${user.profilePicture}` : perfil);
 
-    const imgProfile = (path: string | null) => {
-      if (path === null) {
-        return perfil;
-      } else {
-        return `${import.meta.env.VITE_API_URL}/${path}`;
-      }
-    };
+  const imgProfile = (path: string | null) => {
+    if (path === null) {
+      return perfil;
+    } else {
+      return `${import.meta.env.VITE_API_URL}/${path}`;
+    }
+  };
 
   const onBack = () => {
     navigate(-1);
@@ -46,10 +45,10 @@ const UserProfileView = () => {
   };
 
   const onEdit = () => {
-    if (!user) {
+    if (!userProfile) {
       return;
     }
-    dispatch(setUserEdit(user));
+    dispatch(setUserEdit(userProfile));
   };
 
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +56,6 @@ const UserProfileView = () => {
     if (file) {
       setSelectedFile(file);
       setPreviewImage(URL.createObjectURL(file));
-      console.log(previewImage)
     }
   };
 
@@ -66,24 +64,21 @@ const UserProfileView = () => {
       alert("Por favor seleccione una imagen.");
       return;
     }
+    if (!userProfile) {
+      return;
+    }
 
-    try {
-      if (!user) {
-        return;
-      }
-      const resultAction = dispatch(
-        fetchUploadProfilePicture({ id: user?.id, file: selectedFile })
-      );
-      if (fetchUploadProfilePicture.fulfilled.match(resultAction)) {
-        setPreviewImage(null);
-        alert("Imagen subida con éxito");
-      }
-    } catch (error) {
-      console.error("Error al subir la imagen:", error);
-      alert("No se pudo actualizar el usuario")
+    const resultAction = dispatch(
+      fetchUploadProfilePicture({ id: userProfile?.id, file: selectedFile })
+    );
+    if (fetchUploadProfilePicture.fulfilled.match(resultAction)) {
+      setPreviewImage(null);
+      alert("Imagen subida con éxito");
+    } else {
+      alert("No se pudo actualizar el usuario");
     }
   };
-  
+
   useEffect(() => {
     if (isModalOpen) {
       document.body.style.overflow = "hidden";
@@ -100,7 +95,7 @@ const UserProfileView = () => {
         <div className="bg-gradient-to-tr from-green-400 via-green-600 to-violet-300 flex flex-col p-5 gap-5 mt-4">
           <div className="flex justify-between items-center">
             <h2 className="text-xl md:text-3xl text-white font-semibold">
-              {`${user?.name} ${user?.lastName}`}
+              {`${userProfile?.name} ${userProfile?.lastName}`}
             </h2>
           </div>
           <nav className="bg-white px-5 text-green-700 text-sm space-x-4 rounded-xl flex justify-between items-center">
@@ -136,7 +131,11 @@ const UserProfileView = () => {
                 <div className="w-40 h-40 sm:w-44 sm:h-44 lg:w-60 lg:h-60 rounded-ful relative">
                   <div className="w-40 h-40 sm:w-44 sm:h-44 lg:w-60 lg:h-60 rounded-full overflow-hidden">
                     <img
-                     src={previewImage || imgProfile(user?.profilePicture)}
+                      src={
+                        userProfile
+                          ? previewImage || imgProfile(userProfile?.profilePicture)
+                          : perfil
+                      }
                       alt="Imagen Perfíl"
                       className="object-cover w-full h-full flex justify-center items-center"
                     />
@@ -145,6 +144,7 @@ const UserProfileView = () => {
                       onClick={() =>
                         document.getElementById("fileInput")?.click()
                       }
+                      disabled={!userProfile?.active}
                     >
                       <CameraIcon className="h-12 md:h-16 text-gray-500" />
                     </button>
@@ -159,7 +159,8 @@ const UserProfileView = () => {
                 </div>
               </div>
               <button
-                className="px-6 py-2 bg-blue-500 text-white rounded-md shadow-lg"
+                className={`px-6 py-2 rounded-md shadow-lg ${userProfile?.active ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-700"}`}
+                disabled={!userProfile?.active}
                 onClick={onUpload}
               >
                 Subir Imagen
@@ -169,10 +170,10 @@ const UserProfileView = () => {
                 <p className="flex justify-start items-center gap-1">
                   <span
                     className={`h-2 w-2 rounded-full ${
-                      user?.active === true ? "bg-green-400" : "bg-red-500"
+                      userProfile?.active === true ? "bg-green-400" : "bg-red-500"
                     }`}
                   ></span>
-                  {user?.active === true ? "Activo" : "No Activo"}
+                  {userProfile?.active === true ? "Activo" : "No Activo"}
                 </p>
               </div>
               <div></div>
@@ -185,25 +186,25 @@ const UserProfileView = () => {
                   </h2>
                   <hr className="mb-3 border-gray-400" />
                   <p className="text-gray-400">Nombre</p>
-                  <p className="mb-3">{user?.name}</p>
+                  <p className="mb-3">{userProfile?.name}</p>
                   <p className="text-gray-400">Apellido</p>
-                  <p className="mb-3">{user?.lastName}</p>
+                  <p className="mb-3">{userProfile?.lastName}</p>
                   <p className="text-gray-400">Identificación</p>
                   <p className="mb-3">
-                    {user?.idType}: {user?.userId}
+                    {userProfile?.idType}: {userProfile?.userId}
                   </p>
                   <p className="text-gray-400">Teléfono</p>
-                  <p className="mb-3">{user?.phoneNumber}</p>
+                  <p className="mb-3">{userProfile?.phoneNumber}</p>
                   <p className="text-gray-400">Dirección</p>
-                  <p className="mb-3">{user?.address}</p>
+                  <p className="mb-3">{userProfile?.address}</p>
                   <p className="text-gray-400">Correo Electrónico</p>
-                  <p className="mb-3">{user?.email}</p>
+                  <p className="mb-3">{userProfile?.email}</p>
                   <p className="text-gray-400">Fecha de Nacimiento</p>
                   <p className="mb-3">{formatServerDate(userDateOfBirth)}</p>
 
                   <Link
-                    to="/new-user"
-                    className="px-6 py-1 bg-gradient-to-b from-yellow-400 to-yellow-500 hover:from-sky-700 hover:to-sky-800 hover:text-white shadow-lg text-black rounded-md"
+                    to={userProfile?.active ?  "/new-user" : "#"}
+                    className={`px-6 py-1 bg-gradient-to-b rounded-md font-semibold ${userProfile?.active ? "text-black hover:from-sky-700 from-yellow-400 to-yellow-500  hover:to-sky-800 hover:text-white shadow-lg " : "from-gray-300 to-gray-300  text-gray-700 cursor-default"}`}
                     onClick={onEdit}
                   >
                     Editar Perfil
@@ -214,28 +215,29 @@ const UserProfileView = () => {
                   <h2 className="font-bold text-green-700">Seguridad</h2>
                   <hr className="mb-3 border-gray-400" />
                   <p className="text-gray-400">Cargo</p>
-                  <p className="mb-3">{user?.jobTitle}</p>
+                  <p className="mb-3">{userProfile?.jobTitle}</p>
                   <p className="text-gray-400">Cargo</p>
-                  <p className="mb-3">{user?.jobTitle}</p>
+                  <p className="mb-3">{userProfile?.jobTitle}</p>
                   <p className="text-gray-400">rol</p>
-                  <p className="mb-3">{user?.role}</p>
+                  <p className="mb-3">{userProfile?.role}</p>
                   <p className="text-gray-400">Usuario</p>
-                  <p className="mb-3">{user?.user}</p>
+                  <p className="mb-3">{userProfile?.user}</p>
                   <div className="flex justify-between items-center">
-                    <Link 
-                    to={`/update-passowrd/${user?.id}`}
-                    className="text-sm font-medium bg-gradient-to-b from-orange-400 to-orange-600 text-white px-2 py-1 rounded-md  shadow hover:from-yellow-500 hover:to-yellow-600">
+                    <Link
+                      to={userProfile?.active ?  `/update-passowrd/${userProfile?.id}` : "#"}
+                      className={`text-sm font-medium bg-gradient-to-b px-2 py-1 rounded-md   ${userProfile?.active ? "text-black hover:from-sky-700 from-yellow-400 to-yellow-500  hover:to-sky-800 hover:text-white shadow-lg " : "from-gray-300 to-gray-300  text-gray-700 cursor-default"}`}
+                    >
                       Cambiar Contraseña
                     </Link>
                     <button
                       className={`text-sm font-medium bg-gradient-to-b  text-white px-2 py-1 rounded-md  shadow  ${
-                        user?.active === true
+                        userProfile?.active === true
                           ? "from-gray-600 to-gray-700 hover:from-black hover:to-black"
                           : " from-green-600 to-green-700 hover:from-teal-600 hover:to-teal-700"
                       }`}
                       onClick={() => setIsModalOpen(true)}
                     >
-                      {user?.active === true
+                      {userProfile?.active === true
                         ? "Desactivar Usuario"
                         : "Activar Usuario"}
                     </button>
@@ -247,7 +249,6 @@ const UserProfileView = () => {
         </div>
       )}
       {isModalOpen && <DeactiveUserModal setIsModalOpen={setIsModalOpen} />}
-     
     </>
   );
 };
