@@ -4,13 +4,13 @@ import { UserFormType, UserUpdatedType } from "../../types/types";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
-import {
-  cleanUserEdit,
-  fecthUpdateProfile,
-  fetchCreateUser,
-} from "../../redux/slices/userSlice";
+import { cleanUserEdit } from "../../redux/slices/userSlice";
 import { useEffect } from "react";
 import { formatServerDate } from "../../helpers/helpers";
+import {
+  fecthUpdateProfile,
+  fetchCreateUser,
+} from "../../redux/thunks/userThunks";
 
 const NewUserView = () => {
   const navigate = useNavigate();
@@ -54,8 +54,6 @@ const NewUserView = () => {
   const onSubmit: SubmitHandler<UserFormType> = async (data) => {
     let upData: UserUpdatedType | null = null;
 
-
-
     if (userEdit) {
       upData = {} as UserUpdatedType;
       upData.address = data.address;
@@ -65,37 +63,26 @@ const NewUserView = () => {
       upData.role = data.role;
       upData.user = data.user;
 
-      try {
-        const resultAction = await dispatch(
-          fecthUpdateProfile({ id: userEdit.id, user: upData })
-        );
-        if (fecthUpdateProfile.fulfilled.match(resultAction)) {
-          alert("¡Usuario actualizado correctamente!");
-          reset();
-          cleanUserEdit();
-        } else {
-          console.error("Error del backend:", resultAction.error.message);
-          alert(`Error: ${resultAction.error.message}`);
-        }
-      } catch (error) {
-              console.error("Error al actualizar el usuario:", error);
-        alert("Ocurrió un error inesperado al actualizar el usuario.");
+      const resultAction = await dispatch(
+        fecthUpdateProfile({ id: userEdit.id, user: upData })
+      );
+
+      if (fecthUpdateProfile.fulfilled.match(resultAction)) {
+        alert("¡Usuario actualizado correctamente!");
+        reset();
+        cleanUserEdit();
+      } else {
+        console.error("Error del backend:", resultAction.error.message);
+        alert(`Error: ${resultAction.error.message}`);
       }
-      
     } else {
-  
-      try {
-        const resultAction = await dispatch(fetchCreateUser(data));
-        if (fetchCreateUser.fulfilled.match(resultAction)) {
-          alert("¡Usuario creado correctamente!");
-          reset();
-        } else {
-          console.error("Error del backend:", resultAction.error.message);
-          alert(`Error: ${resultAction.error.message}`);
-        }
-      } catch (error) {
-        console.error("Error al crear usuario:", error);
-        alert("Ocurrió un error inesperado al crear el usuario.");
+      const resultAction = await dispatch(fetchCreateUser(data));
+      if (fetchCreateUser.fulfilled.match(resultAction)) {
+        alert("¡Usuario creado correctamente!");
+        reset();
+      } else {
+        console.error("Error del backend:", resultAction.error.message);
+        alert(`Error: ${resultAction.error.message}`);
       }
     }
   };

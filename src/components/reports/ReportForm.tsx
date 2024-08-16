@@ -43,7 +43,8 @@ const ReportForm: React.FC = () => {
 
   const report = useSelector((state: RootState) => state.report.report);
   const error = useSelector((state: RootState) => state.report.error);
-  const user = useSelector((state: RootState) => state.user.userProfile);
+  const loading = useSelector((state: RootState) => state.report.loading);
+  const user = useSelector((state: RootState) => state.user.authUser);
 
   const [workforceArray, setWorkforceArray] = useState<WorkforceType[]>([]);
   const [materialArray, setMaterialArray] = useState<MaterialType[]>([]);
@@ -88,52 +89,46 @@ const ReportForm: React.FC = () => {
     data.materials = materialArray;
 
     if (!report) {
+      //* IF REPORT IF FULLIED IT MEANS I AM EDITING, OTHERWISE I AM CREANTING A NEW ONE
       data.ref = uuidv4();
       data.createdBy = `${user?.name} ${user?.lastName}`;
       if (user?.role !== "ingObra") {
+        //   //* ONLY IF USER IS DIFFERNT TO INGOBRA THE REPORT IS IMEDIATLY PROCESSED
         data.processed = true;
       }
     }
 
+    //*EDIT REPORT AS REPORT STATUS IS FULLFILLED
     if (report && report.id) {
-      try {
-        const resultAction = await dispatch(
-          fetchEditReport({ id: report.id, data })
+      const resultAction = await dispatch(
+        fetchEditReport({ id: report.id, data })
+      );
+      if (fetchEditReport.fulfilled.match(resultAction)) {
+        alert("Informe actualizado exitosamente");
+        reset();
+        navigate(-1);
+      } else {
+        alert(
+          "Ocurrió un error al editar el informe, revise los datos cuidadosamente"
         );
-        if (fetchEditReport.fulfilled.match(resultAction)) {
-          alert("Informe actualizado exitosamente");
-          reset();
-          navigate(-1);
-        } else {
-          console.error("Error del backend:", resultAction.error.message);
-          alert(`${resultAction.error.message}`);
-        }
-      } catch (error) {
-        console.error("Error al actualizar el informe:", error);
-        alert("Ocurrió un error inesperado.");
       }
+      //* CREATE REPORT
     } else {
-      try {
-        const resultAction = await dispatch(fetchCreateReport(data));
-        if (fetchCreateReport.fulfilled.match(resultAction)) {
-          alert("Informe creado exitosamente");
-          reset();
-          navigate(-1);
 
-          if (resultAction.payload.processed === true && user?.role !== "ingObra") {
-            try {
-              await dispatch(fetchCreateTender(resultAction.payload.id));
-            } catch (error) {
-              console.error("Ocurrió un error inesperado: ", error);
-              alert("Ocurrió un error inesperadp");
-            }
-          }
-        } else {
-          console.error("Error del backend:", resultAction.error.message);
+      const resultAction = await dispatch(fetchCreateReport(data));
+      if (fetchCreateReport.fulfilled.match(resultAction)) {
+        alert("Informe creado exitosamente");
+        reset();
+        navigate(-1);
+
+        //*CREATE TENDER ONLY IF USER IS DIFFERENT TO INGOBRA
+        if (user?.role !== "ingObra") {
+          await dispatch(fetchCreateTender(resultAction.payload.id));
         }
-      } catch (error) {
-        console.error("Ocurrió un error inesperado: ", error);
-        alert("Ocurrió un error inesperadp");
+      } else {
+        alert(
+          "Ocurrió un error al crear el informe, revise los datos cuidadosamente"
+        );
       }
     }
   };
@@ -143,7 +138,7 @@ const ReportForm: React.FC = () => {
       action=""
       onSubmit={handleSubmit(onSubmit)}
       autoComplete="on"
-      className="bg-white w-full max-w-2xl mx-auto mb-5 px-10 md:px-16 py-12 space-y-5 flex flex-col items-center shadow-md rounded-lg overflow-hidden"
+      className="bg-white w-full max-w-3xl mx-auto mb-5 px-10 md:px-16 py-12 space-y-5 flex flex-col items-center shadow-md rounded-lg overflow-hidden"
     >
       <h2 className="text-center font-black text-red-600 uppercase text-base md:text-xl">
         Informe de <span className="text-gray-500">Visita de Obra</span>
@@ -161,7 +156,7 @@ const ReportForm: React.FC = () => {
         type="submit"
         className="w-full max-w-40 p-2 bg-gradient-to-b from-cyan-700 to-cyan-800
         hover:from-gray-500 hover:to-gray-700 cursor-pointer uppercase text-xs self-end text-white font-semibold"
-        value={report ? "Editar" : "Guardar"}
+        value={report ? "Editar" : "Guardar"} disabled={loading}
       />
     </form>
   );

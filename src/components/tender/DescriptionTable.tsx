@@ -1,22 +1,24 @@
 import { useSelector } from "react-redux";
-import { Description} from "../../types/types";
+import { Description } from "../../types/types";
 import { RootState } from "../../redux/store";
 
 //TODO: AGREFGAR TARIFAS DE MANO DE OBRA PARA 2024
 
 type ChildInputProps = {
   setIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  setDescEdit: React.Dispatch<React.SetStateAction<Description>>;
+  setDescEdit: React.Dispatch<React.SetStateAction<Description | null>>;
   handleDelete: (index: number) => void;
 };
 
 const DescriptionTable: React.FC<ChildInputProps> = ({
   setIndex,
   setDescEdit,
-  handleDelete}) =>{
-
+  handleDelete,
+}) => {
   const tender = useSelector((state: RootState) => state.tender.tender);
-
+  if (tender === null) {
+    return;
+  }
   const totalSum = tender.description?.reduce(
     (acc, desc) => acc + desc.totalValue,
     0
@@ -24,8 +26,8 @@ const DescriptionTable: React.FC<ChildInputProps> = ({
 
   const onEdit = (index: number, desc: Description) => {
     setIndex(index);
-  setDescEdit(desc);
- };
+    setDescEdit(desc);
+  };
 
   return (
     <>
@@ -91,14 +93,12 @@ const DescriptionTable: React.FC<ChildInputProps> = ({
                 </button>
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
-
                 <button
                   className="text-red-500 font-semibold"
                   onClick={() => handleDelete(index)}
                 >
                   Eliminar
                 </button>
-
               </td>
             </tr>
           ))}
@@ -110,7 +110,7 @@ const DescriptionTable: React.FC<ChildInputProps> = ({
           {totalSum?.toLocaleString("en-US", {
             style: "currency",
             currency: "USD",
-          })} 
+          })}
         </h3>
         <small className="italic">*Valor en cop</small>
       </div>

@@ -17,6 +17,7 @@ const NotesTenderView = () => {
   const dispatch = useDispatch<AppDispatch>();
   const tender = useSelector((state: RootState) => state.tender.tender);
   const loading = useSelector((state: RootState) => state.tender.loading);
+  const error = useSelector((state: RootState) => state.tender.error);
   const [index, setIndex] = useState<number | null>(null);
   const [noteEdit, setNoteEdit] = useState<string>("");
 
@@ -34,6 +35,9 @@ const NotesTenderView = () => {
 
   const handleDelete = async (index: number) => {
     //* CREA UN NUEVO ARRAY CON LA DESCRIPCIÓN EN EL ÍNDICE DADO
+    if (tender === null) {
+      return;
+    }
     const updatedNotes = tender.notes.filter((_, i: number) => i !== index);
 
     //* Crea un nuevo objeto `Tender` con la lista actualizada de descripciones
@@ -42,24 +46,20 @@ const NotesTenderView = () => {
       notes: updatedNotes,
     };
 
-    try {
-      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
-      if (fetchUpdateTender.fulfilled.match(resultAction)) {
-        alert("¡Nota eliminada correctamente!");
-      } else {
-        if (resultAction.payload) {
-          console.error(resultAction.payload);
-        } else {
-          console.error("Falló la eliminación");
-        }
-      }
+    const resultAction = await dispatch(fetchUpdateTender(updatedTender));
+    if (fetchUpdateTender.fulfilled.match(resultAction)) {
+      alert("¡Nota eliminada correctamente!");
       setIndex(null);
-    } catch (error) {
-      console.error("Error inesperado:", error);
+    } else {
+      alert(error);
     }
-    //* DESPARA EL THUNK
+    setIndex(null);
   };
+
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    if (tender === null) {
+      return;
+    }
     const updatedNotesArray: string[] =
       index !== null
         ? tender.notes.map((note: string, i: number) =>
@@ -72,28 +72,20 @@ const NotesTenderView = () => {
       notes: updatedNotesArray,
     };
 
-    try {
-      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
+    const resultAction = await dispatch(fetchUpdateTender(updatedTender));
 
-      if (fetchUpdateTender.fulfilled.match(resultAction)) {
-        // La actualización fue exitosa
-        alert("¡Cotización Actualizada correctamente!");
+    if (fetchUpdateTender.fulfilled.match(resultAction)) {
+      // La actualización fue exitosa
+      alert("¡Cotización Actualizada correctamente!");
 
-        setIndex(null);
-        setNoteEdit("");
-        reset();
-      } else {
-        if (resultAction.payload) {
-          //La actualización falló con un mensaje de error del backend
-          console.error(resultAction.payload);
-        } else {
-          // La actualización falló con un error desconocido
-          console.error("Falló la actualización de la cotización");
-        }
-      }
-    } catch (error) {
-      console.error("Error inesperado:", error);
+      setIndex(null);
+      setNoteEdit("");
+      reset();
+    } else {
+      alert(error);
     }
+    setIndex(null);
+    setNoteEdit("");
   };
 
   useEffect(() => {
@@ -109,8 +101,8 @@ const NotesTenderView = () => {
         <HourglassSpinner />
       ) : (
         <div className="w-full">
-          <TenderName name={tender.name} />
-          <form  onSubmit={handleSubmit(onSubmit)}>
+          <TenderName name={tender ? tender.name : ""} />
+          <form onSubmit={handleSubmit(onSubmit)}>
             <h2 className="text-center font-black text-gray-500 uppercase text-base md:text-xl">
               Notas <span className="text-red-500">Adicionales</span>
             </h2>
@@ -136,8 +128,8 @@ const NotesTenderView = () => {
           </form>
           <NotesTable
             setIndex={setIndex}
-             setNoteEdit={setNoteEdit}
-             handleDelete={handleDelete}
+            setNoteEdit={setNoteEdit}
+            handleDelete={handleDelete}
           />
         </div>
       )}

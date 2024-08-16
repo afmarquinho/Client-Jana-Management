@@ -1,112 +1,15 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { UserType } from "../../types/types";
 import {
-  activeDeactiveUserService,
-  createUserService,
-  getUsersService,
-  updatePasswordService,
-  updateUserService,
-  uploadProfilePictureService,
-} from "../../services/userServices";
-import { isAxiosError } from "axios";
-import { UserFormType, UserType, UserUpdatedType } from "../../types/types";
+  fecthUpdateProfile,
+  fetchActiveDeactiveUser,
+  fetchCreateUser,
+  fetchGetUsers,
+  fetchUpdatePassword,
+  fetchUploadProfilePicture,
+} from "../thunks/userThunks";
 
 //*THUNKS
-export const fetchGetUsers = createAsyncThunk("api/user/getAll", async () => {
-  try {
-    const users = await getUsersService();
-    return users;
-  } catch (error) {
-    if (isAxiosError(error)) {
-      throw new Error(
-        error.response?.data.errors[0]?.msg || "Error al obtener usuarios"
-      );
-    } else {
-      throw new Error("Ha ocurrido un error inesperado al obtener usuarios");
-    }
-  }
-});
-
-export const fetchCreateUser = createAsyncThunk(
-  "api/user/create",
-  async (user: UserFormType) => {
-    try {
-      const data = await createUserService(user);
-      return data;
-    } catch (error) {
-      if (isAxiosError(error)) {
-        throw error;
-      } else {
-        throw new Error("Ha ocurrido un error inesperado al crear el usuario");
-      }
-    }
-  }
-);
-
-export const fetchUploadProfilePicture = createAsyncThunk(
-  "user/uploadProfilePicture",
-  async ({ id, file }: { id: number; file: File }) => {
-    try {
-      const filePath = await uploadProfilePictureService(id, file);
-      return filePath;
-    } catch (error) {
-      if (isAxiosError(error)) {
-        throw error;
-      } else {
-        throw new Error("Ha ocurrido un error inesperado al cargar la foto");
-      }
-    }
-  }
-);
-
-export const fecthUpdateProfile = createAsyncThunk(
-  "user/updateProfile",
-  async ({ id, user }: { id: number; user: UserUpdatedType }) => {
-    try {
-      return await updateUserService(id, user);
-    } catch (error) {
-      if (isAxiosError(error)) {
-        throw error;
-      } else {
-        throw new Error(
-          "Ha ocurrido un error inesperado al actualizar el usuario"
-        );
-      }
-    }
-  }
-);
-
-export const fetchActiveDeactiveUser = createAsyncThunk(
-  "api/user/update-status",
-  async ({ id, status }: { id: number; status: boolean }) => {
-    try {
-      await activeDeactiveUserService(id, status);
-      return status;
-    } catch (error) {
-      if (isAxiosError(error)) {
-        throw error;
-      } else {
-        throw new Error("Ha ocurrido un error inesperado al crear el usuario");
-      }
-    }
-  }
-);
-
-export const fetchUpdatePassword = createAsyncThunk(
-  "user/update-password",
-  async ({ id, password }: { id: number; password: string }) => {
-    try {
-      return await updatePasswordService(id, password);
-    } catch (error) {
-      if (isAxiosError(error)) {
-        throw error;
-      } else {
-        throw new Error(
-          "Ha ocurrido un error inesperado al actualizar la contraseña"
-        );
-      }
-    }
-  }
-);
 
 const initialFakeValues: UserType = {
   id: 0,

@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import HourglassSpinner from "../../components/HourglassSpinner";
 import { useEffect, useState } from "react";
-import { initValDescription } from "../../helpers/initialValues";
 import TenderName from "../../components/tender/TenderName";
 import TotalSummary from "../../components/tender/TotalSummary";
 import TenderSummary from "../../components/tender/TenderSummary";
@@ -18,9 +17,10 @@ const DescriptionsTenderView = () => {
   const tender = useSelector((state: RootState) => state.tender.tender);
 
   const loading = useSelector((state: RootState) => state.tender.loading);
+  const error = useSelector((state: RootState) => state.tender.error);
 
   const [index, setIndex] = useState<number | null>(null);
-  const [descEdit, setDescEdit] = useState<Description>(initValDescription);
+  const [descEdit, setDescEdit] = useState<Description | null>(null);
 
   const { register, handleSubmit, watch, reset, setValue } =
     useForm<Description>({
@@ -31,7 +31,7 @@ const DescriptionsTenderView = () => {
       },
     });
   useEffect(() => {
-    if (index !== null) {
+    if (index !== null && descEdit!== null) {
       setValue("item", descEdit.item);
       setValue("description", descEdit.description);
       setValue("unit", descEdit.unit);
@@ -56,28 +56,19 @@ const DescriptionsTenderView = () => {
       description: updatedDescriptions,
     };
 
-    try {
-      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
-      if (fetchUpdateTender.fulfilled.match(resultAction)) {
-        alert("¡Descripción eliminada correctamente!");
-      } else {
-        if (resultAction.payload) {
-          console.error(resultAction.payload);
-        } else {
-          console.error("Falló la eliminación");
-        }
-      }
-      setIndex(null);
-    } catch (error) {
-      console.error("Error inesperado:", error);
+    const resultAction = await dispatch(fetchUpdateTender(updatedTender));
+    if (fetchUpdateTender.fulfilled.match(resultAction)) {
+      alert("Descripción eliminada correctamente");
+    } else {
+      alert(error);
     }
-    //* DESPARA EL THUNK
+    setIndex(null);
   };
 
   const onSubmit: SubmitHandler<Description> = async (data) => {
     data.totalValue = data.quantity * data.unitValue;
-    if(!tender){
-      return
+    if (!tender) {
+      return;
     }
     const updatedDescriptions: Description[] =
       index !== null
@@ -91,27 +82,14 @@ const DescriptionsTenderView = () => {
       description: updatedDescriptions,
     };
 
-    try {
-      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
+    const resultAction = await dispatch(fetchUpdateTender(updatedTender));
 
-      if (fetchUpdateTender.fulfilled.match(resultAction)) {
-        // La actualización fue exitosa
-        alert("¡Cotización Actualizada correctamente!");
-        reset();
-      } else {
-        if (resultAction.payload) {
-          // La actualización falló con un mensaje de error del backend
-          console.error(resultAction.payload);
-        } else {
-          // La actualización falló con un error desconocido
-          console.error("Failed to update tender.");
-        }
-      }
-      setIndex(null);
-      setDescEdit(initValDescription);
-    } catch (error) {
-      console.error("An unexpected error occurred:", error);
+    if (fetchUpdateTender.fulfilled.match(resultAction)) {
+      alert("¡Cotización Actualizada correctamente!");
+      reset();
     }
+    setIndex(null);
+    setDescEdit(null);
   };
 
   return (
@@ -122,8 +100,8 @@ const DescriptionsTenderView = () => {
         <>
           <TenderNav />
           <div className="w-full">
-          <TenderName name={tender ? tender.name : ""} />
-          <h2 className="text-red-500">Resúmen de la oferta</h2>
+            <TenderName name={tender ? tender.name : ""} />
+            <h2 className="text-red-500">Resúmen de la oferta</h2>
             <div className="flex gap-10">
               <TotalSummary />
               <TenderSummary />

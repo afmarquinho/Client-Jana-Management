@@ -2,10 +2,11 @@ import { Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
-import { cleanUserEdit, fetchGetUsers } from "../../redux/slices/userSlice";
+import { cleanUserEdit } from "../../redux/slices/userSlice";
 import { useEffect, useState } from "react";
 import UsersTable from "../../components/user/UsersTable";
 import HourglassSpinner from "../../components/HourglassSpinner";
+import { fetchGetUsers } from "../../redux/thunks/userThunks";
 
 const DashboardUser = () => {
   const dispatch = useDispatch<AppDispatch>();

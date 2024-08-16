@@ -16,6 +16,7 @@ import TenderNav from "../../components/tender/TenderNav";
 const WorkforceView = () => {
   const dispatch = useDispatch<AppDispatch>();
   const tender = useSelector((state: RootState) => state.tender.tender);
+  const error = useSelector((state: RootState) => state.tender.error);
 
   const [index, setIndex] = useState<number | null>(null);
   const [wfEdit, setWfEdit] = useState<LaborType>(initValWorkforce);
@@ -57,27 +58,24 @@ const WorkforceView = () => {
     );
 
     //* Crea un nuevo objeto `Tender` con la lista actualizada de descripciones
-    const updatedTender: Tender = {
+    let updatedTender: Tender = {
       ...tender,
       workforces: updatedWorkforceArray,
     };
+     //*ACTUALIZO EL CAMNPO DE RESUMEN, VER EL HELPER
+     const summary: OfferSummaryType = summaryTender(updatedTender);
 
-    try {
-      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
-      if (fetchUpdateTender.fulfilled.match(resultAction)) {
-        alert("¡Mano de obra eliminada correctamente!");
-      } else {
-        if (resultAction.payload) {
-          console.error(resultAction.payload);
-        } else {
-          console.error("Falló la eliminación");
-        }
-      }
-      setIndex(null);
-    } catch (error) {
-      console.error("Error inesperado:", error);
+     updatedTender = {
+       ...updatedTender,
+       summary: summary,
+     };
+
+    const resultAction = await dispatch(fetchUpdateTender(updatedTender));
+    if (fetchUpdateTender.fulfilled.match(resultAction)) {
+      alert("¡Mano de obra eliminada correctamente!");
+    } else {
+      alert(error);
     }
-    //* DESPARA EL THUNK
   };
 
   const onSubmit: SubmitHandler<LaborType> = async (data) => {
@@ -100,7 +98,7 @@ const WorkforceView = () => {
       workforces: updatedWorkforceArray,
     };
 
-    //*ACTUALIZO EL CAMNPO DE RESUMEN
+    //*ACTUALIZO EL CAMNPO DE RESUMEN, VER EL HELPER
     const summary: OfferSummaryType = summaryTender(updatedTender);
 
     updatedTender = {
@@ -108,27 +106,16 @@ const WorkforceView = () => {
       summary: summary,
     };
 
-    try {
-      const resultAction = await dispatch(fetchUpdateTender(updatedTender));
-
-      if (fetchUpdateTender.fulfilled.match(resultAction)) {
-        // La actualización fue exitosa
-        alert("¡Cotización Actualizada correctamente!");
-
-        setIndex(null);
-        setWfEdit(initValWorkforce);
-        reset();
-      } else {
-        if (resultAction.payload) {
-          // La actualización falló con un mensaje de error del backend
-          console.error(resultAction.payload);
-        } else {
-          // La actualización falló con un error desconocido
-          console.error("Falló la actualización de la cotización");
-        }
-      }
-    } catch (error) {
-      console.error("Error inesperado:", error);
+    const resultAction = await dispatch(fetchUpdateTender(updatedTender));
+    if (fetchUpdateTender.fulfilled.match(resultAction)) {
+      // La actualización fue exitosa
+      alert("¡Cotización Actualizada correctamente!");
+      setIndex(null);
+      //* se utiliza valores iniciales por la suma de los valores, si es null da error y toca agrear otro linea de lógica
+      setWfEdit(initValWorkforce);
+      reset();
+    } else {
+      alert(error);
     }
   };
 

@@ -18,24 +18,18 @@ const ModalDeleteReport: React.FC<ChildInputProps> = ({ setIsModalOpen }) => {
 
   const handleDelete = async () => {
     setIsModalOpen(false);
-    try {
-      if (report !== null && report.id !== undefined) {
-        const resultAction = await dispatch(
-          fetchDeleteReport({ id: report.id })
-        );
-        if (fetchDeleteReport.fulfilled.match(resultAction)) {
-          alert("Informe de Visita de Obra eliminado exitosamente");
-          navigate("/dashboard-report");
-        } else {
-          console.error("Error del backend:", resultAction.error.message);
-          alert(`Error: ${resultAction.error.message}`);
-        }
+
+    if (report !== null && report.id !== undefined) {
+      const resultAction = await dispatch(
+        fetchDeleteReport({ id: report.id })
+      );
+      if (fetchDeleteReport.fulfilled.match(resultAction)) {
+        alert("Informe de Visita de Obra eliminado exitosamente");
+        navigate("/dashboard-report");
+      } else {
+        alert(`Error: ${resultAction.error.message}`);
       }
-    } catch (error) {
-      console.error("Error eliminar el informe", error);
-      alert("No se puedo procesar el informe");
-    }
-  };
+    }}
 
   return (
     <div className="fixed bg-black bg-opacity-50 flex justify-center items-center inset-0">

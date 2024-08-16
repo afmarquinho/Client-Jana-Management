@@ -2,10 +2,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Tender, VisitReportType } from "../../types/types";
 import {
   fetchCreateTender,
-  fetchGetReportById,
   fetchGetTenders,
   fetchUpdateTender,
 } from "../thunks/tenderThunks";
+import { fetchGetReportById } from "../thunks/reportThunks";
+
 
 type TenderState = {
   tenders: Tender[];

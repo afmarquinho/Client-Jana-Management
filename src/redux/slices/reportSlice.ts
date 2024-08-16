@@ -24,7 +24,6 @@ const initialState: ReportState = {
   unprocessedReports: [],
   processedReports: [],
   report: null,
-  
   updatedReport: null,
   error: null,
   loading: false,

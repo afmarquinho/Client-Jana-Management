@@ -4,7 +4,7 @@ import {
 } from "@heroicons/react/16/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
-import { fetchActiveDeactiveUser } from "../../redux/slices/userSlice";
+import { fetchActiveDeactiveUser } from "../../redux/thunks/userThunks";
 
 type ChildInputProps = {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,24 +15,19 @@ const DeactiveUserModal: React.FC<ChildInputProps> = ({ setIsModalOpen }) => {
   const user = useSelector((state: RootState) => state.user.userProfile);
 
   const onStatus = async () => {
-    try {
-      if (!user) {
-        return;
-      }
-      setIsModalOpen(false);
-  
-      const resultAction = await dispatch(
-        fetchActiveDeactiveUser({ id: user.id, status: !user.active })
-      );
-      if (fetchActiveDeactiveUser.fulfilled.match(resultAction)) {
-        alert("Estado actualizado con éxito");
-      }
-    } catch (error) {
-      console.error("Error al actualizar el estado del usuario:", error);
+    if (!user) {
+      return;
+    }
+    setIsModalOpen(false);
+    const resultAction = await dispatch(
+      fetchActiveDeactiveUser({ id: user.id, status: !user.active })
+    );
+    if (fetchActiveDeactiveUser.fulfilled.match(resultAction)) {
+      alert("Estado actualizado con éxito");
+    } else {
       alert("No se pudo actualizar el usuario");
     }
   };
-  
 
   return (
     <div className="fixed bg-black bg-opacity-50 flex justify-center items-center inset-0 z-[100]">

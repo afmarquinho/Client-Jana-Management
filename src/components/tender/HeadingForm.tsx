@@ -11,6 +11,8 @@ const HeadingForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const tender = useSelector((state: RootState) => state.tender.tender);
   const loading = useSelector((state: RootState) => state.tender.loading);
+  const error = useSelector((state: RootState) => state.tender.error);
+  const user = useSelector((state: RootState) => state.user.authUser);
 
   const { register, handleSubmit } = useForm<HeadingTender>({
     defaultValues: {
@@ -21,7 +23,7 @@ const HeadingForm = () => {
       email: tender?.email,
       phoneNumber: tender?.phoneNumber,
       customerCity: tender?.customerCity,
-      createdBy: "User",
+      createdBy: `${user?.name} ${user?.lastName}`,
       reviewedBy: tender?.reviewedBy,
       date: getTodayDateString(),
       leadTime: tender?.leadTime,
@@ -35,22 +37,11 @@ const HeadingForm = () => {
     }
     const tend: Tender = { ...tender, ...data };
 
-    try {
-      const resultAction = await dispatch(fetchUpdateTender(tend));
-      if (fetchUpdateTender.fulfilled.match(resultAction)) {
-        alert("Tender actualizado exitosamente");
-      } else {
-        console.error(resultAction.error.message);
-        alert(
-          "Ocurrió un error al actualizar la cotización. Por favor, intenta nuevamente."
-        );
-      }
-    } catch (error) {
-      // Manejo de errores
-      console.error("Error al actualizar la cotización:", error);
-      alert(
-        "Ocurrió un error al actualizar la cotización. Por favor, intenta nuevamente."
-      );
+    const resultAction = await dispatch(fetchUpdateTender(tend));
+    if (fetchUpdateTender.fulfilled.match(resultAction)) {
+      alert("Cotizacion actualizada exitosamente");
+    } else {
+      alert(error);
     }
   };
   return (
