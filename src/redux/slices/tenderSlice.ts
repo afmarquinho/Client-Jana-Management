@@ -4,9 +4,9 @@ import {
   fetchCreateTender,
   fetchGetTenders,
   fetchUpdateTender,
+  fetchPrintTender,
 } from "../thunks/tenderThunks";
 import { fetchGetReportById } from "../thunks/reportThunks";
-
 
 type TenderState = {
   tenders: Tender[];
@@ -37,13 +37,13 @@ const tenderSlice = createSlice({
       state.tender = action.payload;
     },
     cleanTender: (state) => {
-      state.tender= null;
+      state.tender = null;
     },
     cleanError: (state) => {
       state.error = null;
     },
     cleanViewReport: (state) => {
-      state.viewReport= null;
+      state.viewReport = null;
     },
   },
   extraReducers: (builder) => {
@@ -109,10 +109,32 @@ const tenderSlice = createSlice({
       })
       .addCase(fetchCreateTender.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || "Falló la creación de la cotización";
+        state.error =
+          action.error.message || "Falló la creación de la cotización";
+      })
+      .addCase(fetchPrintTender.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchPrintTender.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        if (state.tender) {
+          state.tender = { ...state.tender, code: action.payload };
+        }
+        sessionStorage.setItem("TENDER", JSON.stringify(state.tender));
+        state.tenders = state.tenders.map((tender) =>
+          tender.id === state.tender?.id ? state.tender : tender
+        );
+      })
+      .addCase(fetchPrintTender.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          action.error.message || "Falló la creación de la cotización";
       });
   },
 });
-export const { tenderToEdit, cleanError, cleanViewReport, cleanTender } = tenderSlice.actions;
+export const { tenderToEdit, cleanError, cleanViewReport, cleanTender } =
+  tenderSlice.actions;
 
 export default tenderSlice.reducer;

@@ -29,10 +29,18 @@ const HeadingForm = () => {
       leadTime: tender?.leadTime,
       paymentMethod: tender?.paymentMethod,
       proposalValidity: tender?.proposalValidity,
+      rev: tender?.rev,
     },
   });
   const onSubmit: SubmitHandler<HeadingTender> = async (data) => {
     if (!tender) {
+      return;
+    }
+
+    if (data.rev < tender.rev) {
+      alert(
+        `La nueva revisión no debe ser menor a la versión actual (${tender.rev}).`
+      );
       return;
     }
     const tend: Tender = { ...tender, ...data };

@@ -1,15 +1,24 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import Logo from "../Logo";
-import perfil from "../../assets/background/perfil.jpg";
+import perfil from "../../assets/background/imgGeneric.png";
 import { Link } from "react-router-dom";
+import { cleanAuthUser } from "../../redux/slices/userSlice";
 
 const Header = () => {
+  const dispatch = useDispatch()
   const user = useSelector((state: RootState) => state.user.authUser);
 
   const imgProfile = (path: string) => {
     return `${import.meta.env.VITE_API_URL}/${path}`;
   };
+  const onClose = () => {
+    dispatch(cleanAuthUser())
+    localStorage.clear();
+    
+
+  };
+  
 
   return (
     <>
@@ -19,8 +28,8 @@ const Header = () => {
             <Logo />
           </div>
           <div className="text-sm flex flex-col sm:flex-row gap-2 sm:gap-8 items-center">
-            <span className="text-white ">{`Bienvenido: ${user?.name} ${user?.lastName}  `}</span>
-            <div className="h-10 w-10 rounded-full overflow-hidden bg-transparent">
+            <span className="text-white font-semibold ">{`Bienvenido: ${user?.user}`}</span>
+            <div className="h-14 w-14 rounded-full overflow-hidden bg-transparent">
               <img
                 src={
                   !user
@@ -36,6 +45,7 @@ const Header = () => {
             <button
               className="py-1 px-2 rounded-md bg-gradient-to-b from-red-600 to-red-700 hover:from-red-800 hover:to-red-900 text-white shadow shadow-gray-700"
               type="button"
+              onClick={onClose}
             >
               Cerrar Sesión
             </button>

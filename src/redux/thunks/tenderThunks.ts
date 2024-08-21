@@ -43,7 +43,6 @@ export const fetchCreateTender = createAsyncThunk(
   }
 );
 
-
 export const fetchUpdateTender = createAsyncThunk(
   "tenders/updateTender",
   async (data: Tender) => {
@@ -53,7 +52,27 @@ export const fetchUpdateTender = createAsyncThunk(
     } catch (error) {
       if (isAxiosError(error)) {
         const errorMessage =
-        error.response?.data?.errors?.[0]?.msg || "Error al actualizar la cotización";
+          error.response?.data?.errors?.[0]?.msg ||
+          "Error al actualizar la cotización";
+        console.error("Error del backend: ", errorMessage);
+        throw new Error(errorMessage);
+      } else {
+        throw new Error("Ha ocurrido un error inesperado");
+      }
+    }
+  }
+);
+export const fetchPrintTender = createAsyncThunk(
+  "tenders/printConsecutive",
+  async (id: number) => {
+    try {
+      const { data } = await axiosClient.post(`/consecutives/create/${id}`);
+      return data.data; // Puedes devolver los datos actualizados si es necesario
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const errorMessage =
+          error.response?.data?.errors?.[0]?.msg ||
+          "Error al generar el consecutivo de la cotización";
         console.error("Error del backend: ", errorMessage);
         throw new Error(errorMessage);
       } else {

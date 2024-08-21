@@ -15,6 +15,7 @@ import {
   fetchEditReport,
 } from "../../redux/thunks/reportThunks";
 import { fetchCreateTender } from "../../redux/thunks/tenderThunks";
+import { Slide, toast, ToastContainer } from "react-toastify";
 
 // TODO: SI EL USUARIO QUIE CREA EL REPORTE TIENE ROL DE ING DE COTIZACIONES ENTONCES QUE SE CREE Y PROCESE DE UNA VEZ, DE ESA MANERA EL ING DE OBRA NO VE ESA COTIZACIÓN EN SU PANEL
 
@@ -117,7 +118,10 @@ const ReportForm: React.FC = () => {
 
       const resultAction = await dispatch(fetchCreateReport(data));
       if (fetchCreateReport.fulfilled.match(resultAction)) {
-        alert("Informe creado exitosamente");
+        toast.success("¡Informe creado exitosamente!", {
+          transition: Slide,
+        });
+       
         reset();
         navigate(-1);
 
@@ -126,9 +130,12 @@ const ReportForm: React.FC = () => {
           await dispatch(fetchCreateTender(resultAction.payload.id));
         }
       } else {
-        alert(
-          "Ocurrió un error al crear el informe, revise los datos cuidadosamente"
-        );
+        toast.error(`${resultAction.error.message}`, {
+          transition: Slide,
+          autoClose: 8000,
+          theme: "colored",
+        });
+        
       }
     }
   };
@@ -158,6 +165,7 @@ const ReportForm: React.FC = () => {
         hover:from-gray-500 hover:to-gray-700 cursor-pointer uppercase text-xs self-end text-white font-semibold"
         value={report ? "Editar" : "Guardar"} disabled={loading}
       />
+      <ToastContainer/>
     </form>
   );
 };

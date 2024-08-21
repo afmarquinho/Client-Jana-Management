@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import perfil from "../../assets/background/perfil.jpg";
+import perfil from "../../assets/background/imgGeneric.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
@@ -12,6 +12,7 @@ import {
 import { CameraIcon } from "@heroicons/react/16/solid";
 import DeactiveUserModal from "../../components/user/DeactiveUserModal";
 import { fetchUploadProfilePicture } from "../../redux/thunks/userThunks";
+import { Slide, toast, ToastContainer } from "react-toastify";
 
 const UserProfileView = () => {
   const navigate = useNavigate();
@@ -61,21 +62,32 @@ const UserProfileView = () => {
 
   const onUpload = async () => {
     if (!selectedFile) {
-      alert("Por favor seleccione una imagen.");
+      toast.error("Debes seleccionar una imagen", {
+        autoClose: 8000,
+        theme: "colored",
+        transition: Slide,
+      });
+
       return;
     }
     if (!userProfile) {
       return;
     }
 
-    const resultAction = dispatch(
+    const resultAction = await dispatch(
       fetchUploadProfilePicture({ id: userProfile?.id, file: selectedFile })
     );
     if (fetchUploadProfilePicture.fulfilled.match(resultAction)) {
       setPreviewImage(null);
-      alert("Imagen subida con éxito");
+      toast.success("Imagen subida con éxito", {
+        transition: Slide,
+      });
     } else {
-      alert("No se pudo actualizar el usuario");
+    
+      toast.error("No se pudo actualizar el usuario", {
+        transition: Slide,
+        theme: "colored"
+      });
     }
   };
 
@@ -133,7 +145,8 @@ const UserProfileView = () => {
                     <img
                       src={
                         userProfile
-                          ? previewImage || imgProfile(userProfile?.profilePicture)
+                          ? previewImage ||
+                            imgProfile(userProfile?.profilePicture)
                           : perfil
                       }
                       alt="Imagen Perfíl"
@@ -159,7 +172,11 @@ const UserProfileView = () => {
                 </div>
               </div>
               <button
-                className={`px-6 py-2 rounded-md shadow-lg ${userProfile?.active ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-700"}`}
+                className={`px-6 py-2 rounded-md shadow-lg ${
+                  userProfile?.active
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-300 text-gray-700"
+                }`}
                 disabled={!userProfile?.active}
                 onClick={onUpload}
               >
@@ -170,7 +187,9 @@ const UserProfileView = () => {
                 <p className="flex justify-start items-center gap-1">
                   <span
                     className={`h-2 w-2 rounded-full ${
-                      userProfile?.active === true ? "bg-green-400" : "bg-red-500"
+                      userProfile?.active === true
+                        ? "bg-green-400"
+                        : "bg-red-500"
                     }`}
                   ></span>
                   {userProfile?.active === true ? "Activo" : "No Activo"}
@@ -203,8 +222,12 @@ const UserProfileView = () => {
                   <p className="mb-3">{formatServerDate(userDateOfBirth)}</p>
 
                   <Link
-                    to={userProfile?.active ?  "/new-user" : "#"}
-                    className={`px-6 py-1 bg-gradient-to-b rounded-md font-semibold ${userProfile?.active ? "text-black hover:from-sky-700 from-yellow-400 to-yellow-500  hover:to-sky-800 hover:text-white shadow-lg " : "from-gray-300 to-gray-300  text-gray-700 cursor-default"}`}
+                    to={userProfile?.active ? "/new-user" : "#"}
+                    className={`px-6 py-1 bg-gradient-to-b rounded-md font-semibold ${
+                      userProfile?.active
+                        ? "text-black hover:from-sky-700 from-yellow-400 to-yellow-500  hover:to-sky-800 hover:text-white shadow-lg "
+                        : "from-gray-300 to-gray-300  text-gray-700 cursor-default"
+                    }`}
                     onClick={onEdit}
                   >
                     Editar Perfil
@@ -224,8 +247,16 @@ const UserProfileView = () => {
                   <p className="mb-3">{userProfile?.user}</p>
                   <div className="flex justify-between items-center">
                     <Link
-                      to={userProfile?.active ?  `/update-passowrd/${userProfile?.id}` : "#"}
-                      className={`text-sm font-medium bg-gradient-to-b px-2 py-1 rounded-md   ${userProfile?.active ? "text-black hover:from-sky-700 from-yellow-400 to-yellow-500  hover:to-sky-800 hover:text-white shadow-lg " : "from-gray-300 to-gray-300  text-gray-700 cursor-default"}`}
+                      to={
+                        userProfile?.active
+                          ? `/update-passowrd/${userProfile?.id}`
+                          : "#"
+                      }
+                      className={`text-sm font-medium bg-gradient-to-b px-2 py-1 rounded-md   ${
+                        userProfile?.active
+                          ? "text-black hover:from-sky-700 from-yellow-400 to-yellow-500  hover:to-sky-800 hover:text-white shadow-lg "
+                          : "from-gray-300 to-gray-300  text-gray-700 cursor-default"
+                      }`}
                     >
                       Cambiar Contraseña
                     </Link>
@@ -249,6 +280,7 @@ const UserProfileView = () => {
         </div>
       )}
       {isModalOpen && <DeactiveUserModal setIsModalOpen={setIsModalOpen} />}
+      <ToastContainer />
     </>
   );
 };

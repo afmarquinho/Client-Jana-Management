@@ -11,6 +11,7 @@ import {
   fecthUpdateProfile,
   fetchCreateUser,
 } from "../../redux/thunks/userThunks";
+import { Slide, toast, ToastContainer } from "react-toastify";
 
 const NewUserView = () => {
   const navigate = useNavigate();
@@ -78,11 +79,17 @@ const NewUserView = () => {
     } else {
       const resultAction = await dispatch(fetchCreateUser(data));
       if (fetchCreateUser.fulfilled.match(resultAction)) {
-        alert("¡Usuario creado correctamente!");
+        toast.success("¡Usuario creado correctamente!", {
+          transition: Slide,
+        });
         reset();
       } else {
         console.error("Error del backend:", resultAction.error.message);
-        alert(`Error: ${resultAction.error.message}`);
+        toast.error(`${resultAction.error.message}`, {
+          transition: Slide,
+          autoClose: 8000,
+          theme: "colored",
+        });
       }
     }
   };
@@ -116,6 +123,7 @@ const NewUserView = () => {
           className="my-5 px-14 py-2 bg-gradient-to-b from-yellow-400 to-yellow-500 hover:from-blue-900 hover:to-blue-950 text-black shadow shadow-gray-700 cursor-pointer rounded-sm text-sm font-medium hover:text-white uppercase"
         />
       </form>
+      <ToastContainer />
     </>
   );
 };
