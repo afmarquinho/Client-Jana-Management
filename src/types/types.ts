@@ -53,6 +53,7 @@ export type HeadingTender = {
   leadTime: string;
   paymentMethod: string;
   proposalValidity: string;
+  rev: number;
 };
 
 export type LaborType = {
@@ -103,7 +104,7 @@ export type CommentsTypes = {
 };
 
 export type Tender = HeadingTender & {
-  consecutive: string | null,
+  code: string | null;
   description: Description[];
   notes: string[];
   status: string;
@@ -114,7 +115,6 @@ export type Tender = HeadingTender & {
   otherExpenses: OtherExpensesType[];
   summary: OfferSummaryType;
   comments: CommentsTypes[];
-  rev: number;
 };
 
 export type UserFormType = {
@@ -145,4 +145,13 @@ export type UserUpdatedType = {
   jobTitle: string;
   role: string;
   user: string;
+};
+export type AuthUserType = {
+  id: number;
+  user: string;
+  name: string;
+  lastName: string;
+  active: boolean;
+  role: string;
+  profilePicture: string;
 };

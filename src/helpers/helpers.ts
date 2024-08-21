@@ -1,4 +1,5 @@
-import { Tender } from "../types/types";
+import { NavigateFunction } from "react-router-dom";
+import { AuthUserType, Tender } from "../types/types";
 
 //* FORMAT DATES
 export const formatServerDate = (dateString: string): string => {
@@ -116,3 +117,19 @@ export const summaryTender = (tender: Tender) => {
   const total = materials + preparation + day + night;
   return { materials, preparation, day, night, total };
 };
+
+export const redirectTo = (user: AuthUserType, navigate: NavigateFunction)=>{
+  
+  if (user.role === "admin") {
+    navigate("/dashboard-user");
+    return;
+  } else {
+    if (user.role === "ingObra") {
+      navigate("/dashboard-report");
+      return;
+    } else {
+      navigate("/dashboard-tender");
+      return;
+    }
+  }
+}

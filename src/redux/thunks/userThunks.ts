@@ -3,6 +3,25 @@ import { isAxiosError } from "axios";
 import axiosClient from "../../axiosClient";
 import { UserFormType, UserUpdatedType } from "../../types";
 
+export const fetchRestoreSesion = createAsyncThunk(
+  "api/user/restore-sesion",
+  async () => {
+    try {
+      const {data} = await axiosClient.post(`/users/restore-session`, {});
+      return data.data
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const errorMessage =
+          error.response?.data.errors[0].msg || "Error al recuperar la cuenta";
+        console.error("Error del backend: ", errorMessage);
+        throw new Error(errorMessage);
+      } else {
+        throw new Error("Ha ocurrido un error inesperado al al recuperar la cuenta");
+      }
+    }
+  }
+);
+
 export const fetchGetUsers = createAsyncThunk("api/user/getAll", async () => {
   try {
     const response = await axiosClient.get(`/users`);
@@ -75,14 +94,14 @@ export const fetchUploadProfilePicture = createAsyncThunk(
           },
         }
       );
-      console.log(response.data.filePath)
+      console.log(response.data.filePath);
       return response.data.filePath; // Ruta del archivo en el servidor
     } catch (error) {
-        if (isAxiosError(error)) {
-            const errorMessage =
-              error.response?.data.errors[0].msg || "Error al obtener los usuarios";
-            console.error("Error del backend: ", errorMessage);
-            throw new Error(errorMessage);
+      if (isAxiosError(error)) {
+        const errorMessage =
+          error.response?.data.errors[0].msg || "Error al obtener los usuarios";
+        console.error("Error del backend: ", errorMessage);
+        throw new Error(errorMessage);
       } else {
         throw new Error("Ha ocurrido un error inesperado al cargar la foto");
       }
@@ -144,6 +163,32 @@ export const fetchUpdatePassword = createAsyncThunk(
         throw new Error(
           "Ha ocurrido un error inesperado al actualizar la contraseña"
         );
+      }
+    }
+  }
+);
+
+export const fetchAuthenticate = createAsyncThunk(
+  "user/auth",
+  async ({ email, password }: { email: string; password: string }) => {
+    try {
+      const { data } = await axiosClient.post("/users/login", {
+        email,
+        password,
+      });
+      localStorage.setItem("AUTH_TOKEN", data.token);
+      return data.data;
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const errorMessage = error.response?.data.error
+          ? error.response?.data.error
+          : error.response?.data.errors[0].msg
+          ? error.response?.data.errors[0].msg
+          : "Ha ocurrido un error inesperado";
+        console.error(errorMessage);
+        throw new Error(errorMessage);
+      } else {
+        throw new Error("Ha ocurrido un error inesperado");
       }
     }
   }

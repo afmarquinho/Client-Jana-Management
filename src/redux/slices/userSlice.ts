@@ -1,36 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserType } from "../../types/types";
+import { AuthUserType, UserType } from "../../types/types";
 import {
   fecthUpdateProfile,
   fetchActiveDeactiveUser,
+  fetchAuthenticate,
   fetchCreateUser,
   fetchGetUsers,
+  fetchRestoreSesion,
   fetchUpdatePassword,
   fetchUploadProfilePicture,
 } from "../thunks/userThunks";
 
 //*THUNKS
 
-const initialFakeValues: UserType = {
-  id: 0,
-  profilePicture: null,
-  active: true,
-  name: "Luís",
-  lastName: "Gómez",
-  idType: "cc",
-  userId: 12457887,
-  dateOfBirth: "1990-04-25",
-  address: "Kra 25# 89-100",
-  phoneNumber: "124 2541247",
-  email: "correo@correo.com",
-  role: "gerente",
-  jobTitle: "Inspector de Calidad",
-  user: "Doe.John.25",
-  password: "hdhdfgh321",
-};
-
 type InitialStateType = {
-  authUser: UserType | null;
+  authUser: AuthUserType | null;
   users: UserType[];
   userProfile: UserType | null;
   error: string | null;
@@ -40,7 +24,7 @@ type InitialStateType = {
 
 //TODO: NO PONER ANY
 const initialState: InitialStateType = {
-  authUser: initialFakeValues,
+  authUser: null,
   users: [],
   userProfile: null,
   error: null,
@@ -67,6 +51,9 @@ const userSlice = createSlice({
     },
     cleanUserEdit: (state) => {
       state.userEdit = null;
+    },
+    cleanAuthUser: (state) => {
+      state.authUser = null;
     },
   },
   extraReducers: (builder) => {
@@ -170,6 +157,34 @@ const userSlice = createSlice({
         state.loading = false;
         state.error =
           action.error.message || "Falló la actualización de la contraserña";
+      })
+      .addCase(fetchAuthenticate.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAuthenticate.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.authUser = action.payload;
+      })
+      .addCase(fetchAuthenticate.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          action.error.message || "Falló la actualización de la contraserña";
+      })
+      .addCase(fetchRestoreSesion.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchRestoreSesion.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.authUser = action.payload;
+      })
+      .addCase(fetchRestoreSesion.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          action.error.message || "Falló la actualización de la contraserña";
       });
   },
 });
@@ -180,6 +195,7 @@ export const {
   setUserProfile,
   setUserEdit,
   cleanUserEdit,
+  cleanAuthUser,
 } = userSlice.actions;
 
 export default userSlice.reducer;

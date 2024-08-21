@@ -1,11 +1,23 @@
-import { useSelector } from "react-redux";
 import { formatServerDate } from "../../helpers";
-import { RootState } from "../../redux/store";
 import termocalderas from "../../assets/logo/VMTERMOCALDERAS.png";
 import termocalderas2 from "../../assets/logo/VMTERMOCALDERAS2.png";
+import { useEffect, useState } from "react";
+import { Tender } from "../../types";
 
 const PDFView = () => {
-  const tender = useSelector((state: RootState) => state.tender.tender);
+  const [tender, setTender] = useState<Tender | null>(null);
+
+  useEffect(() => {
+    // Función para cargar el objeto Tender desde sessionStorage
+    const loadTender = () => {
+      const tend = sessionStorage.getItem("TENDER");
+      if (tend) {
+        setTender(JSON.parse(tend));
+      }
+    };
+
+    loadTender();
+  }, []);
 
   const totalSum = tender?.description?.reduce(
     (acc, desc) => acc + desc.totalValue,
@@ -23,20 +35,26 @@ const PDFView = () => {
                 alt="VM TERMOCALDERAS"
                 className="w-full"
               />
-              
+
               <p>NIT: 901360107-1 </p>
-              <p>E-MAIL: vmtermocalderas.principal@gmail.com</p>
+              <p>Correos:vmtermocalderas.principal@gmail.com</p>
               <p>vmtermocalderas.compras@gmail.com</p>
-              <p>TELEFONOS: 322 443 2959 - 315 5151743</p>
+              <p>Teléfonos: 322 443 2959 - 315 5151743</p>
             </div>
           </div>
-            <div><p>{tender?.consecutive}</p></div>
-          <div className="h-40">
-            <img
-              src={termocalderas}
-              alt="VM TERMOCALDERAS"
-              className="h-full"
+          <div className="flex flex-col justify-center items-end">
+            <div className="h-40">
+              <img
+                src={termocalderas}
+                alt="VM TERMOCALDERAS"
+                className="h-full"
               />
+            </div>
+
+            <p className="text-lg flex gap-10 items-center">
+              {tender?.code}{" "}
+              <span className="text-base">Rev: {tender?.rev}</span>
+            </p>
           </div>
         </div>
         <div className="italic font-bold">

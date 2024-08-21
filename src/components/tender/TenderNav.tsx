@@ -13,14 +13,14 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { cleanTender } from "../../redux/slices/tenderSlice";
-import { RootState } from "../../redux/store";
-
+import { AppDispatch, RootState } from "../../redux/store";
+import { fetchPrintTender } from "../../redux/thunks/tenderThunks";
 
 const TenderNav: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const tender = useSelector((state:RootState)=> state.tender.tender)
+  const tender = useSelector((state: RootState) => state.tender.tender);
 
   const onBack = () => {
     navigate(-1);
@@ -28,6 +28,13 @@ const TenderNav: React.FC = () => {
   const onHome = () => {
     navigate("/dashboard-tender");
     dispatch(cleanTender());
+  };
+
+  const onPrint = async () => {
+    if (tender) {
+      await dispatch(fetchPrintTender(tender.id));
+    }
+    
   };
 
   return (
@@ -141,6 +148,7 @@ const TenderNav: React.FC = () => {
         <Link
           to={`/tender-PDF/${tender?.id}`}
           className="text-green-100 bg-orange-600 hover:bg-teal-900 w-full flex jjustify-start items-center gap-1 ps-1 py-3 mt-5"
+          onClick={onPrint}
         >
           <PrinterIcon className="h-4" />
           Imprimir
