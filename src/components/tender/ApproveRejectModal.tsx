@@ -93,7 +93,7 @@ const ApproveRejectModal: React.FC<ChildInputProps> = ({
         <h4
           className={`${
             status === "rejected"
-              ? "bg-red-600"
+              ? "bg-red-700"
               : status === "approved"
               ? "bg-green-500"
               : "bg-blue-500"
