@@ -7,7 +7,7 @@ import {
 } from "../redux/thunks/userThunks";
 import { redirectTo } from "../helpers";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect} from "react";
 
 type AuthType = {
   email: string;
@@ -20,11 +20,16 @@ const LoginForm = () => {
 
   const user = useSelector((state: RootState) => state.user.authUser);
   const loading = useSelector((state: RootState) => state.user.loading);
-  const error = useSelector((state: RootState) => state.user.error);
+  
 
   const { register, handleSubmit } = useForm<AuthType>({});
 
   const onSubmit: SubmitHandler<AuthType> = async (data) => {
+   
+    if (!data.email || !data.password) {
+      return alert("Email y contraseña son requeridos");
+    }
+
     const resultAction = await dispatch(fetchAuthenticate(data));
 
     if (fetchAuthenticate.fulfilled.match(resultAction)) {
@@ -32,9 +37,12 @@ const LoginForm = () => {
         return;
       }
       redirectTo(user, navigate);
+      return;
+    } else if (fetchAuthenticate.rejected.match(resultAction)) {
+      const errorMsg = resultAction.error.message || "Error desconocido al autenticar";
+      alert(errorMsg); // Mostrar el error específico que viene del thunk
     }
   };
-
   useEffect(() => {
     if (localStorage.getItem("AUTH_TOKEN")) {
       dispatch(fetchRestoreSesion());
@@ -65,12 +73,6 @@ const LoginForm = () => {
             <h2 className="text-center font-bold sm:font-bold sm:text-xl text-black sm:text-green-600 ">
               Iniciar Sesión
             </h2>
-            {error && (
-              <div className="text-red p-2 text-xs sm:text-sm font-medium absolute text-red-500">
-                {" "}
-                * {error}
-              </div>
-            )}
           </div>
         </div>
         <input

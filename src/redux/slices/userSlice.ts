@@ -171,6 +171,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.error =
           action.error.message || "Falló la actualización de la contraserña";
+
       })
       .addCase(fetchRestoreSesion.pending, (state) => {
         state.loading = true;
