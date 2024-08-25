@@ -10,7 +10,6 @@ import { Tender } from "../../types/types";
 import { fetchUpdateTender } from "../../redux/thunks/tenderThunks";
 import { createConsecutiveService } from "../../services/consecutiveService";
 
-
 type ChildInputProps = {
   status: string;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,6 +30,10 @@ const ApproveRejectModal: React.FC<ChildInputProps> = ({
   });
 
   const onSubmit: SubmitHandler<CommentsTypes> = async (data) => {
+    if (!tender) {
+      return;
+    }
+
     const commentsArray: CommentsTypes[] = data.comment
       ? [...tender.comments, data]
       : [...tender.comments];
@@ -121,8 +124,9 @@ const ApproveRejectModal: React.FC<ChildInputProps> = ({
               : "¿Confirma que deseas enviar la cotización para revisión?"}
           </p>
           <p className="text-sm text-center">
-            {status === "review" ? "Pues dejar un comentario si deseas." : "Puedes dejar un comentario para que el responsable conozca el motivo de tu decisión."}
-            
+            {status === "review"
+              ? "Pues dejar un comentario si deseas."
+              : "Puedes dejar un comentario para que el responsable conozca el motivo de tu decisión."}
           </p>
 
           <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
@@ -135,10 +139,10 @@ const ApproveRejectModal: React.FC<ChildInputProps> = ({
                 type="submit"
                 className={`${
                   status === "rejected"
-                  ? "bg-red-700"
-                  : status === "approved"
-                  ? "bg-green-500"
-                  : "bg-blue-500"
+                    ? "bg-red-700"
+                    : status === "approved"
+                    ? "bg-green-500"
+                    : "bg-blue-500"
                 } bg-gradient-to-b py-2 px-4 rounded`}
               >
                 Confirmar

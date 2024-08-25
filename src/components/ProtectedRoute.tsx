@@ -1,8 +1,4 @@
-//import { useSelector } from "react-redux";
-import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
-import { RootState } from "../redux/store";
-//import { RootState } from "../redux/store";
 
 const ProtectedRoute = ({
   isAllowed,
@@ -13,10 +9,9 @@ const ProtectedRoute = ({
   redirectTo?: string;
   children?: React.ReactNode; //* ESTO HACE AL CHILDREN OPCIONAL
 }) => {
-    //const user = useSelector((state: RootState) => state.user.authUser);
+  //const user = useSelector((state: RootState) => state.user.authUser);
 
   if (!isAllowed) {
- 
     return <Navigate to={redirectTo} />;
   }
 
