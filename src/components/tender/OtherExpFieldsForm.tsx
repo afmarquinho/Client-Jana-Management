@@ -1,9 +1,10 @@
 import { UseFormRegister, UseFormWatch } from "react-hook-form";
-import { OtherExpenses } from "../../types/types";
+import { OtherExpensesType } from "../../types";
+
 
 type ChildInputProps = {
-  register: UseFormRegister<OtherExpenses>;
-  watch: UseFormWatch<OtherExpenses>;
+  register: UseFormRegister<OtherExpensesType>;
+  watch: UseFormWatch<OtherExpensesType>;
 };
 
 const OtherExpFieldsForm: React.FC<ChildInputProps> = ({

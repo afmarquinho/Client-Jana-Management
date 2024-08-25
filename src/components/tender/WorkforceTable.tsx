@@ -17,11 +17,14 @@ const WorkforceTable: React.FC<ChildInputProps> = ({
 }) => {
   const tender = useSelector((state: RootState) => state.tender.tender);
 
-  const filteredShiftArray = tender.workforces.filter(
-    (item) => item.shiftType === shiftType
-  );
+  const filteredShiftArray = !tender
+    ? []
+    : tender.workforces.filter((item) => item.shiftType === shiftType);
 
   const onEdit = (selectedItem: LaborType) => {
+    if(!tender){
+      return
+    }
     const originalIndex = tender.workforces.findIndex(
       (item) => item === selectedItem
     );
@@ -30,6 +33,9 @@ const WorkforceTable: React.FC<ChildInputProps> = ({
   };
 
   const onDelete = (selectedItem: LaborType) => {
+    if(!tender){
+      return
+    }
     const originalIndex = tender.workforces.findIndex(
       (item) => item === selectedItem
     );

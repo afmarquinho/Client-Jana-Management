@@ -19,7 +19,7 @@ const WorkforceView = () => {
   const error = useSelector((state: RootState) => state.tender.error);
 
   const [index, setIndex] = useState<number | null>(null);
-  const [wfEdit, setWfEdit] = useState<LaborType>(initValWorkforce);
+  const [wfEdit, setWfEdit] = useState<LaborType >(initValWorkforce);
 
   const { register, handleSubmit, watch, reset, setValue } = useForm<LaborType>(
     {

@@ -16,13 +16,16 @@ const OtherExpTable: React.FC<ChildInputProps> = ({
   shiftType,
 }) => {
   const tender = useSelector((state: RootState) => state.tender.tender);
-  const filteredExpArray = tender.otherExpenses.filter(
-    (item: OtherExpensesType) => {
-      return item.shiftType === shiftType;
-    }
-  );
+  const filteredExpArray = !tender
+    ? []
+    : tender.otherExpenses.filter((item: OtherExpensesType) => {
+        return item.shiftType === shiftType;
+      });
 
   const onEdit = (selectedItem: OtherExpensesType) => {
+    if (!tender) {
+      return;
+    }
     const originalIndex = tender.otherExpenses.findIndex(
       (item) => item === selectedItem
     );
@@ -31,14 +34,14 @@ const OtherExpTable: React.FC<ChildInputProps> = ({
   };
 
   const onDelete = (selectedItem: OtherExpensesType) => {
+    if (!tender) {
+      return;
+    }
     const originalIndex = tender.otherExpenses.findIndex(
       (item) => item === selectedItem
     );
     handleDelete(originalIndex);
   };
-
-
-
 
   return (
     <div className="my-5">
@@ -144,10 +147,7 @@ const OtherExpTable: React.FC<ChildInputProps> = ({
                 })}
               </td>
               <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
-                <button
-                  className="font-semibold"
-                  onClick={() => onEdit(item)}
-                >
+                <button className="font-semibold" onClick={() => onEdit(item)}>
                   Editar
                 </button>
               </td>

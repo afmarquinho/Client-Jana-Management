@@ -9,7 +9,8 @@ const CommentsView = () => {
     <div className="my-5 flex gap-5">
       <TenderNav />
       <div className="w-full max-w-[500px]">
-        {tender.comments.length
+        {!tender ? 0 : 
+        tender.comments.length
           ? tender.comments.map((item, i) => (
               <div key={i} className="mb-8">
                 <p className="w-full text-sm font-medium">{item.author}</p>

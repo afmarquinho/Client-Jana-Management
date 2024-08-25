@@ -38,7 +38,8 @@ const NotesTable: React.FC<ChildInputProps> = ({
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-400">
-        {tender.notes.map(( note, i) => (
+        {!tender ? <tr>No hay notas para mostrar</tr> : 
+        tender.notes.map(( note, i) => (
           <tr key={i}>
             <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 bg-white text-center">
               {i + 1}
