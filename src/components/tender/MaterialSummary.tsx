@@ -3,6 +3,9 @@ import { RootState } from "../../redux/store";
 
 const MaterialSummary = () => {
   const tender = useSelector((state: RootState) => state.tender.tender);
+  if(!tender){
+    return
+  }
   
   const totalprofit = (tender.materials
     .reduce((total, item) => {
