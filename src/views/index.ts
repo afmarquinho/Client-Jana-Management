@@ -1,5 +1,4 @@
 export * from './IndexView';
-export * from './InicioPage';
 export * from './NotFoundView';
 export * from './reports/DashboardReportView';
 export * from './reports/NewReportView';
