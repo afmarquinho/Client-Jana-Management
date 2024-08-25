@@ -11,7 +11,7 @@ export const formatServerDate = (dateString: string): string => {
 // console.log(inputDate);
 // console.log("la fecha real es: " + realDate);
 
-//* VALIDATE IF A DATE IS HAS NO EXPIRED, USED ON SUMMARY-REPORTS BEFORE SEND TO API AN RESQUEST
+//* VALIDATE IF A DATE IS HAS NO EXPIRED, USED ON SUMMARY-REPORTS BEFORE SENDING TO API AN RESQUEST
 export const isDateValid = (dateString: string): boolean => {
   const inputDate = new Date(dateString);
   const realDate = new Date(inputDate.setDate(inputDate.getDate() + 1));
