@@ -62,7 +62,7 @@ const WorkforceTable: React.FC<ChildInputProps> = ({
           }`}
         >
           <tr>
-            <th className="ps-1 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap">
+            <th className="ps-1 py-3 text-left text-xs font-medium text-gray-100 uppercase tracking-wider whitespace-nowrap">
               Item
             </th>
             <th className="px-2 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap text-center">
