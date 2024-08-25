@@ -27,6 +27,7 @@ const ApproveRejectModal: React.FC<ChildInputProps> = ({
       author: "Joe Doe",
       comment: "",
     },
+
   });
 
   const onSubmit: SubmitHandler<CommentsTypes> = async (data) => {
@@ -92,7 +93,7 @@ const ApproveRejectModal: React.FC<ChildInputProps> = ({
         <h4
           className={`${
             status === "rejected"
-              ? "bg-red-700"
+              ? "bg-red-600"
               : status === "approved"
               ? "bg-green-500"
               : "bg-blue-500"
