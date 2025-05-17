@@ -4,12 +4,12 @@
 
 ### Requerimientos previos.
 
-- Tener insladado el entorno Node.js LTS. Si no lo tiene, puede visitar https://nodejs.org/en
+- Tener instalado el entorno Node.js LTS. Si no lo tiene, puede visitar https://nodejs.org/en
 - Tener git instalado. Si no lo tiene, puede visitar https://git-scm.com/
 - Tener instalado el editor de código de su preferencia, VS CODE recomendado.
-- Para administrar la base de datos, preferiblemente un servicio contratado en la nube, si la tiene local, solo cambiar el string de conexión en la varaible de entorno.
+- Para administrar la base de datos, preferiblemente un servicio contratado en la nube, si la tiene local, solo debe cambiar el string de conexión en la variable de entorno.
 
-## Pasos para instalar el cliente de la aplicación.
+### Pasos para instalar el cliente de la aplicación.
 
 - Clonar el repositorio 
 
@@ -33,4 +33,8 @@ npm run dev
 ```
 
 - Desplegar la aplicación en el browser de su preferencia, en el puerto provisto.
+
+#### Despligue en modo desarrollo:
+- Netlify: https://jana-management.netlify.app/
+- Vercel: https://jana-project.vercel.app/
 
