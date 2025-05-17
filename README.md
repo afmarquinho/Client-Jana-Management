@@ -1,4 +1,4 @@
-# Jana Management Syste.
+# Jana Management System
 
 ## Pasos para correr la aplicación en modo desarrollo.
 
