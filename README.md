@@ -1,30 +1,36 @@
-# React + TypeScript + Vite
+# Jana Management Syste.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Pasos para correr la aplicación en modo desarrollo.
 
-Currently, two official plugins are available:
+### Requerimientos previos.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Tener insladado el entorno Node.js LTS. Si no lo tiene, puede visitar https://nodejs.org/en
+- Tener git instalado. Si no lo tiene, puede visitar https://git-scm.com/
+- Tener instalado el editor de código de su preferencia, VS CODE recomendado.
+- Para administrar la base de datos, preferiblemente un servicio contratado en la nube, si la tiene local, solo cambiar el string de conexión en la varaible de entorno.
 
-## Expanding the ESLint configuration
+## Pasos para instalar el cliente de la aplicación.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Clonar el repositorio 
 
-- Configure the top-level `parserOptions` property like this:
+```bash
+git clone https://github.com/afmarquinho/Client-Jana-Management.git
+```
+- Cambiar el nombre de la carpeta clonada a "client".
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+- Abrir la consola e ingresar a la carpeta "client".
+
+- Instalar las dependencias necesarias con el comando:
+
+```bash
+npm install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- Correr la aplicación en modo desarrollo:
+
+```bash
+npm run dev
+```
+
+- Desplegar la aplicación en el browser de su preferencia, en el puerto provisto.
+

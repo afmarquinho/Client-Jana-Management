@@ -1,6 +1,6 @@
 import { formatServerDate } from "../../helpers";
-import termocalderas from "../../assets/logo/VMTERMOCALDERAS.png";
-import termocalderas2 from "../../assets/logo/VMTERMOCALDERAS2.png";
+import termocalderas from "../../../public/logo/VMTERMOCALDERAS.png";
+import termocalderas2 from "../../../public/logo/VMTERMOCALDERAS2.png"
 import { useEffect, useState } from "react";
 import { Tender } from "../../types";
 

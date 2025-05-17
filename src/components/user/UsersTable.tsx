@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { UserType } from "../../types/types";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
-import perfil from "../../assets/background/perfil.png";
+import perfil from "../../../public/genericPhotoIcon.png";
 import { setUserProfile } from "../../redux/slices/userSlice";
 
 type ChildInputProps = {

@@ -1,0 +1,5 @@
+.box-bg {
+  background-image: url(../../public/background/background.png);
+  background-repeat: no-repeat;
+  background-position: 30% 50%;
+}
