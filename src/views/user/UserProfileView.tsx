@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import perfil from "../../../public/genericPhotoIcon.png";
+import perfil from "/genericPhotoIcon.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";

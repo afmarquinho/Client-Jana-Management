@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import Logo from "../Logo";
-import perfil from "../../../public/genericPhotoIcon.png";
+import perfil from "/genericPhotoIcon.png";
 import { Link } from "react-router-dom";
 import { cleanAuthUser } from "../../redux/slices/userSlice";
 

@@ -12,7 +12,7 @@ const IndexView = () => {
       {/* central container with children */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex w-11/12 max-w-3xl shadow-[-10px_13px_49px_0px_rgba(0,0,0,0.48)]">
         {/* Box with the background img*/}
-        <div className="w-1/2 p-5 bg-cover hidden sm:flex bg-green-400 box-bg" 
+        <div className="w-1/2 p-5 bg-cover hidden sm:flex bg-green-400 box-bg bg-no-repeat" 
         >
           <div className="w-full">
             <div className="w-2/3">
