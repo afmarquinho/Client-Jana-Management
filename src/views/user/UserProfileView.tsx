@@ -63,7 +63,7 @@ const UserProfileView = () => {
   const onUpload = async () => {
     if (!selectedFile) {
       toast.error("Debes seleccionar una imagen", {
-        autoClose: 8000,
+        autoClose: 5000,
         theme: "colored",
         transition: Slide,
       });
@@ -77,12 +77,17 @@ const UserProfileView = () => {
     const resultAction = await dispatch(
       fetchUploadProfilePicture({ id: userProfile?.id, file: selectedFile })
     );
+    
+
     if (fetchUploadProfilePicture.fulfilled.match(resultAction)) {
-      setPreviewImage(null);
+      setPreviewImage(resultAction.payload);
       toast.success("Imagen subida con éxito", {
         transition: Slide,
       });
-    } else {
+    } 
+    
+    
+    else {
     
       toast.error("No se pudo actualizar el usuario", {
         transition: Slide,

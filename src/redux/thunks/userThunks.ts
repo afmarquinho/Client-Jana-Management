@@ -94,7 +94,7 @@ export const fetchUploadProfilePicture = createAsyncThunk(
           },
         }
       );
-      console.log(response.data.filePath);
+      // console.log(response.data.filePath);
       return response.data.filePath; // Ruta del archivo en el servidor
     } catch (error) {
       if (isAxiosError(error)) {
