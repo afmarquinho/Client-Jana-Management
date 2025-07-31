@@ -49,16 +49,16 @@ const ReportButton: React.FC<Props> = ({ item, dias = "Días Restantes" }) => {
       onClick={() => handleClick(item)}
     >
       <h3 className="font-bold text-left"> {item.name}</h3>
-      <h4 className="text-orange-600 font-semibold">{item.customerName}</h4>
-      <p className="italic text-left w-full text-xs">
+      <h4 className="text-orange-600 font-semibold text-left">{item.customerName}</h4>
+      <p className="italic text-right w-full text-xs">
         Vence:{" "}
         <span className=" font-semibold">{formatServerDate(item.dueDate)}</span>
       </p>
-      <small>
+      <small className={`text-right`}>
         {dias}:{" "}
         <span className="font-semibold">{remainingDays(item.dueDate)}</span>
       </small>
-      <span className="text-xs w-full text-right">Ver Mas +</span>
+      <span className="text-xs w-full text-left">Ver Mas +</span>
     </button>
   );
 };

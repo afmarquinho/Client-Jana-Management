@@ -32,7 +32,7 @@ export const fetchGetReportById = createAsyncThunk(
       if (isAxiosError(error)) {
         const errorMessage =
           error.response?.data.errors[0].msg || "Error al obtener el informe";
-          console.error("Error del backend: ", errorMessage);
+        console.error("Error del backend: ", errorMessage);
         throw new Error(errorMessage);
       } else {
         throw new Error("Ha ocurrido un error inesperado");
@@ -101,9 +101,20 @@ export const fetchDeleteReport = createAsyncThunk(
 
 export const fetchProcessReport = createAsyncThunk(
   "process/report",
-  async ({ id, dueDate }: { id: number; dueDate: string }) => {
+  async ({
+    reportId,
+    userId,
+    dueDate,
+  }: {
+    reportId: number;
+    userId: number;
+    dueDate: string;
+  }) => {
     try {
-      await axiosClient.patch(`/reports/${id}`, { dueDate });
+      await axiosClient.post(`/tenders/${reportId}`, {
+        userId,
+        dueDate,
+      });
     } catch (error) {
       if (isAxiosError(error)) {
         const errorMessage =

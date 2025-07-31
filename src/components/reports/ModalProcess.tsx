@@ -14,8 +14,11 @@ const ModalProcess: React.FC<ChildInputProps> = ({ setIsModalProcess }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const report = useSelector((state: RootState) => state.report.report);
+  const user = useSelector((state: RootState) => state.user.authUser);
 
   const onProcess = async () => {
+     if(!user) return
+
     setIsModalProcess(false);
     if (!report) {
       return;
@@ -26,7 +29,8 @@ const ModalProcess: React.FC<ChildInputProps> = ({ setIsModalProcess }) => {
 
     const resultAction = await dispatch(
       fetchProcessReport({
-        id: report.id,
+        reportId: report.id,
+        userId: user?.id,
         dueDate: formatServerDate(report.dueDate),
       })
     );
@@ -34,7 +38,7 @@ const ModalProcess: React.FC<ChildInputProps> = ({ setIsModalProcess }) => {
     if (fetchProcessReport.fulfilled.match(resultAction)) {
       navigate("/dashboard-report");
       alert("Informe de Visita de Obra procesado exitosamente");
-      
+
       await dispatch(fetchCreateTender(report.id));
     }
   };
