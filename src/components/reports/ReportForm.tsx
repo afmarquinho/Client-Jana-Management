@@ -13,8 +13,9 @@ import Alert from "../Alert";
 import {
   fetchCreateReport,
   fetchEditReport,
+  fetchProcessReport,
 } from "../../redux/thunks/reportThunks";
-import { fetchCreateTender } from "../../redux/thunks/tenderThunks";
+// import { fetchCreateTender } from "../../redux/thunks/tenderThunks";
 import { Slide, toast, ToastContainer } from "react-toastify";
 
 // TODO: SI EL USUARIO QUIE CREA EL REPORTE TIENE ROL DE ING DE COTIZACIONES ENTONCES QUE SE CREE Y PROCESE DE UNA VEZ, DE ESA MANERA EL ING DE OBRA NO VE ESA COTIZACIÓN EN SU PANEL
@@ -123,8 +124,6 @@ const ReportForm: React.FC = () => {
       //* CREATE REPORT
     } else {
 
-      console.log(data)
-
       const resultAction = await dispatch(fetchCreateReport(data));
       if (fetchCreateReport.fulfilled.match(resultAction)) {
         toast.success("¡Informe creado exitosamente!", {
@@ -135,9 +134,13 @@ const ReportForm: React.FC = () => {
         navigate(-1);
 
         //*CREATE TENDER ONLY IF USER IS DIFFERENT TO INGOBRA
-        if (user?.role !== "ingObra") {
-          await dispatch(fetchCreateTender(resultAction.payload.id));
+        if (user.role !== "ingObra") {
+          await dispatch(fetchProcessReport({reportId: resultAction.payload.id,
+            userId: resultAction.payload.userId,
+            dueDate:data.dueDate
+          }));
         }
+        
       } else {
         toast.error(`${resultAction.error.message}`, {
           transition: Slide,

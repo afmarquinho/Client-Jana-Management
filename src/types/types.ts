@@ -26,6 +26,7 @@ export type VisitReportType = {
   id: number;
   processed?: boolean;
   tenderID?: number;
+  createdBy? : string
 };
 
 export type Description = {

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { formatServerDate } from "../../helpers";
 import { useNavigate } from "react-router-dom";
-import { fetchCreateTender } from "../../redux/thunks/tenderThunks";
+// import { fetchCreateTender } from "../../redux/thunks/tenderThunks";
 
 type ChildInputProps = {
   setIsModalProcess: React.Dispatch<React.SetStateAction<boolean>>;
@@ -39,7 +39,7 @@ const ModalProcess: React.FC<ChildInputProps> = ({ setIsModalProcess }) => {
       navigate("/dashboard-report");
       alert("Informe de Visita de Obra procesado exitosamente");
 
-      await dispatch(fetchCreateTender(report.id));
+      // await dispatch(fetchCreateTender(report.id));
     }
   };
   const onCancel = () => {

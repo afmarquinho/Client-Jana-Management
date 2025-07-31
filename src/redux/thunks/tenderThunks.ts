@@ -24,24 +24,24 @@ export const fetchGetTenders = createAsyncThunk(
   }
 );
 
-export const fetchCreateTender = createAsyncThunk(
-  "tenders/createTender",
-  async (reportId: number) => {
-    try {
-      const response = await axiosClient.post(`/tenders/${reportId}`);
-      return response.data.data;
-    } catch (error) {
-      if (isAxiosError(error)) {
-        const errorMessage =
-          error.response?.data?.message || "No se pudo crear la cotización";
-        console.error("Error del backend: ", errorMessage);
-        throw new Error(errorMessage);
-      } else {
-        throw new Error("Ha ocurrido un error inesperado");
-      }
-    }
-  }
-);
+// export const fetchCreateTender = createAsyncThunk(
+//   "tenders/createTender",
+//   async (reportId: number) => {
+//     try {
+//       const response = await axiosClient.post(`/tenders/${reportId}`);
+//       return response.data.data;
+//     } catch (error) {
+//       if (isAxiosError(error)) {
+//         const errorMessage =
+//           error.response?.data?.message || "No se pudo crear la cotización";
+//         console.error("Error del backend: ", errorMessage);
+//         throw new Error(errorMessage);
+//       } else {
+//         throw new Error("Ha ocurrido un error inesperado");
+//       }
+//     }
+//   }
+// );
 
 export const fetchUpdateTender = createAsyncThunk(
   "tenders/updateTender",

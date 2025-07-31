@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Tender, VisitReportType } from "../../types/types";
 import {
-  fetchCreateTender,
+  // fetchCreateTender,
   fetchGetTenders,
   fetchUpdateTender,
   fetchPrintTender,
@@ -98,20 +98,20 @@ const tenderSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Falló la solicitud";
       })
-      .addCase(fetchCreateTender.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchCreateTender.fulfilled, (state, action) => {
-        state.loading = false;
-        state.error = null;
-        state.tenders = [...state.tenders, action.payload];
-      })
-      .addCase(fetchCreateTender.rejected, (state, action) => {
-        state.loading = false;
-        state.error =
-          action.error.message || "Falló la creación de la cotización";
-      })
+      // .addCase(fetchCreateTender.pending, (state) => {
+      //   state.loading = true;
+      //   state.error = null;
+      // })
+      // .addCase(fetchCreateTender.fulfilled, (state, action) => {
+      //   state.loading = false;
+      //   state.error = null;
+      //   state.tenders = [...state.tenders, action.payload];
+      // })
+      // .addCase(fetchCreateTender.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.error =
+      //     action.error.message || "Falló la creación de la cotización";
+      // })
       .addCase(fetchPrintTender.pending, (state) => {
         state.loading = true;
         state.error = null;
