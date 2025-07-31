@@ -215,7 +215,7 @@ const UserProfileView = () => {
                   <p className="mb-3">{userProfile?.lastName}</p>
                   <p className="text-gray-400">Identificación</p>
                   <p className="mb-3">
-                    {userProfile?.idType}: {userProfile?.userId}
+                    {userProfile?.idType}: {userProfile?.userNo}
                   </p>
                   <p className="text-gray-400">Teléfono</p>
                   <p className="mb-3">{userProfile?.phoneNumber}</p>

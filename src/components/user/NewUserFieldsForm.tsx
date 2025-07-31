@@ -99,7 +99,7 @@ const NewUserFieldsForm: React.FC<ChildInputProps> = ({ register }) => {
             className={`outline-none w-full p-2 bg-transparent placeholder:text-gray-500 ${
               userEdit ? "text-gray-400" : "text-black"
             }`}
-            {...register("userId", { valueAsNumber: true })}
+            {...register("userNo", { valueAsNumber: true })}
             disabled={userEdit ? true : false}
           />
         </div>

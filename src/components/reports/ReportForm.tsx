@@ -23,7 +23,7 @@ export type UserType = {
   name: string;
   lastName: string;
   idType: string;
-  userId: number;
+  userNo: number;
   dateOfBirth: string;
   address: string;
   phoneNumber: string;
@@ -46,6 +46,7 @@ const ReportForm: React.FC = () => {
   const error = useSelector((state: RootState) => state.report.error);
   const loading = useSelector((state: RootState) => state.report.loading);
   const user = useSelector((state: RootState) => state.user.authUser);
+  
 
   const [workforceArray, setWorkforceArray] = useState<WorkforceType[]>([]);
   const [materialArray, setMaterialArray] = useState<MaterialType[]>([]);
@@ -72,11 +73,13 @@ const ReportForm: React.FC = () => {
       setWorkforceArray(report.workforces);
       setMaterialArray(report.materials);
       setValue("ref", report.ref);
-      setValue("createdBy", report.createdBy);
+      setValue("userId", report.userId);
     }
   }, [ref, report, setValue]);
 
   const onSubmit: SubmitHandler<VisitReportType> = async (data) => {
+    if(!user) return
+
     if (workforceArray.length === 0) {
       alert("Debe haber al menos una mano de obra");
       return;
@@ -92,7 +95,11 @@ const ReportForm: React.FC = () => {
     if (!report) {
       //* IF REPORT IF FULLIED IT MEANS I AM EDITING, OTHERWISE I AM CREANTING A NEW ONE
       data.ref = uuidv4();
-      data.createdBy = `${user?.name} ${user?.lastName}`;
+       
+
+      data.userId = user.id;
+   
+
       if (user?.role !== "ingObra") {
         //   //* ONLY IF USER IS DIFFERNT TO INGOBRA THE REPORT IS IMEDIATLY PROCESSED
         data.processed = true;
@@ -115,6 +122,8 @@ const ReportForm: React.FC = () => {
       }
       //* CREATE REPORT
     } else {
+
+      console.log(data)
 
       const resultAction = await dispatch(fetchCreateReport(data));
       if (fetchCreateReport.fulfilled.match(resultAction)) {

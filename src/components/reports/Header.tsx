@@ -6,19 +6,16 @@ import { Link } from "react-router-dom";
 import { cleanAuthUser } from "../../redux/slices/userSlice";
 
 const Header = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.authUser);
 
   const imgProfile = (path: string) => {
     return `${import.meta.env.VITE_API_URL}/${path}`;
   };
   const onClose = () => {
-    dispatch(cleanAuthUser())
+    dispatch(cleanAuthUser());
     localStorage.clear();
-    
-
   };
-  
 
   return (
     <>

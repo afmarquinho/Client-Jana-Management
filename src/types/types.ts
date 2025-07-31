@@ -22,8 +22,8 @@ export type VisitReportType = {
   description: string;
   workforces: WorkforceType[];
   materials: MaterialType[];
-  createdBy: string;
-  id?: number;
+  userId: number;
+  id: number;
   processed?: boolean;
   tenderID?: number;
 };
@@ -121,7 +121,7 @@ export type UserFormType = {
   name: string;
   lastName: string;
   idType: string;
-  userId: number;
+  userNo: number;
   dateOfBirth: string;
   address: string;
   phoneNumber: string;

@@ -24,7 +24,7 @@ const NewUserView = () => {
       name: "",
       lastName: "",
       idType: "",
-      userId: 0,
+      userNo: 0,
       dateOfBirth: "",
       address: "",
       phoneNumber: "",
@@ -40,7 +40,7 @@ const NewUserView = () => {
       setValue("name", userEdit.name);
       setValue("lastName", userEdit.lastName);
       setValue("idType", userEdit.idType);
-      setValue("userId", userEdit.userId);
+      setValue("userNo", userEdit.userNo);
       setValue("dateOfBirth", formatServerDate(userEdit.dateOfBirth));
       setValue("address", userEdit.address);
       setValue("phoneNumber", userEdit.phoneNumber);
