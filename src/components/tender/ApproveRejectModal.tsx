@@ -9,6 +9,7 @@ import { AppDispatch, RootState } from "../../redux/store";
 import { Tender } from "../../types/types";
 import { fetchUpdateTender } from "../../redux/thunks/tenderThunks";
 import { createConsecutiveService } from "../../services/consecutiveService";
+import { getTodayDateString } from "../../helpers";
 
 type ChildInputProps = {
   status: string;
@@ -21,11 +22,14 @@ const ApproveRejectModal: React.FC<ChildInputProps> = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const tender = useSelector((state: RootState) => state.tender.tender);
+    const user = useSelector((state: RootState) => state.user.authUser);
 
   const { register, handleSubmit, reset } = useForm<CommentsTypes>({
     defaultValues: {
-      author: "Joe Doe",
+      author: `${user?.name} ${user?.lastName}`,
+      jobTitle:  `${user?.jobTitle}`,
       comment: "",
+      createdAt:  getTodayDateString(),
     },
 
   });

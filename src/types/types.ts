@@ -26,7 +26,7 @@ export type VisitReportType = {
   id: number;
   processed?: boolean;
   tenderID?: number;
-  createdBy? : string
+  createdBy?: string;
 };
 
 export type Description = {
@@ -101,7 +101,9 @@ export type OfferSummaryType = {
 
 export type CommentsTypes = {
   author: string;
+  jobTitle: string;
   comment: string;
+  createdAt: string;
 };
 
 export type Tender = HeadingTender & {
@@ -155,4 +157,5 @@ export type AuthUserType = {
   active: boolean;
   role: string;
   profilePicture: string;
+  jobTitle: string;
 };
