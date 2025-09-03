@@ -67,31 +67,30 @@ const LoginForm = () => {
             Área de Miembros
           </h2>
           <div className="relative">
-            <h2 className="font-black text-center text-xl sm:hidden text-green-600">
+            <h2 className="font-black text-center text-xl sm:hidden text-sky-700">
               Bienvenido
             </h2>
-            <h2 className="text-center font-bold sm:font-bold sm:text-xl text-black sm:text-green-600 ">
+            <h2 className="text-center font-bold sm:font-bold sm:text-xl text-black sm:text-sky-700 ">
               Iniciar Sesión
             </h2>
           </div>
         </div>
         <input
           type="text"
-          className="w-full border border-green-600 rounded-md shadow-gray-400 shadow-md outline-none p-2"
+          className="w-full border border-sky-600 rounded-md shadow-gray-400 shadow-md outline-none p-2"
           placeholder="email@email.com"
           {...register("email")}
         />
         <input
           type="password"
-          className="w-full border border-green-600 rounded-md shadow-gray-400 shadow-md outline-none p-2"
+          className="w-full border border-sky-600 rounded-md shadow-gray-400 shadow-md outline-none p-2"
           placeholder="contraseña"
           {...register("password")}
         />
         <input
           type="submit"
           disabled={loading}
-          className="w-full p-2 bg-gradient-to-b from-green-400 to-green-600  hover:from-green-600 hover:to-green-700 
-            rounded-md shadow-gray-400 shadow-md outline-none text-slate-100 hover:text-white font-bold cursor-pointer uppercase"
+          className="w-full p-2 bg-sky-600  hover:bg-sky-700 duration-300 rounded-md shadow-gray-400 shadow-md outline-none text-slate-100 hover:text-white font-bold cursor-pointer uppercase"
           value="Iniciar sesión"
         />
         <p className="w-full text-right text-xs">

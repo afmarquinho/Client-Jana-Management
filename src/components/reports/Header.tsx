@@ -19,7 +19,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="bg-green-600 py-2">
+      <div className="bg-sky-950 py-2">
         <div className="w-11/12 max-w-[90rem] mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
           <div className="w-52">
             <Logo />

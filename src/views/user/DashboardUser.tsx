@@ -36,11 +36,11 @@ const DashboardUser = () => {
       ) : (
         <div className="flex flex-col md:flex-row my-4">
           <div className="w-[200px]">
-            <nav className="bg-green-900">
+            <nav className="bg-sky-950">
               <div className="w-full p-4">
                 <Link
                   to="/new-user"
-                  className="bg-green-400 block w-full p-1 text-center hover:bg-green-700 hover:text-white"
+                  className="bg-sky-600 block w-full p-1 text-center text-white hover:bg-sky-700"
                 >
                   + Nuevo Usuario
                 </Link>

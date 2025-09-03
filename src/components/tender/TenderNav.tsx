@@ -57,11 +57,11 @@ const TenderNav: React.FC = () => {
             <ChevronLeftIcon className="h-4" />
           </button>
         </div>
-        <nav className="bg-green-900 text-white w-36">
+        <nav className="bg-sky-950 text-white w-36">
           <div className="p-4">
             <NavLink
               to="/tender-summary-view"
-              className="text-black text-center bg-green-400 py-2 hover:bg-green-700 block w-full hover:text-white"
+              className="text-black text-center bg-sky-400 py-2 hover:bg-sky-700 block w-full hover:text-white"
             >
               Resúmen
             </NavLink>
@@ -70,8 +70,8 @@ const TenderNav: React.FC = () => {
             to="/tender-editing-heading"
             className={({ isActive }) =>
               isActive
-                ? "text-black border-l-4 border-l-green-300 bg-green-400 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
-                : "text-green-100 border-l-4 border-l-green-900 hover:bg-green-700 hover:border-l-green-300 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
+                ? "text-black border-l-4 border-l-sky-300 bg-sky-400 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
+                : "text-sky-100 border-l-4 border-l-sky-900 hover:bg-sky-700 hover:border-l-sky-300 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
             }
           >
             <DocumentIcon className="h-4" />
@@ -81,8 +81,8 @@ const TenderNav: React.FC = () => {
             to="/tender-editing-workforce"
             className={({ isActive }) =>
               isActive
-                ? "text-black border-l-4 border-l-green-300 bg-green-400 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
-                : "text-green-100 border-l-4 border-l-green-900 hover:bg-green-700 hover:border-l-green-300 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
+                ? "text-black border-l-4 border-l-sky-300 bg-sky-400 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
+                : "text-sky-100 border-l-4 border-l-sky-900 hover:bg-sky-700 hover:border-l-sky-300 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
             }
           >
             <HandRaisedIcon className="h-4" />
@@ -92,8 +92,8 @@ const TenderNav: React.FC = () => {
             to="/tender-editing-materials"
             className={({ isActive }) =>
               isActive
-                ? "text-black border-l-4 border-l-green-300 bg-green-400 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
-                : "text-green-100 border-l-4 border-l-green-900 hover:bg-green-700 hover:border-l-green-300 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
+                ? "text-black border-l-4 border-l-sky-300 bg-sky-400 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
+                : "text-sky-100 border-l-4 border-l-sky-900 hover:bg-sky-700 hover:border-l-sky-300 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
             }
           >
             <WrenchIcon className="h-4" />
@@ -103,8 +103,8 @@ const TenderNav: React.FC = () => {
             to="/tender-editing-other-expenses"
             className={({ isActive }) =>
               isActive
-                ? "text-black border-l-4 border-l-green-300 bg-green-400 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
-                : "text-green-100 border-l-4 border-l-green-900 hover:bg-green-700 hover:border-l-green-300 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
+                ? "text-black border-l-4 border-l-sky-300 bg-sky-400 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
+                : "text-sky-100 border-l-4 border-l-sky-900 hover:bg-sky-700 hover:border-l-sky-300 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
             }
           >
             <CurrencyDollarIcon className="h-4" />
@@ -114,8 +114,8 @@ const TenderNav: React.FC = () => {
             to="/tender-editing-descriptions"
             className={({ isActive }) =>
               isActive
-                ? "text-black border-l-4 border-l-green-300 bg-green-400 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
-                : "text-green-100 border-l-4 border-l-green-900 hover:bg-green-700 hover:border-l-green-300 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
+                ? "text-black border-l-4 border-l-sky-300 bg-sky-400 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
+                : "text-sky-100 border-l-4 border-l-sky-900 hover:bg-sky-700 hover:border-l-sky-300 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
             }
           >
             <BookOpenIcon className="h-4" />
@@ -125,8 +125,8 @@ const TenderNav: React.FC = () => {
             to="/tender-editing-notes"
             className={({ isActive }) =>
               isActive
-                ? "text-black border-l-4 border-l-green-300 bg-green-400 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
-                : "text-green-100 border-l-4 border-l-green-900 hover:bg-green-700 hover:border-l-green-300 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
+                ? "text-black border-l-4 border-l-sky-300 bg-sky-400 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
+                : "text-sky-100 border-l-4 border-l-sky-900 hover:bg-sky-700 hover:border-l-sky-300 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
             }
           >
             <PencilSquareIcon className="h-4" />
@@ -136,8 +136,8 @@ const TenderNav: React.FC = () => {
             to="/tender-comments"
             className={({ isActive }) =>
               isActive
-                ? "text-black border-l-4 border-l-green-300 bg-green-400 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
-                : "text-green-100 border-l-4 border-l-green-900 hover:bg-green-700 hover:border-l-green-300 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
+                ? "text-black border-l-4 border-l-sky-300 bg-sky-400 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
+                : "text-sky-100 border-l-4 border-l-sky-900 hover:bg-sky-700 hover:border-l-sky-300 w-full flex jjustify-start items-center gap-1 ps-1 py-3"
             }
           >
             <ChatBubbleBottomCenterIcon className="h-4" />
@@ -147,7 +147,7 @@ const TenderNav: React.FC = () => {
 
         <Link
           to={`/tender-PDF/${tender?.id}`}
-          className="text-green-100 bg-orange-600 hover:bg-teal-900 w-full flex jjustify-start items-center gap-1 ps-1 py-3 mt-5"
+          className="text-sky-100 bg-orange-600 hover:bg-teal-900 w-full flex jjustify-start items-center gap-1 ps-1 py-3 mt-5"
           onClick={onPrint}
         >
           <PrinterIcon className="h-4" />

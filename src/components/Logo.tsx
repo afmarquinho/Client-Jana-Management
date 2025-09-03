@@ -1,7 +1,7 @@
 const Logo = () => {
   return (
     <>
-      <img src="/jana2.png" alt="Logo Jana" className="w-full" />
+      <img src="/logo/jana1.png" alt="Logo Jana" className="w-full" />
       
     </>
   );
