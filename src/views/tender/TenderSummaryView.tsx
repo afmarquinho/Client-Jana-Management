@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../redux/store";
-import { formatServerDate } from "../../helpers/helpers";
 import ApproveRejectModal from "../../components/tender/ApproveRejectModal";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -117,8 +116,12 @@ const TenderSummaryView = () => {
       <>
         <div className="italic font-bold">
           <p className="font-normal">
-            <span className="">Cartagena, </span>
-            {tender?.date && formatServerDate(tender.date)}
+            <span className="">Santiago de Cali, </span>
+            {new Date().toLocaleDateString("es-CO", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
           </p>
           <p className="font-normal mt-5">Ingeniero:</p>
           <p className="uppercase">{tender?.contactName}</p>

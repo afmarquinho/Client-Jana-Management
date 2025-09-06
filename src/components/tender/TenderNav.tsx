@@ -34,7 +34,6 @@ const TenderNav: React.FC = () => {
     if (tender) {
       await dispatch(fetchPrintTender(tender.id));
     }
-    
   };
 
   return (
@@ -145,14 +144,18 @@ const TenderNav: React.FC = () => {
           </NavLink>
         </nav>
 
-        <Link
-          to={`/tender-PDF/${tender?.id}`}
-          className="text-sky-100 bg-orange-600 hover:bg-teal-900 w-full flex jjustify-start items-center gap-1 ps-1 py-3 mt-5"
-          onClick={onPrint}
-        >
-          <PrinterIcon className="h-4" />
-          Imprimir
-        </Link>
+        {
+          tender && tender.status === "approved" &&
+
+          <Link
+            to={`/tender-PDF/${tender?.id}`}
+            className="text-sky-100 bg-orange-600 hover:bg-teal-900 w-full flex jjustify-start items-center gap-1 ps-1 py-3 mt-5"
+            onClick={onPrint}
+          >
+            <PrinterIcon className="h-4" />
+            Imprimir
+          </Link>
+        }
       </div>
     </>
   );

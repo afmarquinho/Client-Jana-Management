@@ -1,6 +1,5 @@
-import { formatServerDate } from "../../helpers";
 import termocalderas from "/logo/VMTERMOCALDERAS.png";
-import termocalderas2 from "/logo/VMTERMOCALDERAS2.png"
+import termocalderas2 from "/logo/VMTERMOCALDERAS2.png";
 import { useEffect, useState } from "react";
 import { Tender } from "../../types";
 
@@ -59,8 +58,12 @@ const PDFView = () => {
         </div>
         <div className="italic font-bold">
           <p className="font-normal">
-            <span className="">Cartagena, </span>
-            {tender?.date && formatServerDate(tender.date)}
+            <span className="">Santiago de Cali, </span>
+            {new Date().toLocaleDateString("es-CO", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
           </p>
           <p className="font-normal mt-5">Ingeniero:</p>
           <p className="uppercase">{tender?.contactName}</p>
@@ -88,48 +91,48 @@ const PDFView = () => {
         <table className="w-full divide-y divide-gray-400 my-5 table-auto">
           <thead className="bg-gray-200">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border border-gray-400">
+              <th className="px-2 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border border-gray-400">
                 Item
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border border-gray-400">
+              <th className="px-2 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border border-gray-400">
                 Descripción
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border border-gray-400">
-                Unidad
+              <th className="px-2 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border border-gray-400">
+                Und.
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border border-gray-400">
-                Cantidad
+              <th className="px-2 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border border-gray-400">
+                Cant.
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border border-gray-400">
-                Vr Unitario
+              <th className="px-2 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border border-gray-400">
+                Vr. Unit.
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border border-gray-400">
-                Vr Total
+              <th className="px-2 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border border-gray-400">
+                Total
               </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-400">
             {tender?.description.map((desc, index) => (
               <tr key={index}>
-                <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 bg-gray-200 text-center border border-gray-400">
+                <td className="px-2 py-4 whitespace-nowrap text-sm font-medium text-gray-900 bg-gray-200 text-center border border-gray-400">
                   {desc.item}
                 </td>
-                <td className="px-4 py-4 whitespace-normal text-sm text-gray-900 text-justify border border-gray-400">
+                <td className="px-2 py-4 whitespace-normal text-sm text-gray-900 text-justify border border-gray-400 w-[600px]">
                   {desc.description}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-center border border-gray-400">
+                <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-900 text-center border border-gray-400">
                   {desc.unit}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-center border border-gray-400">
+                <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-900 text-center border border-gray-400">
                   {desc.quantity}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-center border border-gray-400">
+                <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-900 text-center border border-gray-400">
                   {desc.unitValue.toLocaleString("en-Us", {
                     style: "currency",
                     currency: "USD",
                   })}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-center border border-gray-400">
+                <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-900 text-center border border-gray-400">
                   {desc.totalValue.toLocaleString("en-Us", {
                     style: "currency",
                     currency: "USD",
