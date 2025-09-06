@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { formatServerDate } from "../../helpers/helpers";
 import { tenderToEdit } from "../../redux/slices/tenderSlice";
 import { fetchGetReportById } from "../../redux/thunks/reportThunks";
+import { useEffect } from "react";
 
 const AllTenders = ({ tenders }: { tenders: Tender[] }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,14 +17,19 @@ const AllTenders = ({ tenders }: { tenders: Tender[] }) => {
     dispatch(tenderToEdit(tender));
   };
 
+  useEffect(() => {
+    console.log("Tenders updated:", tenders);
+  } , [tenders]);
+
+ 
   return (
-    <table className="w-full max-w-[60rem] mx-auto">
+    <table className="w-full xl:max-w-[60rem] 2xl:max-w-[72rem] mx-auto">
       <thead>
         <tr>
           <th></th>
         </tr>
       </thead>
-      <tbody>
+      <tbody className={``}>
         {tenders.map((tender: Tender) => (
           <tr key={tender.id}>
             <td>

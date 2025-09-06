@@ -33,8 +33,7 @@ const DashboardTenderView = () => {
   return (
     <>
       <h2 className="my-5 text-left text-xl uppercase font-black text-gray-500">
-        Informe de Visita <span className="text-blue-800">pendientes</span> por
-        Procesar
+        <span className="text-blue-800">Cotizaciones</span> en proceso
       </h2>
       {loading ? (
         <HourglassSpinner />
