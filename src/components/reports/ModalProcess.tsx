@@ -50,7 +50,7 @@ const ModalProcess: React.FC<ChildInputProps> = ({ setIsModalProcess }) => {
     <div className="fixed bg-black bg-opacity-50 flex justify-center items-center inset-0">
       <div className="w-96 bg-white text-black p-5 rounded-lg">
         <p className="text-center">
-          Confirma que quieres procesar este Informe de Vista
+          Confirma que quieres procesar este Informe de Viista
         </p>
         <div className="w-full flex justify-around items-center mt-5">
           <button
