@@ -71,7 +71,7 @@ const ReportSummaryView = () => {
           </Link>
 
           <h2 className="text-gray-500 font-black uppercase text-md sm:text-xl text-center mb-5">
-            Resúmen de <span className="text-customRed">Informe de Viista</span>
+            Resúmen de <span className="text-customRed">Informe de Visita</span>
           </h2>
 
           <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden text-sm md:text-base">
